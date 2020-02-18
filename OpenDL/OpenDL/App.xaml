@@ -1,0 +1,16 @@
+﻿<Application x:Class="OpenDL.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:OpenDL"
+             xmlns:viewModel="clr-namespace:OpenDL.ViewModel"
+             StartupUri="View/MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <viewModel:ViewModelLocator x:Key="Locator"></viewModel:ViewModelLocator>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/OpenDL;component/Style/PopupStyle.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/OpenDL;component/Style/ShadowStyle.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
