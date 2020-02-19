@@ -63,7 +63,7 @@
                   HorizontalContentAlignment="Stretch"
                   Name="LeftMainMenu"
                   ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                  Width="300"
+                  Width="0"
                   DockPanel.Dock="Left">
 
             <ListView.Resources>

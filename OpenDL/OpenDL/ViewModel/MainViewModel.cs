@@ -14,6 +14,11 @@ using System.Collections.ObjectModel;
 using System.Text;
 using System.Windows.Input;
 
+using static Tensorflow.Binding;
+using Tensorflow;
+
+
+
 namespace OpenDL.ViewModel
 {
     public class MainViewModel : ViewModelBase
@@ -70,6 +75,7 @@ namespace OpenDL.ViewModel
                 case "Select":
                     this.WorkType = message.Type;
                     this.IsPopup = false;
+                    this.IsOpenLeftMenu = true;
                     break;
             };
         }

@@ -7,10 +7,16 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UC\SegmentationControler.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\LabelView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\ReleaseNoteView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\SegmentationLabelView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\SelectWorkTypeView.xaml.cs">
@@ -27,6 +33,9 @@
     <Page Update="Style\ShadowStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="UC\SegmentationControler.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\LabelView.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -34,6 +43,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ReleaseNoteView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\SegmentationLabelView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\SelectWorkTypeView.xaml">

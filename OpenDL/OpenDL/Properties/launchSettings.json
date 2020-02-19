@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OpenDL": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}

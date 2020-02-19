@@ -6,7 +6,15 @@
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:local="clr-namespace:OpenDL.View"
+             xmlns:view="clr-namespace:OpenDL.View"
+             xmlns:viewmodel="clr-namespace:OpenDL.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+    <ContentPresenter Content="{Binding LabelViewModelContent}">
+        <ContentPresenter.Resources>
+            <DataTemplate DataType="{x:Type viewmodel:SegmentationLabelViewModel}">
+                <view:SegmentationLabelView></view:SegmentationLabelView>
+            </DataTemplate>
+        </ContentPresenter.Resources>
+    </ContentPresenter>
 </UserControl>

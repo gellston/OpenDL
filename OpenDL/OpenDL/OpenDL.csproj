@@ -1,16 +1,33 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DefineConstants>TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Image\Orange.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Image\Orange.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CommonServiceLocator" Version="2.0.5" />
     <PackageReference Include="MvvmLightLibsStd10" Version="5.4.1.1" />
     <PackageReference Include="MvvmLightStd10" Version="5.4.1.2" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Windows-GPU" Version="1.14.1" />
     <PackageReference Include="TensorFlow.NET" Version="0.14.2" />
   </ItemGroup>
 
@@ -19,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Control\" />
     <Folder Include="ReleaseNote\" />
   </ItemGroup>
 

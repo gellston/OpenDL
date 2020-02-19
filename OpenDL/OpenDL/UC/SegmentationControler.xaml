@@ -1,0 +1,73 @@
+﻿<UserControl x:Class="OpenDL.UC.SegmentationControler"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OpenDL.UC"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:model="clr-namespace:OpenDL.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             Background="White" MouseRightButtonDown="UserControl_MouseRightButtonDown"
+             >
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalContentAlignment="Stretch"
+                  VerticalContentAlignment="Stretch">
+        <ItemsControl Background="Green"
+                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=PolygonCollection, Mode=OneWay}">
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type model:SegmentationPolygon}">
+                    <Polygon Points="{Binding Points}"
+                            Fill="Orange"
+                            Stroke="ForestGreen"
+                            StrokeThickness="2"
+                            Opacity="0.7"
+                            Name="SegmentationPolygon1">
+       
+                    </Polygon>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter Property="Stroke" Value="DarkRed" TargetName="SegmentationPolygon1"></Setter>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=CanvasWidth, Mode=OneWay}" 
+                            Height="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=CanvasHeight, Mode=OneWay}"
+                            Name="ChildCanvas" 
+                            RenderTransformOrigin="0.5,0.5" 
+                            MouseWheel="ChildCanvas_MouseWheel"
+                            MouseMove="ChildCanvas_MouseMove" 
+                            MouseLeftButtonDown="ChildCanvas_MouseLeftButtonDown" 
+                            MouseLeftButtonUp="ChildCanvas_MouseLeftButtonUp"
+                            >
+                        <Canvas.Background>
+                            <ImageBrush ImageSource="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=Image, Mode=OneWay}"></ImageBrush>
+                        </Canvas.Background>
+                        <Canvas.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform ScaleX="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=Zoom, Mode=OneWay}"
+                                            ScaleY="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=Zoom, Mode=OneWay}"/>
+                                <TranslateTransform X="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=TranslationX, Mode=OneWay}" 
+                                                Y="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=TranslationY, Mode=OneWay}"/>
+                            </TransformGroup>
+                        </Canvas.RenderTransform>
+                    </Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding Path=X}" />
+                    <Setter Property="Canvas.Top" Value="{Binding Path=Y}" />
+                    <Setter Property="Panel.ZIndex" Value="{Binding Path=Z}"></Setter>
+                    <Setter Property="Width" Value="{Binding Path=Width}"></Setter>
+                    <Setter Property="Height" Value="{Binding Path=Height}"></Setter>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+    </ScrollViewer>
+
+</UserControl>

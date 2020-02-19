@@ -28,6 +28,14 @@ namespace OpenDL.ViewModel
                 SimpleIoc.Default.Register<LabelViewModel>();
                 SimpleIoc.Default.Register<ReleaseNoteViewModel>();
                 SimpleIoc.Default.Register<SelectWorkTypeViewModel>();
+                SimpleIoc.Default.Register<SegmentationLabelViewModel>();
+
+
+
+                //Pre Initialization
+
+                SimpleIoc.Default.GetInstance<LabelViewModel>();
+                SimpleIoc.Default.GetInstance<SegmentationLabelViewModel>();
             }
 
         }
