@@ -82,8 +82,6 @@ namespace OpenDL.UC
 
                 control.CanvasWidth = image.Width;
                 control.CanvasHeight = image.Height;
-
-                System.Console.WriteLine("test");
             }
         }
 
@@ -224,17 +222,18 @@ namespace OpenDL.UC
 
         private void ChildCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            var draggableControl = sender as Canvas;
+            if (draggableControl.IsMouseCaptured == true)
+                return;
 
             if (e.Delta > 0)
             {
-                System.Console.WriteLine("test1");
                 this.Zoom -= this.ZoomStep;
                 if (this.Zoom <= this.ZoomMin)
                     this.Zoom = this.ZoomMin;
             }
             else
             {
-                System.Console.WriteLine("test2");
                 this.Zoom += this.ZoomStep;
                 if (this.Zoom >= this.ZoomMax)
                     this.Zoom = this.ZoomMax;
@@ -242,30 +241,37 @@ namespace OpenDL.UC
             }
         }
 
-        private void ChildCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            Point test = e.GetPosition(sender as IInputElement);
-            System.Console.WriteLine("Move x=" + test.X + ", y=" + test.Y);
-            
-            
-        }
+        private Point CanvasStart;
+        private Point CanvasOrigin;
 
         private void ChildCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point pressedPoint = e.GetPosition(sender as IInputElement);
-            System.Console.WriteLine("LeftButtonDown x=" + pressedPoint.X + ", y=" + pressedPoint.Y);
 
             HitTestResult hitTestResult = VisualTreeHelper.HitTest(sender as Visual, e.GetPosition(sender as IInputElement));
+            if (hitTestResult == null) return;
             var element = hitTestResult.VisualHit;
+
 
             if(Keyboard.IsKeyDown(Key.LeftCtrl) == true && element.GetType() == typeof(Polygon)) {
                 SegmentationPolygon datacontext = (element as Polygon).DataContext as SegmentationPolygon;
                 datacontext.IsSelected = !datacontext.IsSelected;
-                System.Console.WriteLine("ItemSelected value = " + datacontext.IsSelected);
+                if (datacontext.IsSelected == true)
+                    this.SelectedItem = datacontext;
                 return;
             }
 
-            if (this.SelectedItem == null && this.Image != null && Keyboard.IsKeyDown(Key.LeftCtrl) != true)
+            if (Keyboard.IsKeyDown(Key.LeftShift) == true && element.GetType() == typeof(Canvas))
+            {
+                this.CanvasStart = e.GetPosition(this);
+                this.CanvasOrigin = new Point(this.TranslationX, this.TranslationY);
+
+                var draggableControl = sender as Canvas;
+                draggableControl.CaptureMouse();
+                return;
+            }
+
+            if (this.SelectedItem == null && this.Image != null && Keyboard.IsKeyDown(Key.LeftAlt) == true)
             {
                 this.SelectedItem = new SegmentationPolygon()
                 {
@@ -279,7 +285,7 @@ namespace OpenDL.UC
                 this.PolygonCollection.Add(this.SelectedItem);
             }
 
-            if(this.SelectedItem != null && Keyboard.IsKeyDown(Key.LeftCtrl) != true)
+            if(this.SelectedItem != null && Keyboard.IsKeyDown(Key.LeftAlt) == true)
             {
                 this.SelectedItem.Points.Add(new Point()
                 {
@@ -287,16 +293,32 @@ namespace OpenDL.UC
                     Y = pressedPoint.Y
                 });
 
-                PointCollection temp = this.SelectedItem.Points;
-                PointCollection newCollection = new PointCollection(temp);
+                PointCollection tempCollection = this.SelectedItem.Points;
+                PointCollection newCollection = new PointCollection(tempCollection);
                 this.SelectedItem.Points = newCollection;
+            }
+        }
+
+        private void ChildCanvas_MouseMove(object sender, MouseEventArgs e)
+        {
+            Point cursorPosition = e.GetPosition(this);
+            Canvas canvas = sender as Canvas;
+            if(canvas != null)
+            {
+                if ( canvas.IsMouseCaptured == true && canvas != null)
+                {
+                    Vector v = this.CanvasStart - cursorPosition;
+                    this.TranslationX = CanvasOrigin.X - v.X;
+                    this.TranslationY = CanvasOrigin.Y - v.Y;
+                    return;
+                }
             }
         }
 
         private void ChildCanvas_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            Point test = e.GetPosition(sender as IInputElement);
-            System.Console.WriteLine("LeftButtonUp x=" + test.X + ", y=" + test.Y);
+            Canvas canvas = sender as Canvas;
+            canvas.ReleaseMouseCapture();
         }
 
         private void UserControl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)

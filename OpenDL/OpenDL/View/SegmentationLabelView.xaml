@@ -6,10 +6,43 @@
              xmlns:local="clr-namespace:OpenDL.View"
              xmlns:uc="clr-namespace:OpenDL.UC"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:model="clr-namespace:OpenDL.Model"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <DockPanel>
+        <UniformGrid DockPanel.Dock="Top" 
+                     Height="40"
+                     Rows="1">
+            <Button Content="Folder Open"></Button>
+            <Button Content="Save Label"></Button>
+            <Button Content="Delete Polygon"></Button>
+            <Button Content="Augmentation"></Button>
+        </UniformGrid>
+        
+        <Grid Width="250" DockPanel.Dock="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <ListView Grid.Row="0"></ListView>
+            <ListView Grid.Row="1" ItemsSource="{Binding LabelCollection}">
+                <ListView.Resources>
+                    <DataTemplate DataType="{x:Type model:SegmentationPolygon}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}"></TextBlock>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.Resources>
+            </ListView>
+        </Grid>
+        <ListView Width="250" DockPanel.Dock="Right"></ListView>
         <uc:SegmentationControler Image="{Binding CurrentImage}"
-                                  PolygonCollection="{Binding LabelCollection}"></uc:SegmentationControler> 
-    </Grid>
+                                  PolygonCollection="{Binding LabelCollection}"></uc:SegmentationControler>
+        
+    </DockPanel>
+
+
 </UserControl>
