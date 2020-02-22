@@ -17,13 +17,14 @@
         <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=PolygonCollection, Mode=OneWay}">
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type model:SegmentationPolygon}">
-                    <Polygon Points="{Binding Points}"
-                            Fill="Orange"
+                    <Polygon Points="{Binding Points}" 
                             Stroke="ForestGreen"
                             StrokeThickness="2"
-                            Opacity="0.7"
+                            Opacity="1"
                             Name="SegmentationPolygon1">
-       
+                        <Polygon.Fill>
+                            <SolidColorBrush Color="{Binding Color}"></SolidColorBrush>
+                        </Polygon.Fill>
                     </Polygon>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">

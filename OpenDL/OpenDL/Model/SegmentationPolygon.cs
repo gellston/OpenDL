@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace OpenDL.Model
 {
-    public class SegmentationPolygon : INotifyPropertyChanged
+    public class SegmentationPolygon : INotifyPropertyChanged, ICloneable
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -28,10 +28,14 @@ namespace OpenDL.Model
             }
         }
 
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
         public SegmentationPolygon()
         {
             this.Points = new PointCollection();
-
         }
 
 
@@ -49,14 +53,19 @@ namespace OpenDL.Model
             set => Set<PointCollection>(nameof(Points), ref _Points, value);
         }
 
-        //public void Add(Point _point)
-        //{
-        //    if (this.Points != null)
-        //    {
-        //        this.Points.Add(_point);
-        //        OnPropertyRaised(nameof(Points));
-        //    }
-        //}
+
+        private Color _Color;
+        public Color Color
+        {
+            get
+            {
+
+                return _Color;
+            }
+            set => 
+                Set<Color>(nameof(Color), ref _Color, value);
+        }
+
 
         public double _X = 0;
         public double X

@@ -219,6 +219,21 @@ namespace OpenDL.UC
         }
 
 
+        public static readonly DependencyProperty TargetItemProperty = DependencyProperty.Register("TargetItem", typeof(SegmentationPolygon), typeof(SegmentationControler));
+        public SegmentationPolygon TargetItem
+        {
+            get
+            {
+                return (SegmentationPolygon)GetValue(TargetItemProperty);
+            }
+
+            set
+            {
+                SetValue(TargetItemProperty, value);
+            }
+        }
+
+
 
         private void ChildCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -271,18 +286,25 @@ namespace OpenDL.UC
                 return;
             }
 
-            if (this.SelectedItem == null && this.Image != null && Keyboard.IsKeyDown(Key.LeftAlt) == true)
+            if (this.SelectedItem == null && this.TargetItem != null && this.Image != null && Keyboard.IsKeyDown(Key.LeftAlt) == true)
             {
-                this.SelectedItem = new SegmentationPolygon()
-                {
-                    X = 0,
-                    Y = 0,
-                    Z = 1,
-                    Width = this.Image.Width,
-                    Height = this.Image.Height
-                };
+                //SegmentationPolygon polygonItem = this.TargetItem.Clone() as SegmentationPolygon;
 
-                this.PolygonCollection.Add(this.SelectedItem);
+                SegmentationPolygon polygonItem = new SegmentationPolygon();
+                polygonItem.X = 0;
+                polygonItem.Y = 0;
+                polygonItem.Width = this.Image.Width;
+                polygonItem.Height = this.Image.Height;
+                polygonItem.Color = this.TargetItem.Color;
+                polygonItem.Name = this.TargetItem.Name;
+
+                //polygonItem.X = 0;
+                //polygonItem.Y = 0;
+                //polygonItem.Width = this.Image.Width;
+                //polygonItem.Height = this.Image.Height;
+
+                this.SelectedItem = polygonItem;
+                this.PolygonCollection.Add(polygonItem);
             }
 
             if(this.SelectedItem != null && Keyboard.IsKeyDown(Key.LeftAlt) == true)
