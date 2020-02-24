@@ -10,16 +10,16 @@
              d:DesignHeight="450" d:DesignWidth="800"
              Background="White" MouseRightButtonDown="UserControl_MouseRightButtonDown"
              >
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                  VerticalScrollBarVisibility="Auto"
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                  VerticalScrollBarVisibility="Disabled"
                   HorizontalContentAlignment="Stretch"
                   VerticalContentAlignment="Stretch">
         <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationControler}, Path=PolygonCollection, Mode=OneWay}">
             <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type model:SegmentationPolygon}">
+                <DataTemplate DataType="{x:Type model:SegmentLabelPolygon}">
                     <Polygon Points="{Binding Points}" 
                             Stroke="ForestGreen"
-                            StrokeThickness="2"
+                            StrokeThickness="1"
                             Opacity="1"
                             Name="SegmentationPolygon1">
                         <Polygon.Fill>

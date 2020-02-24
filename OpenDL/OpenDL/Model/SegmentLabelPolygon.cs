@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 namespace OpenDL.Model
 {
-    public class SegmentationPolygon : INotifyPropertyChanged, ICloneable
+    public class SegmentLabelPolygon : INotifyPropertyChanged, ICloneable
     {
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -33,7 +33,7 @@ namespace OpenDL.Model
             return this.MemberwiseClone();
         }
 
-        public SegmentationPolygon()
+        public SegmentLabelPolygon()
         {
             this.Points = new PointCollection();
         }

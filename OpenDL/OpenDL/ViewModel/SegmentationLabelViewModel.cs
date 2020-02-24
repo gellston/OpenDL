@@ -24,8 +24,7 @@ namespace OpenDL.ViewModel
             this.folderBrowserService = _folderBrowserService;
             this.labelLoaderService = _labelLoaderService;
 
-            this.CurrentImage = new BitmapImage(new Uri("pack://application:,,,/OpenDL;component/Image/Orange.jpg"));
-            this.LabelCollection = new ObservableCollection<SegmentationPolygon>();
+            this.LabelCollection = new ObservableCollection<SegmentLabelPolygon>();
         }
 
 
@@ -47,9 +46,9 @@ namespace OpenDL.ViewModel
                 if(_AddLabelCommand == null)
                 {
                     _AddLabelCommand = new RelayCommand(() => {
-                        this.LabelCollection.Add(new SegmentationPolygon()
+                        this.LabelCollection.Add(new SegmentLabelPolygon()
                         {
-                            Name = "Temp"
+                            Name = "이름 미지정"
                         });
                     });
                 }
@@ -72,7 +71,7 @@ namespace OpenDL.ViewModel
                         
                         if (temp != null)
                         {
-                            foreach (SegmentationPolygon polygon in temp.OfType<SegmentationPolygon>().ToList())
+                            foreach (SegmentLabelPolygon polygon in temp.OfType<SegmentLabelPolygon>().ToList())
                             {
                                 this.LabelCollection.Remove(polygon);
                             }
@@ -99,9 +98,9 @@ namespace OpenDL.ViewModel
 
                         if (temp != null)
                         {
-                            foreach (SegmentationPolygon polygon in temp.OfType<SegmentationPolygon>().ToList())
+                            foreach (SegmentLabelPolygon polygon in temp.OfType<SegmentLabelPolygon>().ToList())
                             {
-                                this.CurrentPolyconCollection.Remove(polygon);
+                                this.PolygonCollection.Remove(polygon);
                             }
                         }
                     });
@@ -127,11 +126,11 @@ namespace OpenDL.ViewModel
                             return;
 
                         string[] files = folderBrowserService.ImageListFromFolder(folderPath);
-
                         ObservableCollection<SegmentLabelUnit> labels = labelLoaderService.LoadSegmentedLabel(files);
-                        
-
-
+                        this.LabelUnitCollection = labels;
+                        this.PolygonCollection = null;
+                        this.SelectedLabelUnit = null;
+                        this.SelectedPolygon = null;
                     });
                 }
 
@@ -141,8 +140,8 @@ namespace OpenDL.ViewModel
 
 
 
-        private SegmentationPolygon _SelectedPolygon = null;
-        public SegmentationPolygon SelectedPolygon
+        private SegmentLabelPolygon _SelectedPolygon = null;
+        public SegmentLabelPolygon SelectedPolygon
         {
             get => _SelectedPolygon;
             set
@@ -150,7 +149,7 @@ namespace OpenDL.ViewModel
 
                 if(value != null)
                 {
-                    SegmentationPolygon polygon = value;
+                    SegmentLabelPolygon polygon = value;
                     polygon.IsSelected = true;
                 }
 
@@ -160,44 +159,74 @@ namespace OpenDL.ViewModel
                 }
 
 
-                Set<SegmentationPolygon>(nameof(SelectedPolygon), ref _SelectedPolygon, value);
+                Set<SegmentLabelPolygon>(nameof(SelectedPolygon), ref _SelectedPolygon, value);
             }
         }
 
 
-        private ObservableCollection<SegmentationPolygon> _CurrentPolyconCollection = null;
-        public ObservableCollection<SegmentationPolygon> CurrentPolyconCollection
+        private ObservableCollection<SegmentLabelPolygon> _PolygonCollection = null;
+        public ObservableCollection<SegmentLabelPolygon> PolygonCollection
         {
             get
             {
-                if (_CurrentPolyconCollection == null)
-                    _CurrentPolyconCollection = new ObservableCollection<SegmentationPolygon>();
+                if (_PolygonCollection == null)
+                    _PolygonCollection = new ObservableCollection<SegmentLabelPolygon>();
 
-                return _CurrentPolyconCollection;
+                return _PolygonCollection;
             }
-            set => Set<ObservableCollection<SegmentationPolygon>>(nameof(CurrentPolyconCollection), ref _CurrentPolyconCollection, value);
+            set => Set<ObservableCollection<SegmentLabelPolygon>>(nameof(PolygonCollection), ref _PolygonCollection, value);
         }
 
 
 
-        private ObservableCollection<SegmentationPolygon> _LabelCollection = null;
-        public ObservableCollection<SegmentationPolygon> LabelCollection
+        private ObservableCollection<SegmentLabelPolygon> _LabelCollection = null;
+        public ObservableCollection<SegmentLabelPolygon> LabelCollection
         {
             get
             {
                 if (_LabelCollection == null)
-                    _LabelCollection = new ObservableCollection<SegmentationPolygon>();
+                    _LabelCollection = new ObservableCollection<SegmentLabelPolygon>();
 
                 return _LabelCollection;
             }
-            set => Set<ObservableCollection<SegmentationPolygon>>(nameof(LabelCollection), ref _LabelCollection, value);
+            set => Set<ObservableCollection<SegmentLabelPolygon>>(nameof(LabelCollection), ref _LabelCollection, value);
         }
 
-        private SegmentationPolygon _SelectedTargetLabel = null;
-        public SegmentationPolygon SelectedTargetLabel
+        private SegmentLabelPolygon _SelectedTargetLabel = null;
+        public SegmentLabelPolygon SelectedTargetLabel
         {
             get => _SelectedTargetLabel;
-            set => Set<SegmentationPolygon>(nameof(SelectedTargetLabel), ref _SelectedTargetLabel, value);
+            set => Set<SegmentLabelPolygon>(nameof(SelectedTargetLabel), ref _SelectedTargetLabel, value);
+        }
+
+
+
+
+        private ObservableCollection<SegmentLabelUnit> _LabelUnitCollection = null;
+        public ObservableCollection<SegmentLabelUnit> LabelUnitCollection
+        {
+            get => _LabelUnitCollection;
+            set => Set<ObservableCollection<SegmentLabelUnit>>(nameof(LabelUnitCollection), ref _LabelUnitCollection, value);
+        }
+
+
+        private SegmentLabelUnit _SelectedLabelUnit = null;
+        public SegmentLabelUnit SelectedLabelUnit
+        {
+            get => _SelectedLabelUnit;
+
+            set
+            {
+                if(value != null)
+                {
+                    SegmentLabelUnit unit = value as SegmentLabelUnit;
+                    this.PolygonCollection = unit.Polygons;
+                    this.CurrentImage = new BitmapImage(new Uri(unit.FilePath));
+                    this.SelectedPolygon = null;
+                }
+
+                Set<SegmentLabelUnit>(nameof(SelectedLabelUnit), ref _SelectedLabelUnit, value);
+            }
         }
     }
 }

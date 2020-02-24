@@ -30,7 +30,7 @@ namespace OpenDL.Model
 
         public SegmentLabelUnit()
         {
-            this.Polygons = new ObservableCollection<SegmentationPolygon>();
+            this.Polygons = new ObservableCollection<SegmentLabelPolygon>();
         }
 
         private string _FileName = "";
@@ -40,12 +40,19 @@ namespace OpenDL.Model
             get => _FileName;
         }
 
+        private string _FilePath = "";
+        public string FilePath
+        {
+            set => Set<string>(nameof(FilePath), ref _FilePath, value);
+            get => _FilePath;
+        }
 
-        private ObservableCollection<SegmentationPolygon> _Polygons = null;
-        public ObservableCollection<SegmentationPolygon> Polygons
+
+        private ObservableCollection<SegmentLabelPolygon> _Polygons = null;
+        public ObservableCollection<SegmentLabelPolygon> Polygons
         {
             get => _Polygons;
-            set => Set<ObservableCollection<SegmentationPolygon>>(nameof(Polygons), ref _Polygons, value);
+            set => Set<ObservableCollection<SegmentLabelPolygon>>(nameof(Polygons), ref _Polygons, value);
         }
     }
 }

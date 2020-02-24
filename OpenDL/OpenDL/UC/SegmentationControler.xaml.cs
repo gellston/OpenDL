@@ -82,6 +82,9 @@ namespace OpenDL.UC
 
                 control.CanvasWidth = image.Width;
                 control.CanvasHeight = image.Height;
+                control.TranslationX = 0;
+                control.TranslationY = 0;
+                ///control.Zoom = 1;
             }
         }
 
@@ -189,12 +192,12 @@ namespace OpenDL.UC
 
 
 
-        public static readonly DependencyProperty PolygonCollectionProperty = DependencyProperty.Register("PolygonCollection", typeof(ObservableCollection<SegmentationPolygon>), typeof(SegmentationControler));
-        public ObservableCollection<SegmentationPolygon> PolygonCollection
+        public static readonly DependencyProperty PolygonCollectionProperty = DependencyProperty.Register("PolygonCollection", typeof(ObservableCollection<SegmentLabelPolygon>), typeof(SegmentationControler));
+        public ObservableCollection<SegmentLabelPolygon> PolygonCollection
         {
             get
             {
-                return (ObservableCollection<SegmentationPolygon>)GetValue(PolygonCollectionProperty);
+                return (ObservableCollection<SegmentLabelPolygon>)GetValue(PolygonCollectionProperty);
             }
 
             set
@@ -204,12 +207,12 @@ namespace OpenDL.UC
         }
 
 
-        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(SegmentationPolygon), typeof(SegmentationControler));
-        public SegmentationPolygon SelectedItem
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(SegmentLabelPolygon), typeof(SegmentationControler), new PropertyMetadata(OnSelectedItemChangedCallBack));
+        public SegmentLabelPolygon SelectedItem
         {
             get
             {
-                return (SegmentationPolygon)GetValue(SelectedItemProperty);
+                return (SegmentLabelPolygon)GetValue(SelectedItemProperty);
             }
 
             set
@@ -217,19 +220,36 @@ namespace OpenDL.UC
                 SetValue(SelectedItemProperty, value);
             }
         }
+        private static void OnSelectedItemChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            SegmentationControler control = sender as SegmentationControler;
+            if (control != null)
+            {
+                control.SelectedItem = e.NewValue as SegmentLabelPolygon;
+            }
+        }
 
 
-        public static readonly DependencyProperty TargetItemProperty = DependencyProperty.Register("TargetItem", typeof(SegmentationPolygon), typeof(SegmentationControler));
-        public SegmentationPolygon TargetItem
+        public static readonly DependencyProperty TargetItemProperty = DependencyProperty.Register("TargetItem", typeof(SegmentLabelPolygon), typeof(SegmentationControler), new PropertyMetadata(OnTargetItemChangedCallBack));
+        public SegmentLabelPolygon TargetItem
         {
             get
             {
-                return (SegmentationPolygon)GetValue(TargetItemProperty);
+                return (SegmentLabelPolygon)GetValue(TargetItemProperty);
             }
 
             set
             {
                 SetValue(TargetItemProperty, value);
+            }
+        }
+
+        private static void OnTargetItemChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+        {
+            SegmentationControler control = sender as SegmentationControler;
+            if (control != null)
+            {
+                control.SelectedItem = null;
             }
         }
 
@@ -269,7 +289,7 @@ namespace OpenDL.UC
 
 
             if(Keyboard.IsKeyDown(Key.LeftCtrl) == true && element.GetType() == typeof(Polygon)) {
-                SegmentationPolygon datacontext = (element as Polygon).DataContext as SegmentationPolygon;
+                SegmentLabelPolygon datacontext = (element as Polygon).DataContext as SegmentLabelPolygon;
                 datacontext.IsSelected = !datacontext.IsSelected;
                 if (datacontext.IsSelected == true)
                     this.SelectedItem = datacontext;
@@ -290,7 +310,7 @@ namespace OpenDL.UC
             {
                 //SegmentationPolygon polygonItem = this.TargetItem.Clone() as SegmentationPolygon;
 
-                SegmentationPolygon polygonItem = new SegmentationPolygon();
+                SegmentLabelPolygon polygonItem = new SegmentLabelPolygon();
                 polygonItem.X = 0;
                 polygonItem.Y = 0;
                 polygonItem.Width = this.Image.Width;

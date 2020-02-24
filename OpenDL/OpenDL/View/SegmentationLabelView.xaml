@@ -60,7 +60,7 @@
                       HorizontalContentAlignment="Stretch"
                       Name="LabelList">
                 <ListView.Resources>
-                    <DataTemplate DataType="{x:Type model:SegmentationPolygon}">
+                    <DataTemplate DataType="{x:Type model:SegmentLabelPolygon}">
                         <Grid Height="30" Margin="0,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="25"></ColumnDefinition>
@@ -92,7 +92,7 @@
                 <TextBlock Text="폴리곤 리스트" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
             </Grid>
             <ListView Grid.Row="3" 
-                      ItemsSource="{Binding CurrentPolyconCollection}"
+                      ItemsSource="{Binding PolygonCollection}"
                       SelectedItem="{Binding SelectedPolygon}"
                       ScrollViewer.HorizontalScrollBarVisibility="Visible"
                       ScrollViewer.VerticalScrollBarVisibility="Visible"
@@ -100,7 +100,7 @@
                       HorizontalContentAlignment="Stretch"
                       Name="PolygonList">
                 <ListView.Resources>
-                    <DataTemplate DataType="{x:Type model:SegmentationPolygon}">
+                    <DataTemplate DataType="{x:Type model:SegmentLabelPolygon}">
                         <Grid Height="30" Margin="0,0,0,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="25"></ColumnDefinition>
@@ -123,11 +123,41 @@
                 </ListView.Resources>
             </ListView>
         </Grid>
-        <ListView Width="250" DockPanel.Dock="Right"></ListView>
+        
+        <ListView Width="250" 
+                  DockPanel.Dock="Right"
+                  ItemsSource="{Binding LabelUnitCollection}"
+                  SelectedItem="{Binding SelectedLabelUnit}">
+            <ListView.Resources>
+                <DataTemplate DataType="{x:Type model:SegmentLabelUnit}">
+                    <Grid Height="30" Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Image.svg'}"></Image>
+                        <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Stretch"
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"></TextBox>
+                        <TextBox Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Stretch"
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"></TextBox>
+                    </Grid>
+                </DataTemplate>
+            </ListView.Resources>
+        </ListView>
+        
         <uc:SegmentationControler Image="{Binding CurrentImage}"
                                   TargetItem="{Binding SelectedTargetLabel}"
-                                  PolygonCollection="{Binding CurrentPolyconCollection}"
-                                  SelectedItem="{Binding SelectedPolygon}"></uc:SegmentationControler>
+                                  PolygonCollection="{Binding PolygonCollection}"
+                                  SelectedItem="{Binding SelectedPolygon, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></uc:SegmentationControler>
         
     </DockPanel>
 

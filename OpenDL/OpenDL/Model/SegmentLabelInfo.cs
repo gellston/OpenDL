@@ -30,15 +30,15 @@ namespace OpenDL.Model
 
         public SegmentLabelInfo()
         {
-            this.Labels = new ObservableCollection<SegmentationPolygon>();
+            this.Labels = new ObservableCollection<SegmentLabelPolygon>();
         }
 
 
-        private ObservableCollection<SegmentationPolygon> _Labels = null;
-        public ObservableCollection<SegmentationPolygon> Labels
+        private ObservableCollection<SegmentLabelPolygon> _Labels = null;
+        public ObservableCollection<SegmentLabelPolygon> Labels
         {
             get => _Labels;
-            set => Set<ObservableCollection<SegmentationPolygon>>(nameof(Labels), ref _Labels, value);
+            set => Set<ObservableCollection<SegmentLabelPolygon>>(nameof(Labels), ref _Labels, value);
         }
 
     }

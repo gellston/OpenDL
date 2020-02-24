@@ -26,11 +26,13 @@ namespace OpenDL.Service
                 SegmentLabelUnit unit = new SegmentLabelUnit();
                 labelCollection.Add(unit);
 
-                unit.FileName = file;
+                unit.FilePath = file;
 
+                string filePath = Path.GetDirectoryName(file);
                 string pureFileName = Path.GetFileNameWithoutExtension(file);
-                string xmlFileName = pureFileName + ".xml";
+                string xmlFileName = filePath + Path.DirectorySeparatorChar + pureFileName + ".xml";
 
+                unit.FileName = pureFileName;
             }
 
 
