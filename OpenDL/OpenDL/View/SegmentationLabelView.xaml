@@ -13,7 +13,7 @@
         <UniformGrid DockPanel.Dock="Top" 
                      Height="40"
                      Rows="1">
-            <Button ToolTip="라벨 열기">
+            <Button ToolTip="라벨 열기" Command="{Binding OpenLabelCommand}">
                 <Image Source="{dx:DXImage 'SvgImages/Actions/Open2.svg'}"></Image>
             </Button>
             <Button ToolTip="라벨 저장">

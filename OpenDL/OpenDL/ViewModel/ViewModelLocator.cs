@@ -23,6 +23,8 @@ namespace OpenDL.ViewModel
             }
             else
             {
+
+                SimpleIoc.Default.Register<LabelLoaderService>();
                 SimpleIoc.Default.Register<FolderBrowserService>();
                 SimpleIoc.Default.Register<MainViewModel>();
                 SimpleIoc.Default.Register<LabelViewModel>();

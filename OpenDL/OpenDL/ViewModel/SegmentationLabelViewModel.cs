@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Input;
@@ -8,14 +9,21 @@ using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using OpenDL.Model;
+using OpenDL.Service;
 
 namespace OpenDL.ViewModel
 {
     public class SegmentationLabelViewModel: ViewModelBase
     {
+        private readonly FolderBrowserService folderBrowserService;
+        private readonly LabelLoaderService labelLoaderService;
 
-        public SegmentationLabelViewModel()
+        public SegmentationLabelViewModel(FolderBrowserService _folderBrowserService,
+                                          LabelLoaderService _labelLoaderService)
         {
+            this.folderBrowserService = _folderBrowserService;
+            this.labelLoaderService = _labelLoaderService;
+
             this.CurrentImage = new BitmapImage(new Uri("pack://application:,,,/OpenDL;component/Image/Orange.jpg"));
             this.LabelCollection = new ObservableCollection<SegmentationPolygon>();
         }
@@ -101,6 +109,33 @@ namespace OpenDL.ViewModel
                 }
 
                 return _DeletePolygonCommand;
+            }
+        }
+
+
+        private ICommand _OpenLabelCommand = null;
+        public ICommand OpenLabelCommand
+        {
+            get
+            {
+                if(_OpenLabelCommand == null)
+                {
+                    _OpenLabelCommand = new RelayCommand(() =>
+                    {
+                        string folderPath = folderBrowserService.SelectFolder();
+                        if (folderPath.Length <= 0)
+                            return;
+
+                        string[] files = folderBrowserService.ImageListFromFolder(folderPath);
+
+                        ObservableCollection<SegmentLabelUnit> labels = labelLoaderService.LoadSegmentedLabel(files);
+                        
+
+
+                    });
+                }
+
+                return _OpenLabelCommand;
             }
         }
 
