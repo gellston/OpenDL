@@ -7,8 +7,12 @@
              xmlns:uc="clr-namespace:OpenDL.UC"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:model="clr-namespace:OpenDL.Model"
+             xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <mvvm:Interaction.Behaviors>
+        <mvvm:EventToCommand EventName="KeyDown" Command="{Binding KeyDownEventCommand}"></mvvm:EventToCommand>
+    </mvvm:Interaction.Behaviors>
     <DockPanel>
         <UniformGrid DockPanel.Dock="Top" 
                      Height="40"
@@ -16,7 +20,7 @@
             <Button ToolTip="라벨 열기" Command="{Binding OpenLabelCommand}">
                 <Image Source="{dx:DXImage 'SvgImages/Actions/Open2.svg'}"></Image>
             </Button>
-            <Button ToolTip="라벨 저장">
+            <Button ToolTip="라벨 저장" Command="{Binding SaveLabelCommand}">
                 <Image Source="{dx:DXImage 'SvgImages/DiagramIcons/save as.svg'}"></Image>
             </Button>
             <Button ToolTip="라벨 추가" Command="{Binding AddLabelCommand}">

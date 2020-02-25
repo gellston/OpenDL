@@ -1,42 +1,111 @@
-﻿using OpenDL.Model;
+﻿using DevExpress.Xpf.Core;
+using Newtonsoft.Json;
+using OpenDL.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Threading;
 
 namespace OpenDL.Service
 {
     public class LabelLoaderService
     {
-
-        public LabelLoaderService()
+        private readonly ConfigureService configService;
+        public LabelLoaderService(ConfigureService _configService)
         {
+            this.configService = _configService;
 
         }
 
 
-        public ObservableCollection<SegmentLabelUnit> LoadSegmentedLabel(string [] _files)
+        public async Task<(ObservableCollection<SegmentLabelPolygon>, ObservableCollection<SegmentLabelUnit>)> LoadSegmentedLabelAsync(string _root, string [] _files)
         {
+
+            ObservableCollection<SegmentLabelPolygon> polygonCollection = new ObservableCollection<SegmentLabelPolygon>();
             ObservableCollection<SegmentLabelUnit> labelCollection = new ObservableCollection<SegmentLabelUnit>();
 
-
-            foreach(var file in _files)
+            using(StreamReader reader = new StreamReader(_root + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, Encoding.UTF8))
             {
-                SegmentLabelUnit unit = new SegmentLabelUnit();
-                labelCollection.Add(unit);
-
-                unit.FilePath = file;
-
-                string filePath = Path.GetDirectoryName(file);
-                string pureFileName = Path.GetFileNameWithoutExtension(file);
-                string xmlFileName = filePath + Path.DirectorySeparatorChar + pureFileName + ".xml";
-
-                unit.FileName = pureFileName;
+                string labelContent = reader.ReadToEnd();
+                polygonCollection = (ObservableCollection<SegmentLabelPolygon>)JsonConvert.DeserializeObject(labelContent, typeof(ObservableCollection<SegmentLabelPolygon>));
             }
 
+            await Task.Run(() =>
+            {
 
-            return labelCollection;
+                foreach (var file in _files)
+                {
+                    SegmentLabelUnit unit = null;
+
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        unit = new SegmentLabelUnit();
+                    });
+
+                    unit.FilePath = file;
+                    string filePath = Path.GetDirectoryName(file);
+                    string pureFileName = Path.GetFileNameWithoutExtension(file);
+                    unit.FileName = pureFileName;
+
+
+                    string jsonFileName = filePath + Path.DirectorySeparatorChar + pureFileName + ".json";
+                    using (StreamReader reader = new StreamReader(jsonFileName, Encoding.UTF8))
+                    {
+                        string labelContent = reader.ReadToEnd();
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            unit.Polygons = (ObservableCollection<SegmentLabelPolygon>)JsonConvert.DeserializeObject(labelContent, typeof(ObservableCollection<SegmentLabelPolygon>));
+                        });
+                    }
+
+                    labelCollection.Add(unit);
+                }
+            });
+
+            return (polygonCollection, labelCollection);
+        }
+
+
+        public async Task<bool> SaveLabelInformationAsync(string _folder, ObservableCollection<SegmentLabelPolygon> _labelInfo, ObservableCollection<SegmentLabelUnit> _unitInfo)
+        {
+
+            await Task.Run(async () =>
+            {
+                string segmentLabelInfoJson = "";
+
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    segmentLabelInfoJson = JsonConvert.SerializeObject(_labelInfo, Formatting.Indented);
+                });
+
+                using (StreamWriter sw = new StreamWriter(_folder + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, false, Encoding.UTF8))
+                {
+                    sw.Write(segmentLabelInfoJson);
+                }
+
+                foreach (var info in _unitInfo)
+                {
+                    string filePath = Path.GetDirectoryName(info.FilePath);
+                    string jsonFileName = filePath + Path.DirectorySeparatorChar + info.FileName + ".json";
+                    string segmentUnitInfoJson = "";
+                    
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        segmentUnitInfoJson = JsonConvert.SerializeObject(info.Polygons, Formatting.Indented);
+                    });
+                    using (StreamWriter sw = new StreamWriter(jsonFileName, false, Encoding.UTF8))
+                    {
+                        sw.Write(segmentUnitInfoJson);
+                    }
+                }
+            }).ConfigureAwait(false);
+
+            return true;
         }
     }
 }

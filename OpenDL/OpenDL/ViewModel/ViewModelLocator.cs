@@ -14,31 +14,21 @@ namespace OpenDL.ViewModel
         public ViewModelLocator()
         {
 
-            if (ViewModelBase.IsInDesignModeStatic == true)
-            {
-                SimpleIoc.Default.Register<DummyMainViewModel>();
-                SimpleIoc.Default.Register<DummyLabelViewModel>();
-                SimpleIoc.Default.Register<ReleaseNoteViewModel>();
-                SimpleIoc.Default.Register<SelectWorkTypeViewModel>();
-            }
-            else
-            {
-
-                SimpleIoc.Default.Register<LabelLoaderService>();
-                SimpleIoc.Default.Register<FolderBrowserService>();
-                SimpleIoc.Default.Register<MainViewModel>();
-                SimpleIoc.Default.Register<LabelViewModel>();
-                SimpleIoc.Default.Register<ReleaseNoteViewModel>();
-                SimpleIoc.Default.Register<SelectWorkTypeViewModel>();
-                SimpleIoc.Default.Register<SegmentationLabelViewModel>();
+            SimpleIoc.Default.Register<ConfigureService>();
+            SimpleIoc.Default.Register<LabelLoaderService>();
+            SimpleIoc.Default.Register<FolderBrowserService>();
+            SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<LabelViewModel>();
+            SimpleIoc.Default.Register<ReleaseNoteViewModel>();
+            SimpleIoc.Default.Register<SelectWorkTypeViewModel>();
+            SimpleIoc.Default.Register<SegmentationLabelViewModel>();
 
 
 
-                //Pre Initialization
+            //Pre Initialization
 
-                SimpleIoc.Default.GetInstance<LabelViewModel>();
-                SimpleIoc.Default.GetInstance<SegmentationLabelViewModel>();
-            }
+            SimpleIoc.Default.GetInstance<LabelViewModel>();
+            SimpleIoc.Default.GetInstance<SegmentationLabelViewModel>();
 
         }
 

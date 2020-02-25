@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using Newtonsoft.Json;
 using OpenDL.Model;
 using OpenDL.Service;
 
@@ -17,6 +18,7 @@ namespace OpenDL.ViewModel
     {
         private readonly FolderBrowserService folderBrowserService;
         private readonly LabelLoaderService labelLoaderService;
+        private string openFolderLocation;
 
         public SegmentationLabelViewModel(FolderBrowserService _folderBrowserService,
                                           LabelLoaderService _labelLoaderService)
@@ -33,8 +35,6 @@ namespace OpenDL.ViewModel
         {
             get => _CurrentImage;
             set => Set<BitmapImage>(nameof(CurrentImage), ref _CurrentImage, value);
-
-            
         }
 
 
@@ -119,15 +119,18 @@ namespace OpenDL.ViewModel
             {
                 if(_OpenLabelCommand == null)
                 {
-                    _OpenLabelCommand = new RelayCommand(() =>
+                    _OpenLabelCommand = new RelayCommand(async () =>
                     {
                         string folderPath = folderBrowserService.SelectFolder();
                         if (folderPath.Length <= 0)
                             return;
 
+                        this.openFolderLocation = folderPath;
+
                         string[] files = folderBrowserService.ImageListFromFolder(folderPath);
-                        ObservableCollection<SegmentLabelUnit> labels = labelLoaderService.LoadSegmentedLabel(files);
-                        this.LabelUnitCollection = labels;
+                        var labelResult = await labelLoaderService.LoadSegmentedLabelAsync(folderPath, files);
+                        this.LabelCollection = labelResult.Item1;
+                        this.LabelUnitCollection = labelResult.Item2;
                         this.PolygonCollection = null;
                         this.SelectedLabelUnit = null;
                         this.SelectedPolygon = null;
@@ -135,6 +138,62 @@ namespace OpenDL.ViewModel
                 }
 
                 return _OpenLabelCommand;
+            }
+        }
+
+        private ICommand _SaveLabelCommand = null;
+        public ICommand SaveLabelCommand
+        {
+            get
+            {
+                if(_SaveLabelCommand == null)
+                {
+                    _SaveLabelCommand = new RelayCommand(async () =>
+                    {
+
+                        try
+                        {
+                            await labelLoaderService.SaveLabelInformationAsync(this.openFolderLocation, this.LabelCollection, this.LabelUnitCollection);
+                        }
+                        catch(Exception e)
+                        {
+                            System.Console.WriteLine(e.ToString());
+                        }
+                        
+
+                    });
+                }
+
+                return _SaveLabelCommand;
+            }
+        }
+
+
+        private ICommand _KeyDownEventCommand = null;
+        public ICommand KeyDownEventCommand
+        {
+            get
+            {
+                if(_KeyDownEventCommand == null)
+                {
+                    _KeyDownEventCommand = new RelayCommand<object>((args) =>
+                    {
+                        if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Enter))
+                        {
+                            if (this.SelectedLabelUnit == null) return;
+
+                            int index = this.LabelUnitCollection.IndexOf(this.SelectedLabelUnit);
+                            index += 1;
+                            if (index >= this.LabelUnitCollection.Count)
+                                index -= 1;
+
+                            this.SelectedLabelUnit = this.LabelUnitCollection[index];
+                        }
+
+                    });
+                }
+
+                return _KeyDownEventCommand;
             }
         }
 
