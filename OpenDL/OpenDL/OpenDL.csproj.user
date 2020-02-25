@@ -16,6 +16,9 @@
     <Compile Update="View\ReleaseNoteView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\SegmentationAugmentView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\SegmentationLabelView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -43,6 +46,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ReleaseNoteView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\SegmentationAugmentView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\SegmentationLabelView.xaml">

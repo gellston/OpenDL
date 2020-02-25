@@ -40,11 +40,33 @@ namespace OpenDL.Model
             get => _FileName;
         }
 
+        //private string _FileNameWithExtension = "";
+        //public string FileNameWithExtension
+        //{
+        //    set => Set<string>(nameof(FileNameWithExtension), ref _FileNameWithExtension, value);
+        //    get => _FileNameWithExtension;
+        //}
+
         private string _FilePath = "";
         public string FilePath
         {
             set => Set<string>(nameof(FilePath), ref _FilePath, value);
             get => _FilePath;
+        }
+
+        private int _ImageWidth = 0;
+        public int ImageWidth
+        {
+            set => Set<int>(nameof(ImageWidth), ref _ImageWidth, value);
+            get => _ImageWidth;
+        }
+
+
+        private int _ImageHeight = 0;
+        public int ImageHeight
+        {
+            set => Set<int>(nameof(ImageHeight), ref _ImageHeight, value);
+            get => _ImageHeight;
         }
 
 

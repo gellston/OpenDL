@@ -53,7 +53,7 @@ namespace OpenDL.ViewModel
 
 
             Messenger.Default.Register<SelectWorkTypeMessage>(this, SelectWorkTypeCallback);
-
+            Messenger.Default.Register<SegmentAugmentationMessage>(this, SegmentAugmentationCallback);
         }
 
 
@@ -70,13 +70,36 @@ namespace OpenDL.ViewModel
                     this.WorkType = this._NonSelection;
                     this.IsOpenLeftMenu = false;
                     this.IsPopup = false;
+                    this.IsAblePopup = false;
                     break;
 
                 case "Select":
                     this.WorkType = message.Type;
                     this.IsPopup = false;
                     this.IsOpenLeftMenu = true;
+                    this.IsAblePopup = true;
                     break;
+            };
+        }
+
+
+        private void SegmentAugmentationCallback(SegmentAugmentationMessage message)
+        {
+            switch (message.Message)
+            {
+                case "Open":
+                    this.PopupWidth = 500;
+                    this.PopupHeight = 500;
+                    this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<SegmentationAugmentViewModel>();
+                    this.IsPopup = true;
+                    this.IsStayOpen = true;
+                    break;
+
+                case "Cancel":
+                    this.IsPopup = false;
+                    this.IsStayOpen = false;
+                    break;
+
             };
         }
 
@@ -117,11 +140,42 @@ namespace OpenDL.ViewModel
             set => Set<bool>(nameof(IsPopup), ref _IsPopup, value);
         }
 
+        private bool _IsStayOpen = false;
+        public bool IsStayOpen
+        {
+            get => _IsStayOpen;
+            set => Set<bool>(nameof(IsStayOpen), ref _IsStayOpen, value);
+        }
+
+
+        private bool _IsAblePopup = false;
+        public bool IsAblePopup
+        {
+            get => _IsAblePopup;
+            set => Set<bool>(nameof(IsAblePopup), ref _IsAblePopup, value);
+        }
+
         private bool _IsOpenLeftMenu = false;
         public bool IsOpenLeftMenu
         {
             get => _IsOpenLeftMenu;
             set => Set<bool>(nameof(IsOpenLeftMenu), ref _IsOpenLeftMenu, value);
+        }
+
+
+        private int _PopupWidth = 0;
+        public int PopupWidth
+        {
+            get => _PopupWidth;
+            set => Set<int>(nameof(PopupWidth), ref _PopupWidth, value);
+        }
+
+
+        private int _PopupHeight = 0;
+        public int PopupHeight
+        {
+            get => _PopupHeight;
+            set => Set<int>(nameof(PopupHeight), ref _PopupHeight, value);
         }
 
 
@@ -156,6 +210,8 @@ namespace OpenDL.ViewModel
                     _OpenSelectWorkTypeCommand = new RelayCommand(() =>
                     {
                         this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<SelectWorkTypeViewModel>();
+                        this.PopupWidth = 300;
+                        this.PopupHeight = 300;
                         this.IsPopup = !this.IsPopup;
 
                     });

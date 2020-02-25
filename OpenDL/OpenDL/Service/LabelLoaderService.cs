@@ -28,11 +28,21 @@ namespace OpenDL.Service
             ObservableCollection<SegmentLabelPolygon> polygonCollection = new ObservableCollection<SegmentLabelPolygon>();
             ObservableCollection<SegmentLabelUnit> labelCollection = new ObservableCollection<SegmentLabelUnit>();
 
-            using(StreamReader reader = new StreamReader(_root + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, Encoding.UTF8))
+
+            try
             {
-                string labelContent = reader.ReadToEnd();
-                polygonCollection = (ObservableCollection<SegmentLabelPolygon>)JsonConvert.DeserializeObject(labelContent, typeof(ObservableCollection<SegmentLabelPolygon>));
+                using (StreamReader reader = new StreamReader(_root + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, Encoding.UTF8))
+                {
+                    string labelContent = reader.ReadToEnd();
+                    polygonCollection = (ObservableCollection<SegmentLabelPolygon>)JsonConvert.DeserializeObject(labelContent, typeof(ObservableCollection<SegmentLabelPolygon>));
+                }
+
             }
+            catch(Exception e)
+            {
+                //System.Console.WriteLine(e.ToString());
+            }
+
 
             await Task.Run(() =>
             {
@@ -44,15 +54,21 @@ namespace OpenDL.Service
                     Application.Current.Dispatcher.Invoke(() =>
                     {
                         unit = new SegmentLabelUnit();
+                        labelCollection.Add(unit);
                     });
-
+                    
                     unit.FilePath = file;
                     string filePath = Path.GetDirectoryName(file);
                     string pureFileName = Path.GetFileNameWithoutExtension(file);
                     unit.FileName = pureFileName;
-
+       
+                    OpenCvSharp.Mat image = new OpenCvSharp.Mat(unit.FilePath);
+                    unit.ImageWidth = image.Width;
+                    unit.ImageHeight = image.Height;
 
                     string jsonFileName = filePath + Path.DirectorySeparatorChar + pureFileName + ".json";
+                    if (File.Exists(jsonFileName) != true) 
+                        continue;
                     using (StreamReader reader = new StreamReader(jsonFileName, Encoding.UTF8))
                     {
                         string labelContent = reader.ReadToEnd();
@@ -62,10 +78,8 @@ namespace OpenDL.Service
                             unit.Polygons = (ObservableCollection<SegmentLabelPolygon>)JsonConvert.DeserializeObject(labelContent, typeof(ObservableCollection<SegmentLabelPolygon>));
                         });
                     }
-
-                    labelCollection.Add(unit);
-                }
-            });
+                                }
+            }).ConfigureAwait(false);
 
             return (polygonCollection, labelCollection);
         }

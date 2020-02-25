@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media.Imaging;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using Newtonsoft.Json;
 using OpenDL.Model;
 using OpenDL.Service;
@@ -194,6 +195,27 @@ namespace OpenDL.ViewModel
                 }
 
                 return _KeyDownEventCommand;
+            }
+        }
+
+
+        private ICommand _OpenAugmentationCommand = null;
+        public ICommand OpenAugmentationCommand
+        {
+            get
+            {
+                if(_OpenAugmentationCommand == null)
+                {
+                    _OpenAugmentationCommand = new RelayCommand(() =>
+                    {
+                        Messenger.Default.Send<SegmentAugmentationMessage>(new SegmentAugmentationMessage()
+                        {
+                            Message = "Open"
+                        });
+                    });
+                }
+
+                return _OpenAugmentationCommand;
             }
         }
 

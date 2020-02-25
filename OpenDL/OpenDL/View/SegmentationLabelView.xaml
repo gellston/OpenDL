@@ -32,7 +32,7 @@
             <Button ToolTip="폴리곤 삭제" Command="{Binding DeletePolygonCommand}" CommandParameter="{Binding ElementName=PolygonList, Path=SelectedItems}">
                 <Image Source="{dx:DXImage 'SvgImages/XAF/Action_DeleteDashboard.svg'}"></Image>
             </Button>
-            <Button ToolTip="어그먼테이션">
+            <Button ToolTip="어그먼테이션" Command="{Binding OpenAugmentationCommand}">
                 <Image Source="{dx:DXImage 'SvgImages/XAF/Action_ModelDifferences_Export.svg'}"></Image>
             </Button>
         </UniformGrid>

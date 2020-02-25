@@ -17,11 +17,14 @@ namespace OpenDL.ViewModel
             SimpleIoc.Default.Register<ConfigureService>();
             SimpleIoc.Default.Register<LabelLoaderService>();
             SimpleIoc.Default.Register<FolderBrowserService>();
+            SimpleIoc.Default.Register<SegmentationService>();
+
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<LabelViewModel>();
             SimpleIoc.Default.Register<ReleaseNoteViewModel>();
             SimpleIoc.Default.Register<SelectWorkTypeViewModel>();
             SimpleIoc.Default.Register<SegmentationLabelViewModel>();
+            SimpleIoc.Default.Register<SegmentationAugmentViewModel>();
 
 
 
