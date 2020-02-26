@@ -5,8 +5,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OpenDL.View"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:converter="clr-namespace:OpenDL.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
+
+    
     <Grid Effect="{StaticResource DefaultDropShadow}"
           Background="White"
           Margin="10">
@@ -31,6 +35,7 @@
             <Image Source="{dx:DXImage 'SvgImages/Export/Export.svg'}"></Image>
         </Button>
         <ProgressBar Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Maximum="{Binding CurrentMaxCount}" Value="{Binding CurrentProcessedCount}"></ProgressBar>
+        <TextBlock Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="1" Text="{Binding CurrentStatusMessage}" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
         <Button Grid.Row="3" Grid.Column="1" ToolTip="어그먼테이션 수행" Command="{Binding DoAugmentationCommand}">
             <Image Source="{dx:DXImage 'SvgImages/Reports/ShowExportWarnings.svg'}"></Image>
         </Button>

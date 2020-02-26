@@ -1,0 +1,226 @@
+﻿<UserControl x:Class="OpenDL.View.SegmentationTrainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OpenDL.View"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
+             xmlns:model="clr-namespace:OpenDL.Model"
+             xmlns:converter="clr-namespace:OpenDL.Converter"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converter:IntegerToStringConverters x:Key="IntegerToStringConverters"></converter:IntegerToStringConverters>
+        <converter:DoubleToStringConverters x:Key="DoubleToStringConverters"></converter:DoubleToStringConverters>
+        <converter:DoubleToStringPercentConverter x:Key="DoubleToStringPercentConverter" Scale="100"></converter:DoubleToStringPercentConverter>
+    </UserControl.Resources>
+
+    <DockPanel>
+        <UniformGrid DockPanel.Dock="Top" 
+                     Height="40"
+                     Rows="1">
+
+            <Button ToolTip="라벨 열기" Command="{Binding OpenAugmentedLabelCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/Actions/Open2.svg'}"></Image>
+            </Button>
+            
+            <Button ToolTip="학습 시작" Command="{Binding TrainStartCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/XAF/Action_Debug_Start.svg'}"></Image>
+            </Button>
+            <Button ToolTip="학습 일시중지" Command="{Binding TrainPauseCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/XAF/Action_Debug_Breakpoint_Toggle.svg'}"></Image>
+            </Button>
+            <Button ToolTip="학습 중지" Command="{Binding TrainStopCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/XAF/Action_Debug_Stop.svg'}"></Image>
+            </Button>
+        </UniformGrid>
+
+        <Grid Height="30"
+              DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="4*"></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="50"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0"
+                    ToolTip="현재 경로">
+                <Image Source="{dx:DXImage 'SvgImages/Outlook Inspired/CustomerContactDirectory.svg'}"></Image>
+            </Button>
+            <TextBox IsReadOnly="True"
+                     HorizontalAlignment="Stretch"
+                     Text="{Binding CurrentOpenedLabelDirectory}"
+                     Grid.Column="1">
+            </TextBox>
+
+            <Button Grid.Column="2"
+                    ToolTip="현재 정확도">
+                <Image Source="{dx:DXImage 'SvgImages/Spreadsheet/Top10Percent.svg'}"></Image>
+            </Button>
+            <TextBox IsReadOnly="True"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Text="{Binding CurrentAccuracy, Converter={StaticResource DoubleToStringPercentConverter}}"
+                     Grid.Column="3">
+            </TextBox>
+
+            <Button Grid.Column="4"
+                    ToolTip="현재 로스 수치">
+                <Image Source="{dx:DXImage 'SvgImages/Spreadsheet/Bottom10Percent.svg'}"></Image>
+            </Button>
+            <TextBox IsReadOnly="True"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Text="{Binding CurrentLoss}"
+                     Grid.Column="5">
+            </TextBox>
+
+            <Button Grid.Column="6"
+                    ToolTip="현재 배치 스텝">
+                <Image Source="{dx:DXImage 'SvgImages/Outlook Inspired/InProgress.svg'}"></Image>
+            </Button>
+            <TextBox IsReadOnly="True"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     Text="{Binding CurrentBatchStep}"
+                     Grid.Column="7">
+            </TextBox>
+        </Grid>
+
+
+        <ListView DockPanel.Dock="Left"
+                  Width="300"
+                  ItemsSource="{Binding PropertyCollection}"
+                  HorizontalContentAlignment="Stretch">
+            <ListView.Resources>
+                <DataTemplate DataType="{x:Type model:BoolProperty}">
+                    <Grid Height="30" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding Name}" 
+                                 Grid.Column="0" 
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Left"
+                                 VerticalAlignment="Stretch"
+                                 IsReadOnly="True"></TextBox>
+                        <CheckBox IsChecked="{Binding Value}"
+                                  Grid.Column="1" 
+                                  HorizontalAlignment="Center"
+                                  VerticalContentAlignment="Center"></CheckBox>
+                    </Grid>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type model:IntProperty}">
+                    <Grid Height="30" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding Name}" 
+                                 Grid.Column="0" 
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Left"
+                                 VerticalAlignment="Stretch"
+                                 IsReadOnly="True"></TextBox>
+                        <TextBox Text="{Binding Value, Converter={StaticResource IntegerToStringConverters}}"
+                                 Grid.Column="1" 
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Left"
+                                 VerticalAlignment="Stretch"
+                                 VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+                </DataTemplate>
+
+                <DataTemplate DataType="{x:Type model:DoubleProperty}">
+                    <Grid Height="30" HorizontalAlignment="Stretch">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="100"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Text="{Binding Name}" 
+                                 Grid.Column="0" 
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Left"
+                                 VerticalAlignment="Stretch"
+                                 IsReadOnly="True"></TextBox>
+                        <TextBox Text="{Binding Value, Converter={StaticResource DoubleToStringConverters}}"
+                                 Grid.Column="1" 
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Left"
+                                 VerticalAlignment="Stretch"
+                                 VerticalContentAlignment="Center"></TextBox>
+                    </Grid>
+                </DataTemplate>
+            </ListView.Resources>
+        </ListView>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <dxc:ChartControl Grid.Row="0">
+                <dxc:ChartControl.Legends>
+                    <dxc:Legend HorizontalPosition="Right" VerticalPosition="Top" Orientation="Horizontal"/>
+                </dxc:ChartControl.Legends>
+                <dxc:XYDiagram2D>
+                    <dxc:XYDiagram2D.Series>
+                        <dxc:LineSeries2D DisplayName="Train sample loss" 
+                                          ShowInLegend="True"
+                                          ShowIsolatedPoints="True"
+                                          DataSource="{Binding TrainCostCollection}"
+                                          ArgumentDataMember="Step"
+                                          ValueDataMember="Value"></dxc:LineSeries2D>
+
+                        <dxc:LineSeries2D DisplayName="Validation sample loss" 
+                                          ShowInLegend="True"
+                                          ShowIsolatedPoints="True"
+                                          DataSource="{Binding ValidationCostCollection}"
+                                          ArgumentDataMember="Step"
+                                          ValueDataMember="Value"></dxc:LineSeries2D>
+                    </dxc:XYDiagram2D.Series>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl>
+
+            <dxc:ChartControl Grid.Row="1">
+                <dxc:ChartControl.Legends>
+                    <dxc:Legend HorizontalPosition="Right" VerticalPosition="Top" Orientation="Horizontal"/>
+                </dxc:ChartControl.Legends>
+                <dxc:XYDiagram2D>
+                    <dxc:LineSeries2D DisplayName="Train sample accuracy" 
+                                  ShowInLegend="True"
+                                  ShowIsolatedPoints="True">
+                        <dxc:SeriesPoint NumericalArgument="0" Value="5.289"/>
+                        <dxc:SeriesPoint NumericalArgument="1" Value="4.182"/>
+                        <dxc:SeriesPoint NumericalArgument="2" Value="3.725"/>
+                        <dxc:SeriesPoint NumericalArgument="3" Value="2.272"/>
+                        <dxc:SeriesPoint NumericalArgument="4" Value="2.117"/>
+                    </dxc:LineSeries2D>
+                    <dxc:LineSeries2D DisplayName="Validation sample accuracy" 
+                                  ShowInLegend="True"
+                                  ShowIsolatedPoints="True">
+                        <dxc:SeriesPoint NumericalArgument="0" Value="5.289"/>
+                        <dxc:SeriesPoint NumericalArgument="1" Value="7"/>
+                        <dxc:SeriesPoint NumericalArgument="2" Value="3.725"/>
+                        <dxc:SeriesPoint NumericalArgument="3" Value="2.272"/>
+                        <dxc:SeriesPoint NumericalArgument="4" Value="2.117"/>
+                    </dxc:LineSeries2D>
+                </dxc:XYDiagram2D>
+            </dxc:ChartControl>
+        </Grid>
+        
+    </DockPanel>
+</UserControl>

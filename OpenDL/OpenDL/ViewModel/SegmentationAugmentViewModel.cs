@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -42,6 +43,12 @@ namespace OpenDL.ViewModel
             set => Set<string>(nameof(OutputAugmentationPath), ref _OutputAugmentationPath, value);
         }
 
+        private string _CurrentStatusMessage = "";
+        public string CurrentStatusMessage
+        {
+            get => _CurrentStatusMessage;
+            set => Set<string>(nameof(CurrentStatusMessage), ref _CurrentStatusMessage, value);
+        }
 
         private ICommand _OpenTargetLabelPathCommand = null;
         public ICommand OpenTargetLabelPathCommand
@@ -88,12 +95,26 @@ namespace OpenDL.ViewModel
                 {
                     _DoAugmentationCommand = new RelayCommand(async () =>
                     {
+
+                        this.CurrentStatusMessage = "준비";
+
                         string[] files = folderBrowserService.ImageListFromFolder(this.TargetLabelPath);
                         var labelResult = await labelLoaderService.LoadSegmentedLabelAsync(TargetLabelPath, files);
                         ObservableCollection<SegmentLabelPolygon> polygons = labelResult.Item1;
                         ObservableCollection<SegmentLabelUnit> labelUnits = labelResult.Item2;
 
-                        this.segmentationService.DoSegmentationAugmentation(this.OutputAugmentationPath, polygons, labelUnits, 0, 0);
+                        await this.segmentationService.DoSegmentationAugmentationAsync(this.OutputAugmentationPath, polygons, labelUnits, 0, 0 , 
+                                                                            (currentCount, maxCount)=>
+                                                                            {
+                                                                                Application.Current.Dispatcher.Invoke(() =>
+                                                                                {
+                                                                                    this.CurrentMaxCount = maxCount;
+                                                                                    this.CurrentProcessedCount = currentCount;
+                                                                                    this.CurrentStatusMessage = string.Format("{0} / {1}", CurrentProcessedCount, CurrentMaxCount);
+                                                                                });
+                                                                            });
+
+                        this.CurrentStatusMessage = "완료";
                     });
                 }
 

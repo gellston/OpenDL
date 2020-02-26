@@ -13,25 +13,42 @@ namespace OpenDL.ViewModel
 
         public ViewModelLocator()
         {
-
+            // Service Registeration
             SimpleIoc.Default.Register<ConfigureService>();
             SimpleIoc.Default.Register<LabelLoaderService>();
             SimpleIoc.Default.Register<FolderBrowserService>();
             SimpleIoc.Default.Register<SegmentationService>();
 
+
+            // Most Top ViewModel Registeration
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<LabelViewModel>();
+            SimpleIoc.Default.Register<TrainViewModel>();
             SimpleIoc.Default.Register<ReleaseNoteViewModel>();
             SimpleIoc.Default.Register<SelectWorkTypeViewModel>();
+            SimpleIoc.Default.Register<ModelManagementViewModel>();
+
+
+            // Segmentation ViewModel Registeration
             SimpleIoc.Default.Register<SegmentationLabelViewModel>();
             SimpleIoc.Default.Register<SegmentationAugmentViewModel>();
+            SimpleIoc.Default.Register<SegmentationTrainViewModel>();
+
+
+            // Classification ViewModel Registeration
+            SimpleIoc.Default.Register<ClassificationLabelViewModel>();
+            SimpleIoc.Default.Register<ClassificationAugmentViewModel>();
+            SimpleIoc.Default.Register<ClassificationTrainViewModel>();
 
 
 
-            //Pre Initialization
-
+            //Pre Initialization of ViewModel
             SimpleIoc.Default.GetInstance<LabelViewModel>();
+            SimpleIoc.Default.GetInstance<TrainViewModel>();
+            SimpleIoc.Default.GetInstance<SegmentationTrainViewModel>();
             SimpleIoc.Default.GetInstance<SegmentationLabelViewModel>();
+            SimpleIoc.Default.GetInstance<ClassificationTrainViewModel>();
+            SimpleIoc.Default.GetInstance<ClassificationLabelViewModel>();
 
         }
 

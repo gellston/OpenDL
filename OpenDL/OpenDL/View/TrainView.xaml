@@ -1,22 +1,20 @@
-﻿<UserControl x:Class="OpenDL.View.LabelView"
+﻿<UserControl x:Class="OpenDL.View.TrainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              xmlns:local="clr-namespace:OpenDL.View"
+             xmlns:viewModel="clr-namespace:OpenDL.ViewModel"
              xmlns:view="clr-namespace:OpenDL.View"
-             xmlns:viewmodel="clr-namespace:OpenDL.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <ContentPresenter Content="{Binding LabelViewModelContent}">
+    <ContentPresenter Content="{Binding TrainViewModelContent}">
         <ContentPresenter.Resources>
-            <DataTemplate DataType="{x:Type viewmodel:SegmentationLabelViewModel}">
-                <view:SegmentationLabelView></view:SegmentationLabelView>
+            <DataTemplate DataType="{x:Type viewModel:SegmentationTrainViewModel}">
+                <view:SegmentationTrainView></view:SegmentationTrainView>
             </DataTemplate>
-            <DataTemplate DataType="{x:Type viewmodel:ClassificationLabelViewModel}">
-                <view:ClassificationLabelView></view:ClassificationLabelView>
+            <DataTemplate DataType="{x:Type viewModel:ClassificationTrainViewModel}">
+                <view:ClassificationTrainView></view:ClassificationTrainView>
             </DataTemplate>
         </ContentPresenter.Resources>
     </ContentPresenter>

@@ -41,5 +41,26 @@ namespace OpenDL.Model
             set => Set<ObservableCollection<SegmentLabelPolygon>>(nameof(Labels), ref _Labels, value);
         }
 
+        private int _LabelSize = 0;
+        public int LabelSize
+        {
+            get => _LabelSize;
+            set => Set<int>(nameof(LabelSize), ref _LabelSize, value);
+        }
+
+        private int _ImageWidth = 0;
+        public int ImageWidth
+        {
+            get => _ImageWidth;
+            set => Set<int>(nameof(ImageWidth), ref _ImageWidth, value);
+        }
+
+        private int _ImageHeight = 0;
+        public int ImageHeight
+        {
+            get => _ImageHeight;
+            set => Set<int>(nameof(ImageHeight), ref _ImageHeight, value);
+        }
+
     }
 }

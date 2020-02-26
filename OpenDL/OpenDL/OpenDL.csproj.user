@@ -10,7 +10,16 @@
     <Compile Update="UC\SegmentationControler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\ClassificationLabelView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ClassificationTrainView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\LabelView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ModelManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\ReleaseNoteView.xaml.cs">
@@ -22,10 +31,16 @@
     <Compile Update="View\SegmentationLabelView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\SegmentationTrainView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\SelectWorkTypeView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\SettingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\TrainView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -39,10 +54,19 @@
     <Page Update="UC\SegmentationControler.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\ClassificationLabelView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ClassificationTrainView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\LabelView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ModelManagementView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ReleaseNoteView.xaml">
@@ -54,10 +78,16 @@
     <Page Update="View\SegmentationLabelView.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\SegmentationTrainView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\SelectWorkTypeView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\SettingView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\TrainView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

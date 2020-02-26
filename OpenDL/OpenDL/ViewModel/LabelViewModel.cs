@@ -39,6 +39,10 @@ namespace OpenDL.ViewModel
                 case "Segmentation":
                     this.LabelViewModelContent = SimpleIoc.Default.GetInstance<SegmentationLabelViewModel>();
                     break;
+
+                case "Classification":
+                    this.LabelViewModelContent = SimpleIoc.Default.GetInstance<ClassificationLabelViewModel>();
+                    break;
             };
         }
     }

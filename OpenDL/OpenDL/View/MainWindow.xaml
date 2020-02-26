@@ -136,6 +136,12 @@
                 <DataTemplate DataType="{x:Type viewModel:ReleaseNoteViewModel}">
                     <view:ReleaseNoteView></view:ReleaseNoteView>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModel:TrainViewModel}">
+                    <view:TrainView></view:TrainView>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModel:ModelManagementViewModel}">
+                    <view:ModelManagementView></view:ModelManagementView>
+                </DataTemplate>
             </ContentPresenter.Resources>
         </ContentPresenter>
     </DockPanel>

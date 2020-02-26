@@ -51,6 +51,29 @@ namespace OpenDL.ViewModel
                 })
             });
 
+            MenuItems.Add(new MainMenu()
+            {
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Business Objects/BO_Opportunity.svg")), 1d, null, null, true),
+                Name = "트레이닝",
+                MenuAction = new RelayCommand(() =>
+                {
+                    this.CurrentContentViewModel = SimpleIoc.Default.GetInstance<TrainViewModel>();
+                })
+
+            });
+
+            MenuItems.Add(new MainMenu()
+            {
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Spreadsheet/ManageRelations.svg")), 1d, null, null, true),
+                Name = "모델 관리",
+                MenuAction = new RelayCommand(() =>
+                {
+                    this.CurrentContentViewModel = SimpleIoc.Default.GetInstance<ModelManagementViewModel>();
+                })
+
+            });
+
+
 
             Messenger.Default.Register<SelectWorkTypeMessage>(this, SelectWorkTypeCallback);
             Messenger.Default.Register<SegmentAugmentationMessage>(this, SegmentAugmentationCallback);
