@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="OpenDL.View.SegmentationTrainView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:runtime="clr-namespace:System.Runtime;assembly=System.Runtime"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -9,7 +10,7 @@
              xmlns:model="clr-namespace:OpenDL.Model"
              xmlns:converter="clr-namespace:OpenDL.Converter"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="1200">
 
     <UserControl.Resources>
         <converter:IntegerToStringConverters x:Key="IntegerToStringConverters"></converter:IntegerToStringConverters>
@@ -99,73 +100,196 @@
             </TextBox>
         </Grid>
 
+        <Grid DockPanel.Dock="Left"
+              Width="300">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="2*"></RowDefinition>
+            </Grid.RowDefinitions>
 
-        <ListView DockPanel.Dock="Left"
-                  Width="300"
-                  ItemsSource="{Binding PropertyCollection}"
-                  HorizontalContentAlignment="Stretch">
-            <ListView.Resources>
-                <DataTemplate DataType="{x:Type model:BoolProperty}">
-                    <Grid Height="30" HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding Name}" 
+            <ListView ItemsSource="{Binding PropertyCollection}"
+                      HorizontalContentAlignment="Stretch"
+                      Grid.Row="0">
+                <ListView.Resources>
+                    <DataTemplate DataType="{x:Type model:StringProperty}">
+                        <Grid Height="30" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding Name}" 
                                  Grid.Column="0" 
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Left"
                                  VerticalAlignment="Stretch"
                                  IsReadOnly="True"></TextBox>
-                        <CheckBox IsChecked="{Binding Value}"
+                            <CheckBox IsChecked="{Binding Value}"
                                   Grid.Column="1" 
                                   HorizontalAlignment="Center"
                                   VerticalContentAlignment="Center"></CheckBox>
-                    </Grid>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type model:IntProperty}">
-                    <Grid Height="30" HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding Name}" 
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type model:BoolProperty}">
+                        <Grid Height="30" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding Name}" 
                                  Grid.Column="0" 
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Left"
                                  VerticalAlignment="Stretch"
                                  IsReadOnly="True"></TextBox>
-                        <TextBox Text="{Binding Value, Converter={StaticResource IntegerToStringConverters}}"
+                            <CheckBox IsChecked="{Binding Value}"
+                                  Grid.Column="1" 
+                                  HorizontalAlignment="Center"
+                                  VerticalContentAlignment="Center"></CheckBox>
+                        </Grid>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type model:IntProperty}">
+                        <Grid Height="30" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding Name}" 
+                                 Grid.Column="0" 
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Left"
+                                 VerticalAlignment="Stretch"
+                                 IsReadOnly="True"></TextBox>
+                            <TextBox Text="{Binding Value, Converter={StaticResource IntegerToStringConverters}}"
                                  Grid.Column="1" 
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Left"
                                  VerticalAlignment="Stretch"
                                  VerticalContentAlignment="Center"></TextBox>
-                    </Grid>
-                </DataTemplate>
+                        </Grid>
+                    </DataTemplate>
 
-                <DataTemplate DataType="{x:Type model:DoubleProperty}">
-                    <Grid Height="30" HorizontalAlignment="Stretch">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="100"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <TextBox Text="{Binding Name}" 
+                    <DataTemplate DataType="{x:Type model:DoubleProperty}">
+                        <Grid Height="30" HorizontalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="100"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Text="{Binding Name}" 
                                  Grid.Column="0" 
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Left"
                                  VerticalAlignment="Stretch"
                                  IsReadOnly="True"></TextBox>
-                        <TextBox Text="{Binding Value, Converter={StaticResource DoubleToStringConverters}}"
+                            <TextBox Text="{Binding Value, Converter={StaticResource DoubleToStringConverters}}"
                                  Grid.Column="1" 
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Left"
                                  VerticalAlignment="Stretch"
                                  VerticalContentAlignment="Center"></TextBox>
-                    </Grid>
-                </DataTemplate>
-            </ListView.Resources>
-        </ListView>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.Resources>
+            </ListView>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0"
+                        ToolTip="딥러닝 모델">
+                    <Image Source="{dx:DXImage 'SvgImages/XAF/Action_EditModel.svg'}"></Image>
+                </Button>
+                <TextBox Grid.Column="1"
+                         IsReadOnly="True"
+                         Text="딥러닝 모델"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"></TextBox>
+
+                <Button Grid.Column="2"
+                        ToolTip="갱신">
+                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Refresh.svg'}"></Image>
+                </Button>
+
+            </Grid>
+            <ListView Grid.Row="2"
+                      ItemsSource="{Binding PureSegmentModelCollection}"
+                      HorizontalContentAlignment="Stretch">
+                <ListView.Resources>
+                    <DataTemplate DataType="{x:Type model:DeepModelPath}">
+                        <Grid Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/XAF/Action_EditModel.svg'}"></Image>
+                            <TextBox IsReadOnly="True"
+                                     Text="{Binding ModelName}"
+                                     Grid.Column="1"
+                                     VerticalContentAlignment="Center"></TextBox>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.Resources>
+            </ListView>
+        </Grid>
+        <Grid DockPanel.Dock="Right"
+              Width="300">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Button Grid.Column="0">
+                    <Image Source="{dx:DXImage 'SvgImages/RichEdit/InsertPageNumber.svg'}"
+                           ToolTip="학습 샘플"></Image>
+                </Button>
+                <TextBox Text="학습 샘플"
+                         IsReadOnly="True"
+                         Grid.Column="1"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"></TextBox>
+
+                <Button Grid.Column="2">
+                    <Image Source="{dx:DXImage 'SvgImages/RichEdit/InsertPageNumber.svg'}"
+                           ToolTip="샘플 갯수"></Image>
+                </Button>
+                <TextBox Text="{Binding TrainSampleCollection.Count, Mode=OneWay}"
+                         IsReadOnly="True"
+                         Grid.Column="3"
+                         HorizontalContentAlignment="Center"
+                         VerticalContentAlignment="Center"></TextBox>
+            </Grid>
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding TrainSampleCollection}"
+                      HorizontalContentAlignment="Stretch"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      SelectedItem="{Binding SelectedSegmentModel}">
+                <ListView.Resources>
+                    <DataTemplate DataType="{x:Type model:SegmentTrainSample}">
+                        <Grid Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/XAF/ModelEditor_ImageSources.svg'}"></Image>
+                            <TextBox IsReadOnly="True"
+                                     Text="{Binding Name}"
+                                     Grid.Column="1"
+                                     VerticalContentAlignment="Center"></TextBox>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.Resources>
+            </ListView>
+        </Grid>
+        
+
 
         <Grid>
             <Grid.RowDefinitions>
@@ -221,6 +345,7 @@
                 </dxc:XYDiagram2D>
             </dxc:ChartControl>
         </Grid>
+
         
     </DockPanel>
 </UserControl>

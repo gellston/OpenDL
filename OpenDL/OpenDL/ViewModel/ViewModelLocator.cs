@@ -15,9 +15,10 @@ namespace OpenDL.ViewModel
         {
             // Service Registeration
             SimpleIoc.Default.Register<ConfigureService>();
-            SimpleIoc.Default.Register<LabelLoaderService>();
+            SimpleIoc.Default.Register<LabelingService>();
             SimpleIoc.Default.Register<FolderBrowserService>();
-            SimpleIoc.Default.Register<SegmentationService>();
+            SimpleIoc.Default.Register<AugmentService>();
+            SimpleIoc.Default.Register<TrainingService>();
 
 
             // Most Top ViewModel Registeration
@@ -43,6 +44,7 @@ namespace OpenDL.ViewModel
 
 
             //Pre Initialization of ViewModel
+            SimpleIoc.Default.GetInstance<ConfigureService>();
             SimpleIoc.Default.GetInstance<LabelViewModel>();
             SimpleIoc.Default.GetInstance<TrainViewModel>();
             SimpleIoc.Default.GetInstance<SegmentationTrainViewModel>();

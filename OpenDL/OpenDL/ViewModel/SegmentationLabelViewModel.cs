@@ -18,11 +18,11 @@ namespace OpenDL.ViewModel
     public class SegmentationLabelViewModel: ViewModelBase
     {
         private readonly FolderBrowserService folderBrowserService;
-        private readonly LabelLoaderService labelLoaderService;
+        private readonly LabelingService labelLoaderService;
         private string openFolderLocation;
 
         public SegmentationLabelViewModel(FolderBrowserService _folderBrowserService,
-                                          LabelLoaderService _labelLoaderService)
+                                          LabelingService _labelLoaderService)
         {
             this.folderBrowserService = _folderBrowserService;
             this.labelLoaderService = _labelLoaderService;

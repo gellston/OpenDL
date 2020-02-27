@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -22,67 +23,34 @@ namespace OpenDL.ViewModel
         private ManualResetEventSlim TrainTaskSignal = new ManualResetEventSlim(false);
 
         private readonly FolderBrowserService folderBrowserService;
+        private readonly TrainingService trainSampleLoaderService;
+        private readonly ConfigureService configureService;
 
-        public SegmentationTrainViewModel(FolderBrowserService _folderBrowserService)
+        public SegmentationTrainViewModel(FolderBrowserService _folderBrowserService,
+                                          TrainingService _trainSampleLoaderService,
+                                          ConfigureService _configureServie)
         {
 
             this.folderBrowserService = _folderBrowserService;
+            this.trainSampleLoaderService = _trainSampleLoaderService;
+            this.configureService = _configureServie;
 
             this.TrainCostCollection = new ObservableCollection<LinePlotInfo>();
             this.ValidationCostCollection = new ObservableCollection<LinePlotInfo>();
             this.TrainAccuracyCollection = new ObservableCollection<LinePlotInfo>();
             this.ValidationAccuracyCollection = new ObservableCollection<LinePlotInfo>();
+            this.PureSegmentModelCollection = new ObservableCollection<DeepModelPath>();
 
-
-            this.PropertyCollection = new ObservableCollection<BaseProperty>();
-
-            this.PropertyCollection.Add(new IntProperty()
-            {
-                Name = "EPOCH SIZE",
-                Value = 500
-            });
-
-            this.PropertyCollection.Add(new IntProperty()
-            {
-                Name = "BATCH SIZE",
-                Value = 10
-            });
-
-            this.PropertyCollection.Add(new IntProperty()
-            {
-                Name = "IMAGE WIDTH",
-                Value = 255
-            });
-
-            this.PropertyCollection.Add(new IntProperty()
-            {
-                Name = "IMAGE HEIGHT",
-                Value = 255
-            });
-
-            this.PropertyCollection.Add(new DoubleProperty()
-            {
-                Name = "LEARING RATE",
-                Value = 0.003
-            });
-
-            this.PropertyCollection.Add(new DoubleProperty()
-            {
-                Name = "VALIDATION SAMPLE RATE",
-                Value = 0.15
-            });
-
-            this.PropertyCollection.Add(new DoubleProperty()
-            {
-                Name = "TARGET ACCURACY",
-                Value = 0.90
-            });
+            this.TrainSampleCollection = new ObservableCollection<SegmentTrainSample>();
 
 
             this.TrainTaskThread = new Thread(new ThreadStart(TrainTaskStart));
             this.TrainTaskThread.IsBackground = true;
             this.TrainTaskThread.Start();
 
+
+            // update 모델
+            this.RefreshPureModelCommand.Execute(null);
         }
 
 
@@ -200,12 +168,39 @@ namespace OpenDL.ViewModel
             {
                 if(_OpenAugmentedLabelCommand == null)
                 {
-                    _OpenAugmentedLabelCommand = new RelayCommand(() =>
+                    _OpenAugmentedLabelCommand = new RelayCommand(async () =>
                     {
                         CurrentOpenedLabelDirectory = folderBrowserService.SelectFolder();
+                        this.TrainSampleCollection = await this.trainSampleLoaderService.LoadSegmentSamplesAsync(CurrentOpenedLabelDirectory);
                     });
                 }
                 return _OpenAugmentedLabelCommand;
+            }
+        }
+
+        private ICommand _RefreshPureModelCommand = null;
+        public ICommand RefreshPureModelCommand
+        {
+            get
+            {
+                if(_RefreshPureModelCommand == null)
+                {
+                    _RefreshPureModelCommand = new RelayCommand(() =>
+                    {
+                        string path = configureService.SegmentationPureModelContainerPath;
+                        string [] models = Directory.GetFiles(path);
+                        foreach(var model in models)
+                        {
+                            this.PureSegmentModelCollection.Add(new DeepModelPath()
+                            {
+                                FullPath = model,
+                                ModelName = Path.GetFileName(model)
+                            });
+                        }
+                    });
+                }
+
+                return _RefreshPureModelCommand;
             }
         }
 
@@ -267,11 +262,53 @@ namespace OpenDL.ViewModel
             set => Set<ObservableCollection<LinePlotInfo>>(nameof(ValidationAccuracyCollection), ref _ValidationAccuracyCollection, value);
         }
 
+        private ObservableCollection<SegmentTrainSample> _TrainSamplesCollection = null;
+        public ObservableCollection<SegmentTrainSample> TrainSampleCollection
+        {
+            get => _TrainSamplesCollection;
+            set => Set<ObservableCollection<SegmentTrainSample>>(nameof(TrainSampleCollection), ref _TrainSamplesCollection, value);
+        }
+
+
+        private ObservableCollection<DeepModelPath> _PureSegmentModelCollection = null;
+        public ObservableCollection<DeepModelPath> PureSegmentModelCollection
+        {
+            get => _PureSegmentModelCollection;
+            set => Set<ObservableCollection<DeepModelPath>>(nameof(PureSegmentModelCollection), ref _PureSegmentModelCollection, value);
+        }
+
+
+        private DeepModelPath _SelectedSegmentModel = null;
+        public DeepModelPath SelectedSegmentModel
+        {
+            get => _SelectedSegmentModel;
+            set => Set<DeepModelPath>(nameof(SelectedSegmentModel), ref _SelectedSegmentModel, value);
+        }
+
+
+
+
         private ObservableCollection<BaseProperty> _PropertyCollection = null;
         public ObservableCollection<BaseProperty> PropertyCollection
         {
-            get => _PropertyCollection;
-            set => Set<ObservableCollection<BaseProperty>>(nameof(PropertyCollection), ref _PropertyCollection, value);
+            get
+            {
+                if(_PropertyCollection == null)
+                {
+                    _PropertyCollection = new ObservableCollection<BaseProperty>();
+
+                    this.PropertyCollection.Add(new StringProperty() { Name = "MODEL NAME", Value = "AnonymousModel" });
+                    this.PropertyCollection.Add(new IntProperty() { Name = "EPOCH SIZE", Value = 500 });
+                    this.PropertyCollection.Add(new IntProperty() { Name = "BATCH SIZE", Value = 10 });
+                    this.PropertyCollection.Add(new IntProperty() { Name = "IMAGE WIDTH", Value = 255 });
+                    this.PropertyCollection.Add(new IntProperty() { Name = "IMAGE HEIGHT", Value = 255 });
+                    this.PropertyCollection.Add(new DoubleProperty() { Name = "LEARING RATE", Value = 0.003 });
+                    this.PropertyCollection.Add(new DoubleProperty() { Name = "VALIDATION SAMPLE RATE", Value = 0.15 });
+                    this.PropertyCollection.Add(new DoubleProperty() { Name = "TARGET ACCURACY", Value = 0.90 });
+                }
+
+                return _PropertyCollection;
+            }
         }
     }
 }

@@ -62,5 +62,13 @@ namespace OpenDL.Model
             set => Set<int>(nameof(ImageHeight), ref _ImageHeight, value);
         }
 
+
+        private bool _IsGray = false;
+        public bool IsGray
+        {
+            get => _IsGray;
+            set => Set<bool>(nameof(IsGray), ref _IsGray, value);
+        }
+
     }
 }

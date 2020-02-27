@@ -12,7 +12,6 @@ namespace OpenDL.Service
 
         public string SelectFolder()
         {
-
             DXFolderBrowserDialog dialog = new DXFolderBrowserDialog();
             if(dialog.ShowDialog() == false)
                 return "";

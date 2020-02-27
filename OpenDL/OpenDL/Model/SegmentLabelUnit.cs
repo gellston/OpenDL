@@ -40,12 +40,12 @@ namespace OpenDL.Model
             get => _FileName;
         }
 
-        //private string _FileNameWithExtension = "";
-        //public string FileNameWithExtension
-        //{
-        //    set => Set<string>(nameof(FileNameWithExtension), ref _FileNameWithExtension, value);
-        //    get => _FileNameWithExtension;
-        //}
+        private string _FileNameWithExtension = "";
+        public string FileNameWithExtension
+        {
+            set => Set<string>(nameof(FileNameWithExtension), ref _FileNameWithExtension, value);
+            get => _FileNameWithExtension;
+        }
 
         private string _FilePath = "";
         public string FilePath

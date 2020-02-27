@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VTObjectDetectionInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FilePath>C:\Github\VTDEEP\python\dataset\object_detection_input512x512\frontal face\120_1_faces.jpg</FilePath>
+  <FileName>120_1_faces.jpg</FileName>
+  <RoiItems>
+    <VTROIRect>
+      <Name>Face</Name>
+      <X>136.13559322033893</X>
+      <Y>118.23728813559322</Y>
+      <Z>0</Z>
+      <IsSelected>false</IsSelected>
+      <ROIColor>
+        <A>255</A>
+        <R>10</R>
+        <G>21</G>
+        <B>222</B>
+        <ScA>1</ScA>
+        <ScR>0.00303527</ScR>
+        <ScG>0.007499032</ScG>
+        <ScB>0.730460763</ScB>
+      </ROIColor>
+      <Width>93.830508474576277</Width>
+      <Height>141.55932203389827</Height>
+    </VTROIRect>
+    <VTROIRect>
+      <Name>Face</Name>
+      <X>337.89830508474569</X>
+      <Y>305.89830508474574</Y>
+      <Z>0</Z>
+      <IsSelected>false</IsSelected>
+      <ROIColor>
+        <A>255</A>
+        <R>10</R>
+        <G>21</G>
+        <B>222</B>
+        <ScA>1</ScA>
+        <ScR>0.00303527</ScR>
+        <ScG>0.007499032</ScG>
+        <ScB>0.730460763</ScB>
+      </ROIColor>
+      <Width>87.864406779661067</Width>
+      <Height>141.0169491525424</Height>
+    </VTROIRect>
+  </RoiItems>
+  <IsConfirmed>true</IsConfirmed>
+</VTObjectDetectionInfo>

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<VTObjectDetectionInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <FilePath>C:\Github\VTDEEP\python\dataset\object_detection_input512x512\frontal face\25_1_frontal face.jpg</FilePath>
+  <FileName>25_1_frontal face.jpg</FileName>
+  <RoiItems>
+    <VTROIRect>
+      <Name>Face</Name>
+      <X>217.8488120950324</X>
+      <Y>134.91144708423326</Y>
+      <Z>0</Z>
+      <IsSelected>false</IsSelected>
+      <ROIColor>
+        <A>255</A>
+        <R>14</R>
+        <G>25</G>
+        <B>222</B>
+        <ScA>1</ScA>
+        <ScR>0.004391442</ScR>
+        <ScG>0.009721218</ScG>
+        <ScB>0.730460763</ScB>
+      </ROIColor>
+      <Width>262.08207343412528</Width>
+      <Height>223.93088552915771</Height>
+    </VTROIRect>
+  </RoiItems>
+  <IsConfirmed>true</IsConfirmed>
+</VTObjectDetectionInfo>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Input;
@@ -16,12 +17,12 @@ namespace OpenDL.ViewModel
     {
 
         readonly FolderBrowserService folderBrowserService;
-        readonly LabelLoaderService labelLoaderService;
-        readonly SegmentationService segmentationService;
+        readonly LabelingService labelLoaderService;
+        readonly AugmentService segmentationService;
 
         public SegmentationAugmentViewModel(FolderBrowserService _folderBrowserService,
-                                            LabelLoaderService _labelLoaderService,
-                                            SegmentationService _segmentationService)
+                                            LabelingService _labelLoaderService,
+                                            AugmentService _segmentationService)
         {
             this.folderBrowserService = _folderBrowserService;
             this.labelLoaderService = _labelLoaderService;
@@ -103,16 +104,21 @@ namespace OpenDL.ViewModel
                         ObservableCollection<SegmentLabelPolygon> polygons = labelResult.Item1;
                         ObservableCollection<SegmentLabelUnit> labelUnits = labelResult.Item2;
 
-                        await this.segmentationService.DoSegmentationAugmentationAsync(this.OutputAugmentationPath, polygons, labelUnits, 0, 0 , 
-                                                                            (currentCount, maxCount)=>
-                                                                            {
-                                                                                Application.Current.Dispatcher.Invoke(() =>
-                                                                                {
-                                                                                    this.CurrentMaxCount = maxCount;
-                                                                                    this.CurrentProcessedCount = currentCount;
-                                                                                    this.CurrentStatusMessage = string.Format("{0} / {1}", CurrentProcessedCount, CurrentMaxCount);
-                                                                                });
-                                                                            });
+
+                        int imageWidth = ((IntProperty)this.PropertyCollection.Where(x => x.Name == "IMAGE WIDTH").FirstOrDefault()).Value;
+                        int imageHeight = ((IntProperty)this.PropertyCollection.Where(x => x.Name == "IMAGE HEIGHT").FirstOrDefault()).Value;
+                        bool grayScale = ((BoolProperty)this.PropertyCollection.Where(x => x.Name == "GRAY SCALE").FirstOrDefault()).Value;
+
+                        await this.segmentationService.DoSegmentationAugmentationAsync(this.OutputAugmentationPath, polygons, labelUnits, imageWidth, imageHeight, grayScale,
+                                                                                       (currentCount, maxCount)=>
+                                                                                       {
+                                                                                           Application.Current.Dispatcher.Invoke(() =>
+                                                                                           {
+                                                                                               this.CurrentMaxCount = maxCount;
+                                                                                               this.CurrentProcessedCount = currentCount;
+                                                                                               this.CurrentStatusMessage = string.Format("{0} / {1}", CurrentProcessedCount, CurrentMaxCount);
+                                                                                           });
+                                                                                       });
 
                         this.CurrentStatusMessage = "완료";
                     });
@@ -155,6 +161,23 @@ namespace OpenDL.ViewModel
         {
             get => _CurrentMaxCount;
             set => Set<int>(nameof(CurrentMaxCount), ref _CurrentMaxCount, value);
+        }
+
+        private ObservableCollection<BaseProperty> _PropertyCollection = null;
+        public ObservableCollection<BaseProperty> PropertyCollection
+        {
+            get
+            {
+                if (_PropertyCollection == null)
+                {
+                    _PropertyCollection = new ObservableCollection<BaseProperty>();
+
+                    this.PropertyCollection.Add(new IntProperty() { Name = "IMAGE WIDTH", Value = 100 });
+                    this.PropertyCollection.Add(new IntProperty() { Name = "IMAGE HEIGHT", Value = 100 });
+                    this.PropertyCollection.Add(new BoolProperty() { Name = "GRAY SCALE", Value = true });
+                }
+                return _PropertyCollection;
+            }
         }
     }
 }
