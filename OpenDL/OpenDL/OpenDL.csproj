@@ -42,6 +42,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="DevExpress.Docs.v19.2">
+      <HintPath>..\..\..\..\Program Files (x86)\DevExpress 19.2\Components\Bin\Framework\DevExpress.Docs.v19.2.dll</HintPath>
+    </Reference>
     <Reference Include="DevExpress.Xpf.Themes.VS2017Dark.v19.2">
       <HintPath>..\..\..\..\Program Files (x86)\DevExpress 19.2\Components\Bin\Framework\DevExpress.Xpf.Themes.VS2017Dark.v19.2.dll</HintPath>
     </Reference>

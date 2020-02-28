@@ -20,6 +20,8 @@ namespace OpenDL.ViewModel
         readonly LabelingService labelLoaderService;
         readonly AugmentService segmentationService;
 
+        private bool IsAugmentating = false;
+
         public SegmentationAugmentViewModel(FolderBrowserService _folderBrowserService,
                                             LabelingService _labelLoaderService,
                                             AugmentService _segmentationService)
@@ -97,6 +99,10 @@ namespace OpenDL.ViewModel
                     _DoAugmentationCommand = new RelayCommand(async () =>
                     {
 
+                        if (this.IsAugmentating == true) return;
+
+                        this.IsAugmentating = true;
+
                         this.CurrentStatusMessage = "준비";
 
                         string[] files = folderBrowserService.ImageListFromFolder(this.TargetLabelPath);
@@ -119,7 +125,7 @@ namespace OpenDL.ViewModel
                                                                                                this.CurrentStatusMessage = string.Format("{0} / {1}", CurrentProcessedCount, CurrentMaxCount);
                                                                                            });
                                                                                        });
-
+                        this.IsAugmentating = false;
                         this.CurrentStatusMessage = "완료";
                     });
                 }

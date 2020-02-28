@@ -9,6 +9,7 @@
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
              xmlns:model="clr-namespace:OpenDL.Model"
              xmlns:converter="clr-namespace:OpenDL.Converter"
+             xmlns:uc="clr-namespace:OpenDL.UC"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="1200">
 
@@ -16,6 +17,7 @@
         <converter:IntegerToStringConverters x:Key="IntegerToStringConverters"></converter:IntegerToStringConverters>
         <converter:DoubleToStringConverters x:Key="DoubleToStringConverters"></converter:DoubleToStringConverters>
         <converter:DoubleToStringPercentConverter x:Key="DoubleToStringPercentConverter" Scale="100"></converter:DoubleToStringPercentConverter>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"></converter:InverseBooleanConverter>
     </UserControl.Resources>
 
     <DockPanel>
@@ -23,17 +25,17 @@
                      Height="40"
                      Rows="1">
 
-            <Button ToolTip="라벨 열기" Command="{Binding OpenAugmentedLabelCommand}">
+            <Button ToolTip="라벨 열기" Command="{Binding OpenAugmentedLabelCommand}" IsEnabled="{Binding IsTraining, Converter={StaticResource InverseBooleanConverter}}">
                 <Image Source="{dx:DXImage 'SvgImages/Actions/Open2.svg'}"></Image>
             </Button>
-            
-            <Button ToolTip="학습 시작" Command="{Binding TrainStartCommand}">
+
+            <Button ToolTip="학습 시작" Command="{Binding TrainStartCommand}" IsEnabled="{Binding IsTraining, Converter={StaticResource InverseBooleanConverter}}">
                 <Image Source="{dx:DXImage 'SvgImages/XAF/Action_Debug_Start.svg'}"></Image>
             </Button>
-            <Button ToolTip="학습 일시중지" Command="{Binding TrainPauseCommand}">
+            <!--<Button ToolTip="학습 일시중지" Command="{Binding TrainPauseCommand}">
                 <Image Source="{dx:DXImage 'SvgImages/XAF/Action_Debug_Breakpoint_Toggle.svg'}"></Image>
-            </Button>
-            <Button ToolTip="학습 중지" Command="{Binding TrainStopCommand}">
+            </Button>-->
+            <Button ToolTip="학습 중지" Command="{Binding TrainStopCommand}" IsEnabled="{Binding IsTraining}">
                 <Image Source="{dx:DXImage 'SvgImages/XAF/Action_Debug_Stop.svg'}"></Image>
             </Button>
         </UniformGrid>
@@ -101,7 +103,7 @@
         </Grid>
 
         <Grid DockPanel.Dock="Left"
-              Width="300">
+              Width="250">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
                 <RowDefinition Height="30"></RowDefinition>
@@ -121,13 +123,14 @@
                             <TextBox Text="{Binding Name}" 
                                  Grid.Column="0" 
                                  HorizontalAlignment="Stretch"
-                                 HorizontalContentAlignment="Left"
+                                 HorizontalContentAlignment="Stretch"
                                  VerticalAlignment="Stretch"
                                  IsReadOnly="True"></TextBox>
-                            <CheckBox IsChecked="{Binding Value}"
+                            <TextBox Text="{Binding Value}"
                                   Grid.Column="1" 
-                                  HorizontalAlignment="Center"
-                                  VerticalContentAlignment="Center"></CheckBox>
+                                  HorizontalAlignment="Stretch"
+                                  VerticalContentAlignment="Stretch"
+                                  IsReadOnly="{Binding IsReadOnly}"></TextBox>
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type model:BoolProperty}">
@@ -145,7 +148,8 @@
                             <CheckBox IsChecked="{Binding Value}"
                                   Grid.Column="1" 
                                   HorizontalAlignment="Center"
-                                  VerticalContentAlignment="Center"></CheckBox>
+                                  VerticalContentAlignment="Center"
+                                  IsEnabled="{Binding IsReadOnly, Converter={StaticResource InverseBooleanConverter}}"></CheckBox>
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type model:IntProperty}">
@@ -165,7 +169,8 @@
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Left"
                                  VerticalAlignment="Stretch"
-                                 VerticalContentAlignment="Center"></TextBox>
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="{Binding IsReadOnly}"></TextBox>
                         </Grid>
                     </DataTemplate>
 
@@ -186,7 +191,8 @@
                                  HorizontalAlignment="Stretch"
                                  HorizontalContentAlignment="Left"
                                  VerticalAlignment="Stretch"
-                                 VerticalContentAlignment="Center"></TextBox>
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="{Binding IsReadOnly}"></TextBox>
                         </Grid>
                     </DataTemplate>
                 </ListView.Resources>
@@ -215,6 +221,7 @@
             </Grid>
             <ListView Grid.Row="2"
                       ItemsSource="{Binding PureSegmentModelCollection}"
+                      SelectedItem="{Binding SelectedSegmentModel}"
                       HorizontalContentAlignment="Stretch">
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type model:DeepModelPath}">
@@ -234,7 +241,7 @@
             </ListView>
         </Grid>
         <Grid DockPanel.Dock="Right"
-              Width="300">
+              Width="250">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -247,7 +254,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0">
-                    <Image Source="{dx:DXImage 'SvgImages/RichEdit/InsertPageNumber.svg'}"
+                    <Image Source="{dx:DXImage 'SvgImages/XAF/ModelEditor_ImageSources.svg'}"
                            ToolTip="학습 샘플"></Image>
                 </Button>
                 <TextBox Text="학습 샘플"
@@ -270,7 +277,7 @@
                       ItemsSource="{Binding TrainSampleCollection}"
                       HorizontalContentAlignment="Stretch"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      SelectedItem="{Binding SelectedSegmentModel}">
+                      >
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type model:SegmentTrainSample}">
                         <Grid Height="30">
@@ -288,15 +295,22 @@
                 </ListView.Resources>
             </ListView>
         </Grid>
-        
 
+        <TextBox DockPanel.Dock="Bottom" 
+                 Height="30"
+                 Text="{Binding CurrentStatus}"
+                 HorizontalContentAlignment="Center"
+                 VerticalContentAlignment="Center"
+                 IsReadOnly="True"></TextBox>
+    
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <dxc:ChartControl Grid.Row="0">
+        <Grid Height="300"
+              DockPanel.Dock="Bottom">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <dxc:ChartControl Grid.Column="0">
                 <dxc:ChartControl.Legends>
                     <dxc:Legend HorizontalPosition="Right" VerticalPosition="Top" Orientation="Horizontal"/>
                 </dxc:ChartControl.Legends>
@@ -319,33 +333,39 @@
                 </dxc:XYDiagram2D>
             </dxc:ChartControl>
 
-            <dxc:ChartControl Grid.Row="1">
+            <dxc:ChartControl Grid.Column="1">
                 <dxc:ChartControl.Legends>
                     <dxc:Legend HorizontalPosition="Right" VerticalPosition="Top" Orientation="Horizontal"/>
                 </dxc:ChartControl.Legends>
                 <dxc:XYDiagram2D>
-                    <dxc:LineSeries2D DisplayName="Train sample accuracy" 
-                                  ShowInLegend="True"
-                                  ShowIsolatedPoints="True">
-                        <dxc:SeriesPoint NumericalArgument="0" Value="5.289"/>
-                        <dxc:SeriesPoint NumericalArgument="1" Value="4.182"/>
-                        <dxc:SeriesPoint NumericalArgument="2" Value="3.725"/>
-                        <dxc:SeriesPoint NumericalArgument="3" Value="2.272"/>
-                        <dxc:SeriesPoint NumericalArgument="4" Value="2.117"/>
-                    </dxc:LineSeries2D>
-                    <dxc:LineSeries2D DisplayName="Validation sample accuracy" 
-                                  ShowInLegend="True"
-                                  ShowIsolatedPoints="True">
-                        <dxc:SeriesPoint NumericalArgument="0" Value="5.289"/>
-                        <dxc:SeriesPoint NumericalArgument="1" Value="7"/>
-                        <dxc:SeriesPoint NumericalArgument="2" Value="3.725"/>
-                        <dxc:SeriesPoint NumericalArgument="3" Value="2.272"/>
-                        <dxc:SeriesPoint NumericalArgument="4" Value="2.117"/>
-                    </dxc:LineSeries2D>
+                    <dxc:XYDiagram2D.Series>
+                        <dxc:LineSeries2D DisplayName="Train sample accuracy" 
+                                          ShowInLegend="True"
+                                          ShowIsolatedPoints="True"
+                                          DataSource="{Binding TrainAccuracyCollection}"
+                                          ArgumentDataMember="Step"
+                                          ValueDataMember="Value"></dxc:LineSeries2D>
+
+                        <dxc:LineSeries2D DisplayName="Validation sample accuracy" 
+                                          ShowInLegend="True"
+                                          ShowIsolatedPoints="True"
+                                          DataSource="{Binding ValidationAccuracyCollection}"
+                                          ArgumentDataMember="Step"
+                                          ValueDataMember="Value"></dxc:LineSeries2D>
+                    </dxc:XYDiagram2D.Series>
                 </dxc:XYDiagram2D>
             </dxc:ChartControl>
         </Grid>
 
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <uc:SegmentationPreviewer Grid.Column="0"
+                                      Images="{Binding BestSamplePreviewCollection}"></uc:SegmentationPreviewer>
+            <uc:SegmentationPreviewer Grid.Column="1"
+                                      Images="{Binding WorstSamplePreviewCollection}"></uc:SegmentationPreviewer>
+        </Grid>
     </DockPanel>
 </UserControl>

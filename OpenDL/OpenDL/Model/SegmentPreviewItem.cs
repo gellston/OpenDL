@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Text;
+using System.Windows.Media.Imaging;
 
 namespace OpenDL.Model
 {
-    public class BaseProperty : INotifyPropertyChanged
+    public class SegmentPreviewItem : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyRaised(string propertyname)
@@ -25,23 +27,25 @@ namespace OpenDL.Model
             }
         }
 
-        public BaseProperty()
+        public SegmentPreviewItem()
         {
 
         }
 
-        private string _Name = "";
-        public string Name
+
+        private BitmapSource _Image = null;
+        public BitmapSource Image
         {
-            get => _Name;
-            set => Set<string>(nameof(Name), ref _Name, value);
+            get => _Image;
+            set => Set<BitmapSource>(nameof(Image), ref _Image, value);
         }
 
-        private bool _IsReadOnly = false;
-        public bool IsReadOnly
+        private double _Alpha = 1;
+        public double Alpha
         {
-            get => _IsReadOnly;
-            set => Set<bool>(nameof(IsReadOnly), ref _IsReadOnly, value);
+            get => _Alpha;
+            set => Set<double>(nameof(Alpha), ref _Alpha, value);
         }
+
     }
 }

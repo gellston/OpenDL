@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="OpenDL.UC.SegmentationPreviewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OpenDL.UC"
+             xmlns:model="clr-namespace:OpenDL.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:SegmentationPreviewer}, Path=Images, Mode=OneWay}">
+        <ItemsControl.Resources>
+            <DataTemplate DataType="{x:Type model:SegmentPreviewItem}">
+                <Image Source="{Binding Image, Mode=OneWay}" Opacity="{Binding Alpha}" Stretch="Uniform"></Image>
+            </DataTemplate>
+        </ItemsControl.Resources>
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <Grid Background="Black">
+                </Grid>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
+</UserControl>

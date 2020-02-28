@@ -15,7 +15,7 @@ namespace OpenDL.Service
         {
             string checkPath = SegmentationPureModelContainerPath;
             checkPath = SegmentationTrainedModelContainerPath;
-
+            checkPath = SegmentationTrainedModelUnzipPath;
         }
 
         public string LabelInfoFileName
@@ -30,7 +30,7 @@ namespace OpenDL.Service
         {
             get
             {
-                return "__ModelInfo.xml";
+                return "__ModelInfo.json";
             }
         }
 
@@ -71,6 +71,18 @@ namespace OpenDL.Service
                     Directory.CreateDirectory(segmentationModelContainerPath);
                 ;
                 return segmentationModelContainerPath;
+            }
+        }
+
+        public string SegmentationTrainedModelUnzipPath
+        {
+            get
+            {
+                string segmentationTrainedModelUnzipPath = this.BaseDirectory + Path.DirectorySeparatorChar + "SegmentationTrainedModelUnzipPath";
+                if (!Directory.Exists(segmentationTrainedModelUnzipPath))
+                    Directory.CreateDirectory(segmentationTrainedModelUnzipPath);
+                
+                return segmentationTrainedModelUnzipPath;
             }
         }
     }
