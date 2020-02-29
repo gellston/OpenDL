@@ -93,7 +93,7 @@ namespace OpenDL.Service
         }
 
 
-        public async Task<bool> SaveLabelInformationAsync(string _folder, ObservableCollection<SegmentLabelPolygon> _labelInfo, ObservableCollection<SegmentLabelUnit> _unitInfo)
+        public async Task<bool> SaveSegmentLabelInformationAsync(string _folder, ObservableCollection<SegmentLabelPolygon> _labelInfo, ObservableCollection<SegmentLabelUnit> _unitInfo)
         {
 
             await Task.Run(async () =>

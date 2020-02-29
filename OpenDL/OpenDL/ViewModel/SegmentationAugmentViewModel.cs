@@ -16,13 +16,13 @@ namespace OpenDL.ViewModel
     public class SegmentationAugmentViewModel : ViewModelBase
     {
 
-        readonly FolderBrowserService folderBrowserService;
+        readonly FileBrowserService folderBrowserService;
         readonly LabelingService labelLoaderService;
         readonly AugmentService segmentationService;
 
         private bool IsAugmentating = false;
 
-        public SegmentationAugmentViewModel(FolderBrowserService _folderBrowserService,
+        public SegmentationAugmentViewModel(FileBrowserService _folderBrowserService,
                                             LabelingService _labelLoaderService,
                                             AugmentService _segmentationService)
         {

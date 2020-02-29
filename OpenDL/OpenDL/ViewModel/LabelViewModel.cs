@@ -12,8 +12,8 @@ namespace OpenDL.ViewModel
     public class LabelViewModel : ViewModelBase
     {
 
-        private readonly FolderBrowserService folderDialogService;
-        public LabelViewModel(FolderBrowserService _folderDialogService)
+        private readonly FileBrowserService folderDialogService;
+        public LabelViewModel(FileBrowserService _folderDialogService)
         {
             folderDialogService = _folderDialogService;
 

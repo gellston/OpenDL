@@ -34,6 +34,14 @@ namespace OpenDL.Service
             }
         }
 
+        public string FreezeModelInfoFileName
+        {
+            get
+            {
+                return "__FreezeModelInfo.xml";
+            }
+        }
+
         public string SecurityPassword
         {
             get
@@ -47,6 +55,15 @@ namespace OpenDL.Service
             get
             {
                 return Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+            }
+        }
+
+        public string SpecialCharacter
+        {
+            get
+            {
+                string specialCharacter = @"[~!@\#$%^&*\()\=+|\\/:;?""<>']";
+                return specialCharacter;
             }
         }
 
@@ -83,6 +100,30 @@ namespace OpenDL.Service
                     Directory.CreateDirectory(segmentationTrainedModelUnzipPath);
                 
                 return segmentationTrainedModelUnzipPath;
+            }
+        }
+
+        public string FreezeUnzipPath
+        {
+            get
+            {
+                string freezeUnzipPath = this.BaseDirectory + Path.DirectorySeparatorChar + "FreezeUnzip";
+                if (!Directory.Exists(freezeUnzipPath))
+                    Directory.CreateDirectory(freezeUnzipPath);
+
+                return freezeUnzipPath;
+            }
+        }
+
+        public string PackageZipPath
+        {
+            get
+            {
+                string packageZipPath = this.BaseDirectory + Path.DirectorySeparatorChar + "PackageZip";
+                if (!Directory.Exists(packageZipPath))
+                    Directory.CreateDirectory(packageZipPath);
+
+                return packageZipPath;
             }
         }
     }

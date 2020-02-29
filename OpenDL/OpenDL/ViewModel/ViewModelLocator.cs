@@ -16,9 +16,11 @@ namespace OpenDL.ViewModel
             // Service Registeration
             SimpleIoc.Default.Register<ConfigureService>();
             SimpleIoc.Default.Register<LabelingService>();
-            SimpleIoc.Default.Register<FolderBrowserService>();
+            SimpleIoc.Default.Register<FileBrowserService>();
             SimpleIoc.Default.Register<AugmentService>();
             SimpleIoc.Default.Register<TrainingService>();
+            SimpleIoc.Default.Register<DialogService>();
+            SimpleIoc.Default.Register<ModelExporterService>();
 
 
             // Most Top ViewModel Registeration

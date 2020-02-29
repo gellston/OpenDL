@@ -7,7 +7,7 @@ using System.Text;
 
 namespace OpenDL.Service
 {
-    public class FolderBrowserService
+    public class FileBrowserService
     {
 
         public string SelectFolder()
@@ -18,6 +18,19 @@ namespace OpenDL.Service
 
             return dialog.SelectedPath;
         }
+
+        public string SaveOneFile(string filter)
+        {
+            DXSaveFileDialog dialog = new DXSaveFileDialog();
+            dialog.Filter = filter;
+            
+            if (dialog.ShowDialog() == false)
+                return "" ;
+
+            return dialog.FileName;
+        }
+
+
 
         public string[] ImageListFromFolder(string _folderPath)
         {
@@ -30,5 +43,7 @@ namespace OpenDL.Service
 
             return files;
         }
+
+
     }
 }

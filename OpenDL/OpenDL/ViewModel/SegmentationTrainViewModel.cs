@@ -19,6 +19,8 @@ using static Tensorflow.Binding;
 using Newtonsoft.Json;
 using NumSharp;
 using Size = OpenCvSharp.Size;
+using System.Windows.Media;
+using System.Text.RegularExpressions;
 
 namespace OpenDL.ViewModel
 {
@@ -28,7 +30,6 @@ namespace OpenDL.ViewModel
         private Thread TrainTaskThread;
         private bool IsThreadloop = true;
         private bool IsInterrupt = false;
-
 
 
         /// <summary>
@@ -44,11 +45,13 @@ namespace OpenDL.ViewModel
         private double validationSampleRate = 0;
         private double targetAccuracy = 0;
         private SegmentTrainModelInfo modelInfo = null;
-        bool isGray = false;
-        int imageWidth = 0;
-        int imageHeight = 0;
-        int labelOutput = 0;
-        int imageChannel = 1;
+        private bool isGray = false;
+        private int imageWidth = 0;
+        private int imageHeight = 0;
+        private int labelOutput = 0;
+        private int imageChannel = 1;
+        private string preModelOutputPath = "";
+        private string modelName = "";
 
 
 
@@ -56,18 +59,21 @@ namespace OpenDL.ViewModel
 
 
 
-        private readonly FolderBrowserService folderBrowserService;
+        private readonly FileBrowserService folderBrowserService;
         private readonly TrainingService trainSampleLoaderService;
         private readonly ConfigureService configureService;
+        private readonly DialogService dialogService;
 
-        public SegmentationTrainViewModel(FolderBrowserService _folderBrowserService,
+        public SegmentationTrainViewModel(FileBrowserService _folderBrowserService,
                                           TrainingService _trainSampleLoaderService,
-                                          ConfigureService _configureServie)
+                                          ConfigureService _configureServie,
+                                          DialogService _dialogService)
         {
 
             this.folderBrowserService = _folderBrowserService;
             this.trainSampleLoaderService = _trainSampleLoaderService;
             this.configureService = _configureServie;
+            this.dialogService = _dialogService;
 
             this.TrainCostCollection = new ObservableCollection<LinePlotInfo>();
             this.ValidationCostCollection = new ObservableCollection<LinePlotInfo>();
@@ -240,7 +246,7 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput);
+                                                    labelOutput).Item1;
 
                         var bestNDArray = this.trainSampleLoaderService.LoadBatch(validationSample,
                                                     bestScoreIndex,
@@ -248,13 +254,22 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput);
+                                                    labelOutput).Item1;
 
 
-                        
+                        var worstNDOutput = sess.run(new[] { Output }, new FeedItem(X, worstNDArray), new FeedItem(Phase, false));
+                        var bestNDOutput = sess.run(new[] { Output }, new FeedItem(X, bestNDArray), new FeedItem(Phase, false));
 
+
+
+                        // UI 업데이트                                                                                                                    
                         Application.Current.Dispatcher.Invoke(() =>
                         {
+
+                            //그래프 및 스코어 업데이트
+                            this.BestSamplePreviewScore = bestScore;
+                            this.WorstSamplePreviewScore = worstScore;
+
                             this.TrainCostCollection.Add(new LinePlotInfo()
                             {
                                 Step = epoch,
@@ -282,81 +297,53 @@ namespace OpenDL.ViewModel
                             this.CurrentAccuracy = totalValidationAccuracy;
                             this.CurrentLoss = totalValidationCost;
 
+                            // 이미지 업데이트
+                            ObservableCollection<SegmentPreviewItem> bestOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
+                                                                                                                         bestNDArray,
+                                                                                                                         bestNDOutput[0],
+                                                                                                                         this.imageWidth,
+                                                                                                                         this.imageHeight,
+                                                                                                                         this.imageChannel);
 
-                            // 현재 이미지 출력 worst 이미지 
-                            var worstSourceImage = this.trainSampleLoaderService.NDArrayToMat(worstNDArray.Item1["0,:,:,:"],
-                                      this.imageChannel,
-                                      this.imageWidth,
-                                      this.imageHeight);
+                            ObservableCollection<SegmentPreviewItem> worstOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
+                                                                                                                                                     worstNDArray,
+                                                                                                                                                     worstNDOutput[0],
+                                                                                                                                                     this.imageWidth,
+                                                                                                                                                     this.imageHeight,
+                                                                                                                                                     this.imageChannel);
 
-                            this.WorstSamplePreviewCollection.Clear();
-                            this.WorstSamplePreviewCollection.Add(new SegmentPreviewItem()
+                            foreach (var item in bestOutputCollection)
                             {
-                                Image = this.trainSampleLoaderService.ConvertToBitmapSource(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(worstSourceImage)),
-                                Alpha = 1
-                            });
-                            
-                            // 마스크이키지 만들기
-                            for (int index = 0; index < this.segmentLabelInfo.Labels.Count; index++)
-                            {
-                                var label = this.segmentLabelInfo.Labels[index];
-                                Mat mask = new Mat(new Size(this.imageWidth, this.imageHeight), MatType.CV_8UC3, new Scalar(label.Color.R, label.Color.G, label.Color.B));
-                                var worstSourceMaskImage = this.trainSampleLoaderService.NDArrayToMat(worstNDArray.Item2["0,:,:," + index],
-                                                                                                      1,
-                                                                                                      this.imageWidth,
-                                                                                                      this.imageHeight);
-                                worstSourceMaskImage = worstSourceMaskImage.Threshold(0.5, 1, ThresholdTypes.Binary);
-                                Mat result = new Mat();
-                                OpenCvSharp.Cv2.BitwiseAnd(mask, worstSourceMaskImage.CvtColor(ColorConversionCodes.GRAY2BGR), result);
-                                this.WorstSamplePreviewCollection.Add(new SegmentPreviewItem()
-                                {
-                                    Image = this.trainSampleLoaderService.ConvertToBitmapSource(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(result)),
-                                    Alpha = 0.5
-                                });
+                                this.BestSamplePreviewCollection.Add(item);
                             }
 
-
-
-                            // 현재 이미지 출력 best 이미지 
-                            var bestSourceImage = this.trainSampleLoaderService.NDArrayToMat(bestNDArray.Item1["0,:,:,:"],
-                                      this.imageChannel,
-                                      this.imageWidth,
-                                      this.imageHeight);
-
-                            this.BestSamplePreviewCollection.Clear();
-                            this.BestSamplePreviewCollection.Add(new SegmentPreviewItem()
+                            foreach (var item in worstOutputCollection)
                             {
-                                Image = this.trainSampleLoaderService.ConvertToBitmapSource(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(bestSourceImage)),
-                                Alpha = 1
-                            });
-
-                            // 마스크이키지 만들기
-                            for (int index = 0; index < this.segmentLabelInfo.Labels.Count; index++)
-                            {
-                                var label = this.segmentLabelInfo.Labels[index];
-                                Mat mask = new Mat(new Size(this.imageWidth, this.imageHeight), MatType.CV_8UC3, new Scalar(label.Color.R, label.Color.G, label.Color.B));
-                                var bestSourceMaskImage = this.trainSampleLoaderService.NDArrayToMat(bestNDArray.Item2["0,:,:," + index],
-                                                                                                      1,
-                                                                                                      this.imageWidth,
-                                                                                                      this.imageHeight);
-                                bestSourceMaskImage = bestSourceMaskImage.Threshold(0.5, 1, ThresholdTypes.Binary);
-                                Mat result = new Mat();
-                                OpenCvSharp.Cv2.BitwiseAnd(mask, bestSourceMaskImage.CvtColor(ColorConversionCodes.GRAY2BGR), result);
-                                this.BestSamplePreviewCollection.Add(new SegmentPreviewItem()
-                                {
-                                    Image = this.trainSampleLoaderService.ConvertToBitmapSource(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(result)),
-                                    Alpha = 0.5
-                                });
+                                this.WorstSamplePreviewCollection.Add(item);
                             }
+
                         });
 
                         if (this.CurrentAccuracy >= this.targetAccuracy)
+                        {
+                            saver.save(sess, configureService.SegmentationTrainedModelUnzipPath + Path.DirectorySeparatorChar + this.modelInfo.CheckFile, write_meta_graph: false);
+                            sess.close();
+                            if (this.trainSampleLoaderService.ZipDeepModel(this.configureService.SegmentationTrainedModelUnzipPath,
+                                                                       this.preModelOutputPath,
+                                                                       this.configureService.SecurityPassword) == false)
+                            {
+                                this.dialogService.ShowErrorMessage("모델 병합에 실패했습니다.");
+                            }
+                            this.trainSampleLoaderService.DeleteUnzipFiles();
+                            this.dialogService.ShowConfirmMessage("학습이 종료되었습니다.");
+
                             break;
+                        }
                     }
                 }
                 catch(Exception e)
                 {
-                    System.Console.WriteLine("test");
+                    this.dialogService.ShowErrorMessage(e.ToString());
                 }
 
                 this.CurrentStatus = "학습 종료";
@@ -378,12 +365,31 @@ namespace OpenDL.ViewModel
                     _TrainStartCommand = new RelayCommand(() =>
                     {
 
-                        if (this.segmentLabelInfo == null) return;
-                        if (this.SelectedSegmentModel == null) return;
+                        if (this.segmentLabelInfo == null)
+                        {
+                            this.dialogService.ShowErrorMessage("라벨 정보가 없습니다.");
+                            return;
+                        }
+                        if (this.SelectedSegmentModel == null)
+                        {
+                            this.dialogService.ShowErrorMessage("모델이 선택되지 않았습니다.");
+                            return;
+                        }
 
                         this.CurrentStatus = "학습 준비중";
 
+                        // 그래프 및 UI초기화
+                        this.BestSamplePreviewCollection.Clear();
+                        this.WorstSamplePreviewCollection.Clear();
+                        this.WorstSamplePreviewScore = 0;
+                        this.BestSamplePreviewScore = 0;
+                        this.TrainCostCollection.Clear();
+                        this.TrainAccuracyCollection.Clear();
+                        this.ValidationCostCollection.Clear();
+                        this.ValidationAccuracyCollection.Clear();
+
                         // 사용자 설정값들 불러오기
+                        this.modelName = ((StringProperty)this.PropertyCollection.Where(x => x.Name == "MODEL NAME").FirstOrDefault()).Value + ".model";
                         this.epoch = ((IntProperty)this.PropertyCollection.Where(x => x.Name == "EPOCH SIZE").FirstOrDefault()).Value;
                         this.batchSize = ((IntProperty)this.PropertyCollection.Where(x => x.Name == "BATCH SIZE").FirstOrDefault()).Value;
                         this.learningRate = ((DoubleProperty)this.PropertyCollection.Where(x => x.Name == "LEARING RATE").FirstOrDefault()).Value;
@@ -404,55 +410,71 @@ namespace OpenDL.ViewModel
                         string unzipPath = configureService.SegmentationTrainedModelUnzipPath;
                         string password = configureService.SecurityPassword;
 
-
                         // 모델 압축 해제 전 폴더 파일들 삭제
                         trainSampleLoaderService.DeleteUnzipFiles();
 
                         // 모델 압축 해제 
-                        try
+                        if(trainSampleLoaderService.UnZipDeepModel(targetModelPath, configureService.SegmentationTrainedModelUnzipPath, configureService.SecurityPassword) == false)
                         {
-                            using (ZipArchive archive = ZipArchive.Read(targetModelPath))
-                            {
-                                archive.Password = password;
-
-                                foreach (ZipItem item in archive)
-                                {
-                                    item.Extract(unzipPath);
-                                }
-                            }
-
-                        }
-                        catch(Exception e)
-                        {
+                            this.dialogService.ShowErrorMessage("모델을 추출하는데 실패했습니다.");
                             return;
                         }
 
+                        // 모델 로드
+                        this.modelInfo = trainSampleLoaderService.LoadSegmentTrainModelInfo(unzipPath + Path.DirectorySeparatorChar + configureService.ModelInfoFileName);
 
-                        // 압축 해제된 파일에서 모델 정보 불러오기
-                        this.modelInfo = null;
-                        try
-                        {
-                            using (StreamReader reader = new StreamReader(configureService.SegmentationTrainedModelUnzipPath + Path.DirectorySeparatorChar + configureService.ModelInfoFileName, Encoding.UTF8))
-                            {
-                                string labelContent = reader.ReadToEnd();
-                                this.modelInfo = (SegmentTrainModelInfo)JsonConvert.DeserializeObject(labelContent, typeof(SegmentTrainModelInfo));
-                            }
 
-                        }
-                        catch (Exception e)
-                        {
-                            return;
-                        }
+                        // 타겟 모델 경로
+                        this.preModelOutputPath = configureService.SegmentationTrainedModelContainerPath + Path.DirectorySeparatorChar + modelName;
 
 
                         /// Label 정보 및 모델 정보 확인 
-                        /// 
-                        if (this.modelInfo == null) return;
-                        if (this.imageWidth != this.modelInfo.Width) return;
-                        if (this.imageHeight != this.modelInfo.Height) return;
-                        if (this.segmentLabelInfo.IsGray != this.modelInfo.IsGray) return;
-                        if (this.segmentLabelInfo.LabelSize != this.modelInfo.MaxLabelCount) return;
-                       
+                        if (this.modelInfo == null)
+                        {
+                            this.dialogService.ShowErrorMessage("Segmentation 모델 로드에 실패했습니다");
+                            return;
+                        }
+
+                        if (File.Exists(this.preModelOutputPath) == true)
+                        {
+                            this.dialogService.ShowErrorMessage("이미 존재하는 학습된 모델입니다.");
+                            return;
+                        }
+
+                        Regex rex = new Regex(this.configureService.SpecialCharacter);
+                        if (this.modelName.Length == 0 || rex.IsMatch(this.modelName) == true || this.modelName.Equals(".model") == true)
+                        {
+                            this.dialogService.ShowErrorMessage("올바르지 않은 모델명입니다.");
+                            return;
+                        }
+
+                        if(this.batchStep <= 0)
+                        {
+                            this.dialogService.ShowErrorMessage("학습 샘플이 충분하지 않습니다. 배치사이즈와 검증샘플 비율을 조절하십시오.");
+                            return;
+                        }
+
+                        if (this.imageWidth != this.modelInfo.Width)
+                        {
+                            this.dialogService.ShowErrorMessage("이미지 너비가 맞지 않습니다.");
+                            return;
+                        }
+                        if (this.imageHeight != this.modelInfo.Height)
+                        {
+                            this.dialogService.ShowErrorMessage("이미지 높이 맞지 않습니다.");
+                            return;
+                        }
+                        if (this.segmentLabelInfo.IsGray != this.modelInfo.IsGray)
+                        {
+                            this.dialogService.ShowErrorMessage("이미지 색상 정보가 맞지 않습니다.");
+                            return;
+                        }
+                        if (this.segmentLabelInfo.LabelSize != this.modelInfo.MaxLabelCount)
+                        {
+                            this.dialogService.ShowErrorMessage("라벨 갯수가 맞지 않습니다.");
+                            return;
+                        }
+
                         this.TrainTaskSignal.Set();
                     });
                 }
@@ -523,6 +545,7 @@ namespace OpenDL.ViewModel
                         CurrentOpenedLabelDirectory = folderBrowserService.SelectFolder();
                         if (CurrentOpenedLabelDirectory.Length <= 0)
                         {
+                            this.dialogService.ShowErrorMessage("경로가 선택되지 않았습니다.");
                             return;
                         }
 
@@ -531,6 +554,12 @@ namespace OpenDL.ViewModel
                         this.TrainSampleCollection = result.Item1;
                         this.segmentLabelInfo = null;
                         this.segmentLabelInfo = result.Item2;
+
+                        if(this.segmentLabelInfo.LabelSize == 0)
+                        {
+                            this.dialogService.ShowErrorMessage("올바르지 않은 라벨 정보입니다.");
+                            return;
+                        }
 
                         ((BoolProperty)this.PropertyCollection.Where(x => x.Name == "GRAY").FirstOrDefault()).Value = this.segmentLabelInfo.IsGray;
                         ((IntProperty)this.PropertyCollection.Where(x => x.Name == "IMAGE WIDTH").FirstOrDefault()).Value = this.segmentLabelInfo.ImageWidth;
@@ -551,6 +580,7 @@ namespace OpenDL.ViewModel
                 {
                     _RefreshPureModelCommand = new RelayCommand(() =>
                     {
+                        this.PureSegmentModelCollection.Clear();
                         string path = configureService.SegmentationPureModelContainerPath;
                         string [] models = Directory.GetFiles(path);
                         foreach(var model in models)
@@ -670,6 +700,20 @@ namespace OpenDL.ViewModel
         {
             get => _WorstSamplePreviewCollection;
             set => Set<ObservableCollection<SegmentPreviewItem>>(nameof(WorstSamplePreviewCollection), ref _WorstSamplePreviewCollection, value);
+        }
+
+        private double _BestSamplePreviewScore = 0;
+        public double BestSamplePreviewScore
+        {
+            get => _BestSamplePreviewScore;
+            set => Set<double>(nameof(BestSamplePreviewScore), ref _BestSamplePreviewScore, value);
+        }
+
+        private double _WorstSamplePreviewScore = 0;
+        public double WorstSamplePreviewScore
+        {
+            get => _WorstSamplePreviewScore;
+            set => Set<double>(nameof(WorstSamplePreviewScore), ref _WorstSamplePreviewScore, value);
         }
 
 

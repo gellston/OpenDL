@@ -112,6 +112,7 @@
 
             <ListView ItemsSource="{Binding PropertyCollection}"
                       HorizontalContentAlignment="Stretch"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       Grid.Row="0">
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type model:StringProperty}">
@@ -214,8 +215,9 @@
                          VerticalContentAlignment="Center"></TextBox>
 
                 <Button Grid.Column="2"
-                        ToolTip="갱신">
-                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Refresh.svg'}"></Image>
+                        ToolTip="갱신"
+                        Command="{Binding RefreshPureModelCommand}">
+                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Refresh.svg'}" ></Image>
                 </Button>
 
             </Grid>
@@ -358,13 +360,35 @@
         </Grid>
 
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
                 <ColumnDefinition Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
+            <TextBox Text="{Binding BestSamplePreviewScore, Converter={StaticResource DoubleToStringPercentConverter}}" 
+                     FontSize="20"
+                     Grid.Row="0" 
+                     Grid.Column="0"
+                     Foreground="#03A9F4"
+                     IsReadOnly="True"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"></TextBox>
+            <TextBox Text="{Binding WorstSamplePreviewScore, Converter={StaticResource DoubleToStringPercentConverter}}" 
+                     FontSize="20"
+                     Grid.Row="0" 
+                     Grid.Column="1"
+                     Foreground="Red"
+                     IsReadOnly="True"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"></TextBox>
             <uc:SegmentationPreviewer Grid.Column="0"
+                                      Grid.Row="1"
                                       Images="{Binding BestSamplePreviewCollection}"></uc:SegmentationPreviewer>
             <uc:SegmentationPreviewer Grid.Column="1"
+                                      Grid.Row="1"
                                       Images="{Binding WorstSamplePreviewCollection}"></uc:SegmentationPreviewer>
         </Grid>
     </DockPanel>

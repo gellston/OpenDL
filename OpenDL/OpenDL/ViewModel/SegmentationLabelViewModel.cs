@@ -17,15 +17,19 @@ namespace OpenDL.ViewModel
 {
     public class SegmentationLabelViewModel: ViewModelBase
     {
-        private readonly FolderBrowserService folderBrowserService;
+        private readonly FileBrowserService folderBrowserService;
         private readonly LabelingService labelLoaderService;
+        private readonly DialogService dialogService;
+
         private string openFolderLocation;
 
-        public SegmentationLabelViewModel(FolderBrowserService _folderBrowserService,
-                                          LabelingService _labelLoaderService)
+        public SegmentationLabelViewModel(FileBrowserService _folderBrowserService,
+                                          LabelingService _labelLoaderService,
+                                          DialogService _dialogService)
         {
             this.folderBrowserService = _folderBrowserService;
             this.labelLoaderService = _labelLoaderService;
+            this.dialogService = _dialogService;
 
             this.LabelCollection = new ObservableCollection<SegmentLabelPolygon>();
         }
@@ -154,11 +158,11 @@ namespace OpenDL.ViewModel
 
                         try
                         {
-                            await labelLoaderService.SaveLabelInformationAsync(this.openFolderLocation, this.LabelCollection, this.LabelUnitCollection);
+                            await labelLoaderService.SaveSegmentLabelInformationAsync(this.openFolderLocation, this.LabelCollection, this.LabelUnitCollection);
                         }
                         catch(Exception e)
                         {
-                            System.Console.WriteLine(e.ToString());
+                            this.dialogService.ShowErrorMessage(e.ToString());
                         }
                         
 
