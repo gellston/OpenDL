@@ -16,6 +16,9 @@ namespace OpenDL.Service
             string checkPath = SegmentationPureModelContainerPath;
             checkPath = SegmentationTrainedModelContainerPath;
             checkPath = SegmentationTrainedModelUnzipPath;
+            checkPath = FreezeUnzipPath;
+            checkPath = TensorflowPackagePath;
+            checkPath = PackageZipPath;
         }
 
         public string LabelInfoFileName
@@ -47,6 +50,31 @@ namespace OpenDL.Service
             get
             {
                 return "Qhdkso!88";
+            }
+        }
+
+
+        public string TensorflowGpuDllName
+        {
+            get
+            {
+                return "tensorflow_gpu.dll";
+            }
+        }
+
+        public string TensorflowCpuDllName
+        {
+            get
+            {
+                return "tensorflow_cpu.dll";
+            }
+        }
+
+        public string TensorflowDllName
+        {
+            get
+            {
+                return "tensorflow.dll";
             }
         }
 
@@ -124,6 +152,18 @@ namespace OpenDL.Service
                     Directory.CreateDirectory(packageZipPath);
 
                 return packageZipPath;
+            }
+        }
+
+        public string TensorflowPackagePath
+        {
+            get
+            {
+                string tensorflowPackagePath = this.BaseDirectory + Path.DirectorySeparatorChar + "TensorflowPackage";
+                if (!Directory.Exists(tensorflowPackagePath))
+                    Directory.CreateDirectory(tensorflowPackagePath);
+
+                return tensorflowPackagePath;
             }
         }
     }

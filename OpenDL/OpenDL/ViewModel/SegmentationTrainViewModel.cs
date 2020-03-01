@@ -21,6 +21,7 @@ using NumSharp;
 using Size = OpenCvSharp.Size;
 using System.Windows.Media;
 using System.Text.RegularExpressions;
+using GalaSoft.MvvmLight.Messaging;
 
 namespace OpenDL.ViewModel
 {
@@ -324,6 +325,7 @@ namespace OpenDL.ViewModel
 
                         });
 
+                        // 학습 완료.
                         if (this.CurrentAccuracy >= this.targetAccuracy)
                         {
                             saver.save(sess, configureService.SegmentationTrainedModelUnzipPath + Path.DirectorySeparatorChar + this.modelInfo.CheckFile, write_meta_graph: false);
@@ -335,6 +337,17 @@ namespace OpenDL.ViewModel
                                 this.dialogService.ShowErrorMessage("모델 병합에 실패했습니다.");
                             }
                             this.trainSampleLoaderService.DeleteUnzipFiles();
+
+
+                            TrainMessage message = new TrainMessage()
+                            {
+                                Message = "Complete"
+                            };
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                Messenger.Default.Send<TrainMessage>(message);
+                            });
+                           
                             this.dialogService.ShowConfirmMessage("학습이 종료되었습니다.");
 
                             break;

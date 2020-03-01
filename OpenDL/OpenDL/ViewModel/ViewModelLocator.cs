@@ -49,6 +49,7 @@ namespace OpenDL.ViewModel
             SimpleIoc.Default.GetInstance<ConfigureService>();
             SimpleIoc.Default.GetInstance<LabelViewModel>();
             SimpleIoc.Default.GetInstance<TrainViewModel>();
+            SimpleIoc.Default.GetInstance<ModelManagementViewModel>();
             SimpleIoc.Default.GetInstance<SegmentationTrainViewModel>();
             SimpleIoc.Default.GetInstance<SegmentationLabelViewModel>();
             SimpleIoc.Default.GetInstance<ClassificationTrainViewModel>();

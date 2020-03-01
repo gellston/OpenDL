@@ -478,66 +478,41 @@ based on dark.css by Vladimir Epifanov
 <body>
 <div id="MainContent">
     <!-- Markdown Monster Content -->
-    <h1 id="vtdeep-manual">VTDEEP Manual</h1>
+    <h1 id="opendl-10">OpenDL 1.0</h1>
+<h4 id="실행환경">실행환경</h4>
+<ul>
+<li>Window10, .Net Core 3.1, Cuda10</li>
+</ul>
 <h4 id="라이브러리-사용법">라이브러리 사용법</h4>
 <ul>
 <li>C++</li>
 </ul>
 <pre><code class="language-cpp">
-#include &lt;vtfactory.h&gt;
+// printf(&quot;준비중입니다..&quot;);
 
-void main(){
-    // Classifier 예제
-    // Classifier 초기화
-    vt::Iclassifier * classifier = createClassifier(&quot;모델파일 경로&quot;, &quot;모델  정보 파일&quot;);
-    // Classifier 실행
-    classifier-&gt;run(unsigned image 버퍼 주소)
-    // Classifier 최대 스코어 확인
-    std::cout &lt;&lt; &quot;Max score = &quot; &lt;&lt; classifier-&gt;getMaxScore() &lt;&lt; std::endl;
-    // Classifier 최대 인덱스 확인
-    std::cout &lt;&lt; &quot;Max score Index = &quot; &lt;&lt; classifier-&gt;getMaxScoreIndex() &lt;&lt; std::endl;
-    // Classifier 인덱스 갯수 확인
-    std::cout &lt;&lt; &quot;Max score Index = &quot; &lt;&lt; classifier-&gt;getLabelCount() &lt;&lt; std::endl;
-    // Classifier 최대 인덱스 확인
-    std::cout &lt;&lt; &quot;Max score Index = &quot; &lt;&lt; classifier-&gt;getMaxScoreIndex() &lt;&lt; std::endl;
-    // Clsasifier 모든 스코어 확인
-    for(int index =0; index &lt; classifier-&gt;getLabelCount(); index++)
-        std::cout &lt;&lt; &quot;Max score Index = &quot; &lt;&lt; classifier-&gt;getScore(index) &lt;&lt; std::endl;
-}
-
+</code></pre>
+<ul>
+<li>C#</li>
+</ul>
+<pre><code class="language-cpp">
+// System.Console.WriteLine(&quot;준비중입니다..&quot;);
 
 </code></pre>
 <h4 id="업데이트-예정-사항">업데이트 예정 사항</h4>
 <ol>
-<li><del>Classifier 모델 추가 VTLight_Color 추가 (ver 1.0)</del></li>
-<li><del>Classifier 모델 추가 VTLight_Gray 추가 (ver 1.0)</del></li>
-<li>지속적인 분류 모델 추가</li>
-<li>tensorflow python 모델 추가 기능</li>
-<li>segmentation을 위한 UI 추가</li>
-<li>메뉴얼 업데이트 - c++ 라이브러리 설치 방법</li>
-<li>Example 코드 추가</li>
-<li>C# 라이브러리 추가</li>
-<li><del>로그인 기능 추가</del></li>
-<li><del>모델 프리징 및 패키징 기능 추가 (ver 1.0)</del></li>
-<li>메뉴얼 업데이트 - 메뉴얼 양식 변경</li>
+<li>C++, C# 라이브러리 추가 예정.</li>
+<li>Classification 학습 기능 추가.</li>
 </ol>
 <hr>
 <h4 id="10-release-note">1.0 Release Note</h4>
 <ul>
 <li>업데이트 리스트</li>
 </ul>
-<pre><code>1. Classification 모델 VTLightNet_Color 추가 
-   - 입력 이미지 사이즈 : 100x100x3
-   - 아웃풋 라벨 갯수 : 2
-   
-2. Classification 모델 VTLightNet_Gray 추가 
-   - 입력 이미지 사이즈 : 100x100x1
-   - 아웃풋 라벨 갯수 : 2
-  
-3. 모델 프리징 및 패키징 기능 추가.
+<pre><code>1. Segmentation 학습 기능 추가
 
-4. 로그인 기능 추가 
-
+2. Segmentation 모델 추가 (HySegNetV1)
+   - 입력 이미지 사이즈 : 256x256x3
+   - 아웃풋 라벨 갯수 : 1
 </code></pre>
 <hr>
 

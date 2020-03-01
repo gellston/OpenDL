@@ -16,7 +16,9 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using Size = OpenCvSharp.Size;
 using DevExpress.Compression;
-//using static Tensorflow.Binding;
+using Tensorflow;
+using static Tensorflow.Binding;
+using Google.Protobuf;
 
 namespace OpenDL.Service
 {
@@ -44,6 +46,33 @@ namespace OpenDL.Service
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+
+        public bool Freeze_Graph(string _meta_file_path, string _check_point_path, string _graph_output_path, string[] __output_nodes)
+        {
+
+            var graph4import = tf.Graph().as_default();
+            var saver = tf.train.import_meta_graph(_meta_file_path);
+            var sess = tf.Session(graph4import);
+
+            try
+            {
+                saver.restore(sess, _check_point_path);
+                var graph = sess.graph;
+                var output_graph_def = tf.graph_util.convert_variables_to_constants(sess, graph.as_graph_def(), __output_nodes);
+                File.WriteAllBytes(_graph_output_path, output_graph_def.ToByteArray());
+                sess.close();
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine("test");
+                sess.close();
+                return false;
+            }
+
+
+            return true;
         }
 
         public (NDArray, NDArray) LoadBatch(List<SegmentTrainSample> _sampleCollection, 
@@ -120,7 +149,13 @@ namespace OpenDL.Service
         {
             string[] files = Directory.GetFiles(configService.SegmentationTrainedModelUnzipPath);
             foreach (var file in files)
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                FileInfo fileInfo = new FileInfo(file);
+                fileInfo.IsReadOnly = false;
                 File.Delete(file);
+            }
+     
         }
 
 

@@ -7,18 +7,33 @@
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
              xmlns:model="clr-namespace:OpenDL.Model"
+             xmlns:converter="clr-namespace:OpenDL.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"></converter:InverseBooleanConverter>
+    </UserControl.Resources>
     <DockPanel>
         <UniformGrid DockPanel.Dock="Top" 
                      Height="40"
                      Rows="1">
-            <Button ToolTip="학습된 모델 프리징 설정">
+            <Button ToolTip="학습된 모델 프리징 설정"
+                    Command="{Binding UnzipModelCommand}">
                 <Image Source="{dx:DXImage 'SvgImages/Spreadsheet/PivotTableGroupSelection.svg'}"></Image>
             </Button>
             <Button ToolTip="모델 프리징"
                     Command="{Binding ExportModelCommand}">
                 <Image Source="{dx:DXImage 'SvgImages/Business Objects/BO_Product.svg'}"></Image>
+            </Button>
+            <Button ToolTip="CPU Package"
+                    Command="{Binding CpuPackageCommand}"
+                    IsEnabled="{Binding IsGpuPackage}">
+                <Image Source="/Image/icons8_processor_80px.png"></Image>
+            </Button>
+            <Button ToolTip="GPU Package"
+                    Command="{Binding GpuPackageCommand}"
+                    IsEnabled="{Binding IsGpuPackage, Converter={StaticResource InverseBooleanConverter}}">
+                <Image Source="/Image/icons8_video_card_200px.png"></Image>
             </Button>
         </UniformGrid>
         <Grid DockPanel.Dock="Left"
@@ -45,11 +60,15 @@
                          HorizontalContentAlignment="Center"
                          VerticalContentAlignment="Center"></TextBox>
                 <Button Grid.Column="2"
-                        ToolTip="갱신">
+                        ToolTip="갱신"
+                        Command="{Binding RefreshTrainedModelCommand}">
                     <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Refresh.svg'}" ></Image>
                 </Button>
             </Grid>
-            <ListView Grid.Row="1">
+            <ListView Grid.Row="1"
+                      ItemsSource="{Binding TrainedDeepModelCollection}"
+                      SelectedItem="{Binding SelectedTrainModel}"
+                      HorizontalContentAlignment="Stretch">
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type model:DeepModelPath}">
                         <Grid Height="30">
@@ -84,11 +103,14 @@
                          HorizontalContentAlignment="Center"
                          VerticalContentAlignment="Center"></TextBox>
                 <Button Grid.Column="2"
-                        ToolTip="갱신">
+                        ToolTip="갱신"
+                        Command="{Binding RefreshPureModelCommand}">
                     <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Refresh.svg'}" ></Image>
                 </Button>
             </Grid>
-            <ListView Grid.Row="3">
+            <ListView Grid.Row="3"
+                      ItemsSource="{Binding PureDeepModelCollection}"
+                      HorizontalContentAlignment="Stretch">
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type model:DeepModelPath}">
                         <Grid Height="30">
@@ -122,7 +144,9 @@
                          HorizontalContentAlignment="Center"
                          VerticalContentAlignment="Center"></TextBox>
             <TextBox IsReadOnly="True"
-                     Grid.Row="1">
+                     Grid.Row="1"
+                     FontSize="20"
+                     Text="{Binding ModelInfoContent}">
                 
             </TextBox>
             <TextBox Grid.Row="2"
@@ -132,7 +156,8 @@
                          VerticalContentAlignment="Center"></TextBox>
             <ListView Grid.Row="3"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      HorizontalContentAlignment="Stretch">
+                      HorizontalContentAlignment="Stretch"
+                      ItemsSource="{Binding PackageContentCollection}">
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type model:ModelFile}">
                         <Grid Height="30">

@@ -1,12 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
     <ApplicationIcon />
     <StartupObject />
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -14,10 +15,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Image\icons8_processor_80px.png" />
+    <None Remove="Image\icons8_video_card_200px.png" />
     <None Remove="Image\Orange.jpg" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Image\icons8_processor_80px.png" />
+    <Resource Include="Image\icons8_video_card_200px.png" />
     <Resource Include="Image\Orange.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
