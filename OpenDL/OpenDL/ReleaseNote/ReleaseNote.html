@@ -478,7 +478,7 @@ based on dark.css by Vladimir Epifanov
 <body>
 <div id="MainContent">
     <!-- Markdown Monster Content -->
-    <h1 id="opendl-10">OpenDL 1.0</h1>
+    <h1 id="opendl-11">OpenDL 1.1</h1>
 <h4 id="실행환경">실행환경</h4>
 <ul>
 <li>Window10, .Net Core 3.1, Cuda10</li>
@@ -488,7 +488,35 @@ based on dark.css by Vladimir Epifanov
 <li>C++</li>
 </ul>
 <pre><code class="language-cpp">
-// printf(&quot;준비중입니다..&quot;);
+#include &lt;iostream&gt;
+#include &lt;opencv2/opencv.hpp&gt;
+
+#include &quot;ODSegmentationFactory.h&quot;
+
+
+int main()
+{
+    cv::namedWindow(&quot;original&quot;);
+    cv::namedWindow(&quot;result&quot;);
+
+    cv::Mat image = cv::imread(&quot;C://Github//OpenDL//OpenDL//x64//Release//00036.jpg&quot;);
+    cv::Mat result = cv::Mat(cv::Size(256, 256), CV_32FC1); // 32bit 배열 필요.
+
+    odl::IODSegmentation* segmentation = SegmentatorLoader(&quot;C://Github//OpenDL//OpenDL//x64//Release//FaceDetector.frz&quot;,      // 프리징 모델 경로
+                                                           &quot;C://Github//OpenDL//OpenDL//x64//Release//__FreezeModelInfo.xml&quot;); // 모델 정보파일 경로
+
+    std::cout &lt;&lt; &quot;label count : &quot; &lt;&lt; segmentation-&gt;GetLabelCount() &lt;&lt; std::endl; // 라벨 갯수 출력
+    
+    segmentation-&gt;Run(image.data, (float *)result.data); // 세그먼테이션 수행
+
+    cv::threshold(result, result, 0.8, 255, cv::THRESH_BINARY); // 시각화를 위한 이진화
+
+    cv::imshow(&quot;original&quot;, image);
+    cv::imshow(&quot;result&quot;, result);
+    cv::waitKey();
+
+    delete segmentation;
+}
 
 </code></pre>
 <ul>
