@@ -11,6 +11,7 @@ int main()
 
     cv::Mat image = cv::imread("C://Github//OpenDL//OpenDL//x64//Release//00036.jpg");
     cv::Mat result = cv::Mat(cv::Size(256, 256), CV_32FC1);
+    cv::Mat threshold = cv::Mat(cv::Size(256, 256), CV_32FC1);
 
     odl::IODSegmentation* segmentation = SegmentatorLoader("C://Github//OpenDL//OpenDL//x64//Release//FaceDetector.frz", 
                                                            "C://Github//OpenDL//OpenDL//x64//Release//__FreezeModelInfo.xml");
@@ -19,10 +20,10 @@ int main()
     
     segmentation->Run(image.data, (float *)result.data);
 
-    cv::threshold(result, result, 0.8, 255, cv::THRESH_BINARY);
+    cv::threshold(result, threshold, 0.8, 255, cv::THRESH_BINARY);
 
     cv::imshow("original", image);
-    cv::imshow("result", result);
+    cv::imshow("result", threshold);
     cv::waitKey();
 
     delete segmentation;

@@ -55,20 +55,25 @@ odl::ODSegmentation::~ODSegmentation() {
 	if (this->image_buffer == nullptr)
 		free(this->image_buffer);
 
-	//if (this->segmentedMap == nullptr)
-	//	free(this->segmentedMap);
+	std::cout << "test" << std::endl;
 
 	TF_CloseSession(this->_session, this->_status);
 	if (TF_GetCode(this->_status) != TF_OK) {
 		TF_DeleteStatus(this->_status);
 	}
 
+	std::cout << "test" << std::endl;
+
 	TF_DeleteSession(this->_session, this->_status);
 	if (TF_GetCode(this->_status) != TF_OK) {
 		TF_DeleteStatus(this->_status);
 	}
+
+	std::cout << "test" << std::endl;
 	TF_DeleteGraph(this->_graph);
 	TF_DeleteStatus(this->_status);
+
+	std::cout << "test" << std::endl;
 }
 
 odl::ODSegmentation::ODSegmentation(std::string _frzPath, std::string __xml) : imageSize(0),
@@ -116,7 +121,7 @@ odl::ODSegmentation::ODSegmentation(std::string _frzPath, std::string __xml) : i
 			this->imageChannel = isGray == true ? 1 : 3;
 			this->imageSize = this->imageChannel * this->imageWidth * this->imageHeight * sizeof(float);
 			this->imagePixelSize = this->imageChannel * this->imageWidth * this->imageHeight;
-			this->segmentPixelSize = this->imageChannel * this->imageWidth * this->imageHeight * sizeof(float) * this->maxLabelCount;
+			this->segmentPixelSize = this->imageWidth * this->imageHeight * sizeof(float) * this->maxLabelCount;
 			this->image_buffer = (float*)malloc(imageSize);
 			//this->segmentedMap = (float*)malloc(this->segmentPixelSize);
 

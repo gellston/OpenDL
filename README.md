@@ -1,10 +1,16 @@
 ﻿
-# OpenDL 1.1
+# OpenDL 1.2
+
+
+#### 실행영상
+[![Video Label](http://img.youtube.com/vi/uLR1RNqJ1Mw/0.jpg)](https://youtu.be/jkmO2F1--qE)
 
 #### 실행환경
 * Window10, .Net Core 3.1, Cuda10
 
-#### 라이브러리 사용법
+#### Segmentation 라이브러리 사용법
+* 결과 
+
 
 * C++  
 
@@ -46,17 +52,60 @@ int main()
 * C#
 
 
-```cpp
+```csharp
 
-// System.Console.WriteLine("준비중입니다..");
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using OpenCvSharp;
+
+namespace OpenDLCSharpConsoleExample
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Cv2.NamedWindow("original");
+            Cv2.NamedWindow("result");
+
+
+            Mat image = new Mat("C://Github//OpenDL//OpenDL//x64//Release//00036.jpg");
+            Mat result = new Mat(new Size(256, 256), MatType.CV_32FC1);
+            Mat convertedDepth = new Mat();
+
+            ODL.IODSegmentationSharp segmentation = ODL.ODSegmentationFactorySharp.SegmentatorLoader("C://Github//OpenDL//OpenDL//x64//Release//FaceDetector.frz",
+                                                                                                    "C://Github//OpenDL//OpenDL//x64//Release//__FreezeModelInfo.xml");
+
+            System.Console.WriteLine("label count :" + segmentation.GetLabelCount());
+            segmentation.Run(image.Data, result.Data);
+
+            Mat threshold = result.Threshold(0.8, 255, ThresholdTypes.Binary);
+            threshold.ConvertTo(convertedDepth, MatType.CV_8UC1);
+
+            Cv2.ImShow("original", image);
+            Cv2.ImShow("result", convertedDepth);
+            Cv2.WaitKey();
+        }
+    }
+}
 
 ```
 
 #### 업데이트 예정 사항
 
- 1. C++, C# 라이브러리 추가 예정.
+ 1. ~~Segmentation C++, C# 라이브러리 추가 예정.~~
  2. Classification 학습 기능 추가.
+ 
+---
+#### 1.2 Release Note
 
+* 업데이트 리스트  
+
+```
+1. Segmentation CSharp 라이브러리 추가
+```
 ---
 #### 1.1 Release Note
 

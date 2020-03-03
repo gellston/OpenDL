@@ -1,6 +1,7 @@
 #pragma once
 
 
+
 #ifdef CALLEE_EXPORTS
 #define CALLEE_API extern "C" __declspec(dllexport)
 #else
@@ -14,3 +15,5 @@
 
 
 CALLEE_API odl::IODSegmentation* SegmentatorLoader(std::string _frzPath, std::string _configFile);
+
+
