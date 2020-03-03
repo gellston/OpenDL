@@ -7,13 +7,22 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="UC\BoxLabelControler.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UC\SegmentationControler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="UC\SegmentationPreviewer.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\ClassificationAugmentView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\ClassificationLabelView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\ClassificationModelManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\ClassificationTrainView.xaml.cs">
@@ -32,6 +41,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\SegmentationLabelView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\SegmentationModelManagementView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\SegmentationTrainView.xaml.cs">
@@ -54,13 +66,22 @@
     <Page Update="Style\ShadowStyle.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="UC\BoxLabelControler.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="UC\SegmentationControler.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UC\SegmentationPreviewer.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\ClassificationAugmentView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\ClassificationLabelView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\ClassificationModelManagementView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ClassificationTrainView.xaml">
@@ -82,6 +103,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\SegmentationLabelView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\SegmentationModelManagementView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\SegmentationTrainView.xaml">

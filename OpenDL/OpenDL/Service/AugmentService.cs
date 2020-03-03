@@ -85,10 +85,11 @@ namespace OpenDL.Service
                         foreach (var polygon in _polygons)
                         {
                             Mat image = new Mat(new Size(unit.ImageWidth, unit.ImageHeight), MatType.CV_8UC1, new Scalar(0, 0, 0));
-                            List<List<Point>> ListOfListOfPoint = new List<List<Point>>();
                             var shapes = unit.Polygons.Where(x => x.Name == polygon.Name);
+
                             foreach (var shape in shapes)
                             {
+                                List<List<Point>> ListOfListOfPoint = new List<List<Point>>();
                                 List<Point> points = new List<Point>();
                                 Application.Current.Dispatcher.Invoke(() =>
                                 {
@@ -103,8 +104,9 @@ namespace OpenDL.Service
                                 });
 
                                 ListOfListOfPoint.Add(points);
+                                image.FillPoly(ListOfListOfPoint, new Scalar(255), LineTypes.AntiAlias);
                             }
-                            image.FillPoly(ListOfListOfPoint, new Scalar(255));
+
                             Mat resizeLabel = image.Resize(new Size(_imageWidth, _imageHeight));
                             resizeLabel.ImWrite(sampleRootFolder + Path.DirectorySeparatorChar + count + ".jpg");
                             count++;

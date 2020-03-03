@@ -3,177 +3,24 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:OpenDL.View"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
-             xmlns:dxc="http://schemas.devexpress.com/winfx/2008/xaml/charts"
-             xmlns:model="clr-namespace:OpenDL.Model"
-             xmlns:converter="clr-namespace:OpenDL.Converter"
+             xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+             xmlns:local="clr-namespace:OpenDL.View"
+             xmlns:view="clr-namespace:OpenDL.View"
+             xmlns:viewmodel="clr-namespace:OpenDL.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <UserControl.Resources>
-        <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"></converter:InverseBooleanConverter>
-    </UserControl.Resources>
-    <DockPanel>
-        <UniformGrid DockPanel.Dock="Top" 
-                     Height="40"
-                     Rows="1">
-            <Button ToolTip="학습된 모델 프리징 설정"
-                    Command="{Binding UnzipModelCommand}">
-                <Image Source="{dx:DXImage 'SvgImages/Spreadsheet/PivotTableGroupSelection.svg'}"></Image>
-            </Button>
-            <Button ToolTip="모델 프리징"
-                    Command="{Binding ExportModelCommand}">
-                <Image Source="{dx:DXImage 'SvgImages/Business Objects/BO_Product.svg'}"></Image>
-            </Button>
-            <Button ToolTip="CPU Package"
-                    Command="{Binding CpuPackageCommand}"
-                    IsEnabled="{Binding IsGpuPackage}">
-                <Image Source="/Image/icons8_processor_80px.png"></Image>
-            </Button>
-            <Button ToolTip="GPU Package"
-                    Command="{Binding GpuPackageCommand}"
-                    IsEnabled="{Binding IsGpuPackage, Converter={StaticResource InverseBooleanConverter}}">
-                <Image Source="/Image/icons8_video_card_200px.png"></Image>
-            </Button>
-        </UniformGrid>
-        <Grid DockPanel.Dock="Left"
-              Width="300">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0"
-                        ToolTip="학습된 모델">
-                    <Image Source="{dx:DXImage 'SvgImages/XAF/Action_EditModel.svg'}"></Image>
-                </Button>
-                <TextBox Grid.Column="1"
-                         IsReadOnly="True"
-                         Text="학습된 모델"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"></TextBox>
-                <Button Grid.Column="2"
-                        ToolTip="갱신"
-                        Command="{Binding RefreshTrainedModelCommand}">
-                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Refresh.svg'}" ></Image>
-                </Button>
-            </Grid>
-            <ListView Grid.Row="1"
-                      ItemsSource="{Binding TrainedDeepModelCollection}"
-                      SelectedItem="{Binding SelectedTrainModel}"
-                      HorizontalContentAlignment="Stretch">
-                <ListView.Resources>
-                    <DataTemplate DataType="{x:Type model:DeepModelPath}">
-                        <Grid Height="30">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/XAF/Action_EditModel.svg'}"></Image>
-                            <TextBox IsReadOnly="True"
-                                     Text="{Binding ModelName}"
-                                     Grid.Column="1"
-                                     VerticalContentAlignment="Center"></TextBox>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.Resources>
-            </ListView>
-
-
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="50"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Button Grid.Column="0"
-                        ToolTip="딥러닝 모델">
-                    <Image Source="{dx:DXImage 'SvgImages/XAF/Action_EditModel.svg'}"></Image>
-                </Button>
-                <TextBox Grid.Column="1"
-                         IsReadOnly="True"
-                         Text="딥러닝 모델"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"></TextBox>
-                <Button Grid.Column="2"
-                        ToolTip="갱신"
-                        Command="{Binding RefreshPureModelCommand}">
-                    <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Refresh.svg'}" ></Image>
-                </Button>
-            </Grid>
-            <ListView Grid.Row="3"
-                      ItemsSource="{Binding PureDeepModelCollection}"
-                      HorizontalContentAlignment="Stretch">
-                <ListView.Resources>
-                    <DataTemplate DataType="{x:Type model:DeepModelPath}">
-                        <Grid Height="30">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/XAF/Action_EditModel.svg'}"></Image>
-                            <TextBox IsReadOnly="True"
-                                     Text="{Binding ModelName}"
-                                     Grid.Column="1"
-                                     VerticalContentAlignment="Center"></TextBox>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.Resources>
-            </ListView>
-        </Grid>
-
-
-
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="30"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <TextBox Grid.Row="0"
-                         IsReadOnly="True"
-                         Text="프리징 모델 정보"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"></TextBox>
-            <TextBox IsReadOnly="True"
-                     Grid.Row="1"
-                     FontSize="20"
-                     Text="{Binding ModelInfoContent}">
-                
-            </TextBox>
-            <TextBox Grid.Row="2"
-                         IsReadOnly="True"
-                         Text="메타 정보 파일"
-                         HorizontalContentAlignment="Center"
-                         VerticalContentAlignment="Center"></TextBox>
-            <ListView Grid.Row="3"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      HorizontalContentAlignment="Stretch"
-                      ItemsSource="{Binding PackageContentCollection}">
-                <ListView.Resources>
-                    <DataTemplate DataType="{x:Type model:ModelFile}">
-                        <Grid Height="30">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50"></ColumnDefinition>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/Outlook Inspired/New.svg'}"></Image>
-                            <TextBox IsReadOnly="True"
-                                     Text="{Binding Name}"
-                                     Grid.Column="1"
-                                     VerticalContentAlignment="Center"></TextBox>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.Resources>
-            </ListView>
-        </Grid>
-    </DockPanel>
+    <ContentPresenter Content="{Binding ManagementViewModel}">
+        <ContentPresenter.Resources>
+            <DataTemplate DataType="{x:Type viewmodel:SegmentationModelManagementViewModel}">
+                <view:SegmentationModelManagementView></view:SegmentationModelManagementView>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:ClassificationModelManagementViewModel}">
+                <view:ClassificationModelManagementView></view:ClassificationModelManagementView>
+            </DataTemplate>
+            <!--<DataTemplate DataType="{x:Type viewmodel:ClassificationLabelViewModel}">
+                <view:ClassificationLabelView></view:ClassificationLabelView>
+            </DataTemplate>-->
+        </ContentPresenter.Resources>
+    </ContentPresenter>
 </UserControl>

@@ -77,6 +77,7 @@ namespace OpenDL.ViewModel
 
             Messenger.Default.Register<SelectWorkTypeMessage>(this, SelectWorkTypeCallback);
             Messenger.Default.Register<SegmentAugmentationMessage>(this, SegmentAugmentationCallback);
+            Messenger.Default.Register<ClassificationAugmentationMessage>(this, ClassificationAugmentationCallback);
         }
 
 
@@ -114,6 +115,26 @@ namespace OpenDL.ViewModel
                     this.PopupWidth = 500;
                     this.PopupHeight = 500;
                     this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<SegmentationAugmentViewModel>();
+                    this.IsPopup = true;
+                    this.IsStayOpen = true;
+                    break;
+
+                case "Cancel":
+                    this.IsPopup = false;
+                    this.IsStayOpen = false;
+                    break;
+
+            };
+        }
+
+        private void ClassificationAugmentationCallback(ClassificationAugmentationMessage message)
+        {
+            switch (message.Message)
+            {
+                case "Open":
+                    this.PopupWidth = 500;
+                    this.PopupHeight = 500;
+                    this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<ClassificationAugmentViewModel>();
                     this.IsPopup = true;
                     this.IsStayOpen = true;
                     break;

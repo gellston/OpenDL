@@ -1,14 +1,170 @@
-﻿<UserControl x:Class="OpenDL.View.ClassificationLabelView"
+﻿<UserControl xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"  
+             x:Class="OpenDL.View.ClassificationLabelView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:OpenDL.View"
+             xmlns:uc="clr-namespace:OpenDL.UC"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:model="clr-namespace:OpenDL.Model"
+             xmlns:mvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <TextBlock Text="미구현" 
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"></TextBlock>
-    </Grid>
+    <mvvm:Interaction.Behaviors>
+        <mvvm:EventToCommand EventName="KeyDown" Command="{Binding KeyDownEventCommand}"></mvvm:EventToCommand>
+    </mvvm:Interaction.Behaviors>
+    <DockPanel>
+        <UniformGrid DockPanel.Dock="Top" 
+                     Height="40"
+                     Rows="1">
+            <Button ToolTip="라벨 열기" Command="{Binding OpenLabelCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/Actions/Open2.svg'}"></Image>
+            </Button>
+            <Button ToolTip="라벨 저장" Command="{Binding SaveLabelCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/DiagramIcons/save as.svg'}"></Image>
+            </Button>
+            <Button ToolTip="라벨 추가" Command="{Binding AddLabelCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Add.svg'}"></Image>
+            </Button>
+            <Button ToolTip="라벨 삭제" Command="{Binding DeleteLabelCommand}" CommandParameter="{Binding ElementName=LabelList, Path=SelectedItems}">
+                <Image Source="{dx:DXImage 'SvgImages/Comments/DeleteComment.svg'}"></Image>
+            </Button>
+            <Button ToolTip="박스 삭제" Command="{Binding DeletePolygonCommand}" CommandParameter="{Binding ElementName=PolygonList, Path=SelectedItems}">
+                <Image Source="{dx:DXImage 'SvgImages/XAF/Action_DeleteDashboard.svg'}"></Image>
+            </Button>
+            <Button ToolTip="어그먼테이션" Command="{Binding OpenAugmentationCommand}">
+                <Image Source="{dx:DXImage 'SvgImages/XAF/Action_ModelDifferences_Export.svg'}"></Image>
+            </Button>
+        </UniformGrid>
+
+        <Grid Width="250" DockPanel.Dock="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Source="{dx:DXImage 'SvgImages/Dashboards/DataLabels.svg'}" Margin="5" Grid.Column="0"></Image>
+                <TextBlock Text="라벨 리스트" 
+                           Grid.Column="1"
+                           HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"></TextBlock>
+            </Grid>
+            <ListView Grid.Row="1"
+                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      ItemsSource="{Binding LabelCollection}"
+                      SelectedItem="{Binding SelectedTargetLabel}"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch"
+                      Name="LabelList">
+                <ListView.Resources>
+                    <DataTemplate DataType="{x:Type model:ClassificationLabelBox}">
+                        <Grid Height="30" Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Label.svg'}"></Image>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch"
+                                     VerticalContentAlignment="Center"></TextBox>
+                            <dxe:PopupColorEdit Color="{Binding Color, Mode=TwoWay}" 
+                                                DefaultColor="DarkOrange"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Stretch"
+                                                Grid.Column="2"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.Resources>
+            </ListView>
+
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Image Source="{dx:DXImage 'SvgImages/Dashboards/ShapeLabels.svg'}" Margin="5" Grid.Column="0"></Image>
+                <TextBlock Text="폴리곤 리스트" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            </Grid>
+            <ListView Grid.Row="3" 
+                      ItemsSource="{Binding BoxCollection}"
+                      SelectedItem="{Binding SelectedBox}"
+                      ScrollViewer.HorizontalScrollBarVisibility="Visible"
+                      ScrollViewer.VerticalScrollBarVisibility="Visible"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch"
+                      Name="PolygonList">
+                <ListView.Resources>
+                    <DataTemplate DataType="{x:Type model:ClassificationLabelBox}">
+                        <Grid Height="30" Margin="0,0,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Label.svg'}"></Image>
+                            <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="Stretch"
+                                     VerticalContentAlignment="Center"></TextBox>
+                            <dxe:PopupColorEdit Color="{Binding Color, Mode=TwoWay}" 
+                                                DefaultColor="DarkOrange"
+                                                HorizontalAlignment="Stretch"
+                                                HorizontalContentAlignment="Stretch"
+                                                Grid.Column="2"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.Resources>
+            </ListView>
+        </Grid>
+
+        <ListView Width="250" 
+                  DockPanel.Dock="Right"
+                  ItemsSource="{Binding LabelUnitCollection}"
+                  SelectedItem="{Binding SelectedLabelUnit}">
+            <ListView.Resources>
+                <DataTemplate DataType="{x:Type model:ClassLabelUnit}">
+                    <Grid Height="30" Margin="0,0,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="25"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Image Grid.Column="0" Source="{dx:DXImage 'SvgImages/Icon Builder/Actions_Image.svg'}"></Image>
+                        <TextBox Text="{Binding FileName, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Stretch"
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"></TextBox>
+                        <TextBox Text="{Binding FilePath, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Stretch"
+                                 HorizontalContentAlignment="Stretch"
+                                 VerticalContentAlignment="Center"
+                                 IsReadOnly="True"></TextBox>
+                    </Grid>
+                </DataTemplate>
+            </ListView.Resources>
+        </ListView>
+
+        <uc:BoxLabelControler Image="{Binding CurrentImage}"
+                                  TargetItem="{Binding SelectedTargetLabel}"
+                                  BoxCollection="{Binding BoxCollection}"
+                                  SelectedItem="{Binding SelectedBox, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"></uc:BoxLabelControler>
+
+    </DockPanel>
+
+
 </UserControl>

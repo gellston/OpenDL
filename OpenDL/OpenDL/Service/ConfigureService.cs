@@ -95,6 +95,8 @@ namespace OpenDL.Service
             }
         }
 
+
+        // Segmentation Path 
         public string SegmentationPureModelContainerPath
         {
             get
@@ -128,6 +130,45 @@ namespace OpenDL.Service
                     Directory.CreateDirectory(segmentationTrainedModelUnzipPath);
                 
                 return segmentationTrainedModelUnzipPath;
+            }
+        }
+
+
+
+        // Classification Path 
+        public string ClassificationPureModelContainerPath
+        {
+            get
+            {
+                string classificationModelContainerPath = this.BaseDirectory + Path.DirectorySeparatorChar + "ClassificationPureModelContainer";
+                if (!Directory.Exists(classificationModelContainerPath))
+                    Directory.CreateDirectory(classificationModelContainerPath);
+                ;
+                return classificationModelContainerPath;
+            }
+        }
+
+        public string ClassificationTrainedModelContainerPath
+        {
+            get
+            {
+                string classificationModelContainerPath = this.BaseDirectory + Path.DirectorySeparatorChar + "ClassificationTrainedModelContainer";
+                if (!Directory.Exists(classificationModelContainerPath))
+                    Directory.CreateDirectory(classificationModelContainerPath);
+                ;
+                return classificationModelContainerPath;
+            }
+        }
+
+        public string ClassificationTrainedModelUnzipPath
+        {
+            get
+            {
+                string classificationTrainedModelUnzipPath = this.BaseDirectory + Path.DirectorySeparatorChar + "ClassificationTrainedModelUnzipPath";
+                if (!Directory.Exists(classificationTrainedModelUnzipPath))
+                    Directory.CreateDirectory(classificationTrainedModelUnzipPath);
+
+                return classificationTrainedModelUnzipPath;
             }
         }
 

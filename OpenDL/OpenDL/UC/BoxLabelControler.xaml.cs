@@ -19,7 +19,7 @@ namespace OpenDL.UC
     /// <summary>
     /// SegmentationControler.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class SegmentationControler : UserControl, INotifyPropertyChanged
+    public partial class BoxLabelControler : UserControl, INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyRaised(string propertyname)
@@ -32,14 +32,14 @@ namespace OpenDL.UC
 
         public void Set<T>(string _name, ref T _reference, T _value)
         {
-            if(!Equals(_reference, _value))
+            if (!Equals(_reference, _value))
             {
                 _reference = _value;
                 OnPropertyRaised(_name);
             }
         }
 
-        public SegmentationControler()
+        public BoxLabelControler()
         {
             InitializeComponent();
 
@@ -49,17 +49,17 @@ namespace OpenDL.UC
             this.ZoomMax = 5;
             this.ZoomMin = 0.2;
             this.Zoom = 1;
-            this.PolygonCollection = null;
+            //this.PolygonCollection = null;
         }
 
 
-        ~SegmentationControler()
+        ~BoxLabelControler()
         {
 
         }
 
 
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(BitmapImage), typeof(SegmentationControler), new PropertyMetadata(OnCustomerChangedCallBack));
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(BitmapImage), typeof(BoxLabelControler), new PropertyMetadata(OnCustomerChangedCallBack));
         public BitmapImage Image
         {
             get
@@ -75,11 +75,12 @@ namespace OpenDL.UC
 
         private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            SegmentationControler control = sender as SegmentationControler;
+            BoxLabelControler control = sender as BoxLabelControler;
             if (control != null)
             {
                 BitmapImage image = e.NewValue as BitmapImage;
                 if (image == null) return;
+
                 control.CanvasWidth = image.Width;
                 control.CanvasHeight = image.Height;
                 control.TranslationX = 0;
@@ -104,7 +105,7 @@ namespace OpenDL.UC
         }
 
 
-        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(SegmentationControler));
+        public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(BoxLabelControler));
         public double Zoom
         {
             get
@@ -118,7 +119,7 @@ namespace OpenDL.UC
             }
         }
 
-        public static readonly DependencyProperty ZoomMaxProperty = DependencyProperty.Register("ZoomMax", typeof(double), typeof(SegmentationControler));
+        public static readonly DependencyProperty ZoomMaxProperty = DependencyProperty.Register("ZoomMax", typeof(double), typeof(BoxLabelControler));
         public double ZoomMax
         {
             get
@@ -132,7 +133,7 @@ namespace OpenDL.UC
             }
         }
 
-        public static readonly DependencyProperty ZoomMinProperty = DependencyProperty.Register("ZoomMin", typeof(double), typeof(SegmentationControler));
+        public static readonly DependencyProperty ZoomMinProperty = DependencyProperty.Register("ZoomMin", typeof(double), typeof(BoxLabelControler));
         public double ZoomMin
         {
             get
@@ -146,7 +147,7 @@ namespace OpenDL.UC
             }
         }
 
-        public static readonly DependencyProperty ZoomStepProperty = DependencyProperty.Register("ZoomStep", typeof(double), typeof(SegmentationControler));
+        public static readonly DependencyProperty ZoomStepProperty = DependencyProperty.Register("ZoomStep", typeof(double), typeof(BoxLabelControler));
         public double ZoomStep
         {
             get
@@ -161,7 +162,7 @@ namespace OpenDL.UC
         }
 
 
-        public static readonly DependencyProperty TranslationXProperty = DependencyProperty.Register("TranslationX", typeof(double), typeof(SegmentationControler));
+        public static readonly DependencyProperty TranslationXProperty = DependencyProperty.Register("TranslationX", typeof(double), typeof(BoxLabelControler));
         public double TranslationX
         {
             get
@@ -176,7 +177,7 @@ namespace OpenDL.UC
         }
 
 
-        public static readonly DependencyProperty TranslationYProperty = DependencyProperty.Register("TranslationY", typeof(double), typeof(SegmentationControler));
+        public static readonly DependencyProperty TranslationYProperty = DependencyProperty.Register("TranslationY", typeof(double), typeof(BoxLabelControler));
         public double TranslationY
         {
             get
@@ -192,12 +193,12 @@ namespace OpenDL.UC
 
 
 
-        public static readonly DependencyProperty PolygonCollectionProperty = DependencyProperty.Register("PolygonCollection", typeof(ObservableCollection<SegmentLabelPolygon>), typeof(SegmentationControler));
-        public ObservableCollection<SegmentLabelPolygon> PolygonCollection
+        public static readonly DependencyProperty PolygonCollectionProperty = DependencyProperty.Register("BoxCollection", typeof(ObservableCollection<ClassificationLabelBox>), typeof(BoxLabelControler));
+        public ObservableCollection<ClassificationLabelBox> BoxCollection
         {
             get
             {
-                return (ObservableCollection<SegmentLabelPolygon>)GetValue(PolygonCollectionProperty);
+                return (ObservableCollection<ClassificationLabelBox>)GetValue(PolygonCollectionProperty);
             }
 
             set
@@ -207,12 +208,12 @@ namespace OpenDL.UC
         }
 
 
-        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(SegmentLabelPolygon), typeof(SegmentationControler), new PropertyMetadata(OnSelectedItemChangedCallBack));
-        public SegmentLabelPolygon SelectedItem
+        public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(ClassificationLabelBox), typeof(BoxLabelControler), new PropertyMetadata(OnSelectedItemChangedCallBack));
+        public ClassificationLabelBox SelectedItem
         {
             get
             {
-                return (SegmentLabelPolygon)GetValue(SelectedItemProperty);
+                return (ClassificationLabelBox)GetValue(SelectedItemProperty);
             }
 
             set
@@ -222,20 +223,20 @@ namespace OpenDL.UC
         }
         private static void OnSelectedItemChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            SegmentationControler control = sender as SegmentationControler;
+            BoxLabelControler control = sender as BoxLabelControler;
             if (control != null)
             {
-                control.SelectedItem = e.NewValue as SegmentLabelPolygon;
+                control.SelectedItem = e.NewValue as ClassificationLabelBox;
             }
         }
 
 
-        public static readonly DependencyProperty TargetItemProperty = DependencyProperty.Register("TargetItem", typeof(SegmentLabelPolygon), typeof(SegmentationControler), new PropertyMetadata(OnTargetItemChangedCallBack));
-        public SegmentLabelPolygon TargetItem
+        public static readonly DependencyProperty TargetItemProperty = DependencyProperty.Register("TargetItem", typeof(ClassificationLabelBox), typeof(BoxLabelControler), new PropertyMetadata(OnTargetItemChangedCallBack));
+        public ClassificationLabelBox TargetItem
         {
             get
             {
-                return (SegmentLabelPolygon)GetValue(TargetItemProperty);
+                return (ClassificationLabelBox)GetValue(TargetItemProperty);
             }
 
             set
@@ -246,7 +247,7 @@ namespace OpenDL.UC
 
         private static void OnTargetItemChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
         {
-            SegmentationControler control = sender as SegmentationControler;
+            BoxLabelControler control = sender as BoxLabelControler;
             if (control != null)
             {
                 control.SelectedItem = null;
@@ -278,6 +279,7 @@ namespace OpenDL.UC
 
         private Point CanvasStart;
         private Point CanvasOrigin;
+        private bool IsRectSelected = false;
 
         private void ChildCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -288,8 +290,9 @@ namespace OpenDL.UC
             var element = hitTestResult.VisualHit;
 
 
-            if(Keyboard.IsKeyDown(Key.LeftCtrl) == true && element.GetType() == typeof(Polygon)) {
-                SegmentLabelPolygon datacontext = (element as Polygon).DataContext as SegmentLabelPolygon;
+            if (Keyboard.IsKeyDown(Key.LeftCtrl) == true && element.GetType() == typeof(Rectangle))
+            {
+                ClassificationLabelBox datacontext = (element as Rectangle).DataContext as ClassificationLabelBox;
                 datacontext.IsSelected = !datacontext.IsSelected;
                 if (datacontext.IsSelected == true)
                     this.SelectedItem = datacontext;
@@ -306,52 +309,77 @@ namespace OpenDL.UC
                 return;
             }
 
+            if (Keyboard.IsKeyDown(Key.LeftShift) == true && element.GetType() == typeof(Rectangle))
+            {
+                ClassificationLabelBox datacontext = (element as Rectangle).DataContext as ClassificationLabelBox;
+                datacontext.IsSelected = true;
+
+                this.IsRectSelected = true;
+                this.SelectedItem = datacontext;
+
+                var draggableControl = sender as Canvas;
+                draggableControl.CaptureMouse();
+                return;
+            }
+
             if (this.SelectedItem == null && this.TargetItem != null && this.Image != null && Keyboard.IsKeyDown(Key.LeftAlt) == true)
             {
-                //SegmentationPolygon polygonItem = this.TargetItem.Clone() as SegmentationPolygon;
 
-                SegmentLabelPolygon polygonItem = new SegmentLabelPolygon();
-                polygonItem.X = 0;
-                polygonItem.Y = 0;
-                polygonItem.Width = this.Image.Width;
-                polygonItem.Height = this.Image.Height;
-                polygonItem.Color = this.TargetItem.Color;
-                polygonItem.Name = this.TargetItem.Name;
+                ClassificationLabelBox boxItem = new ClassificationLabelBox();
+                boxItem.X = pressedPoint.X;
+                boxItem.Y = pressedPoint.Y;
+                boxItem.Width = 10;
+                boxItem.Height = 10;
+                boxItem.Color = this.TargetItem.Color;
+                boxItem.Name = this.TargetItem.Name;
 
-                //polygonItem.X = 0;
-                //polygonItem.Y = 0;
-                //polygonItem.Width = this.Image.Width;
-                //polygonItem.Height = this.Image.Height;
 
-                this.SelectedItem = polygonItem;
-                this.PolygonCollection.Add(polygonItem);
+                this.SelectedItem = boxItem;
+                this.BoxCollection.Add(boxItem);
+                var draggableControl = sender as Canvas;
+                draggableControl.CaptureMouse();
             }
 
-            if(this.SelectedItem != null && Keyboard.IsKeyDown(Key.LeftAlt) == true)
-            {
-                this.SelectedItem.Points.Add(new Point()
-                {
-                    X = pressedPoint.X,
-                    Y = pressedPoint.Y
-                });
-
-                PointCollection tempCollection = this.SelectedItem.Points;
-                PointCollection newCollection = new PointCollection(tempCollection);
-                this.SelectedItem.Points = newCollection;
-            }
         }
 
         private void ChildCanvas_MouseMove(object sender, MouseEventArgs e)
         {
+
+
             Point cursorPosition = e.GetPosition(this);
             Canvas canvas = sender as Canvas;
-            if(canvas != null)
+            if (canvas != null)
             {
-                if ( canvas.IsMouseCaptured == true && canvas != null)
+                if (canvas.IsMouseCaptured == true && canvas != null && Keyboard.IsKeyDown(Key.LeftShift) && this.IsRectSelected == false)
                 {
                     Vector v = this.CanvasStart - cursorPosition;
                     this.TranslationX = CanvasOrigin.X - v.X;
                     this.TranslationY = CanvasOrigin.Y - v.Y;
+                    return;
+                }
+
+                if (canvas.IsMouseCaptured == true && canvas != null && Keyboard.IsKeyDown(Key.LeftAlt) && this.SelectedItem != null)
+                {
+
+                    Point canvasCursorPosition = e.GetPosition(canvas);
+
+                    this.SelectedItem.Width = canvasCursorPosition.X - this.SelectedItem.X;
+                    this.SelectedItem.Height = canvasCursorPosition.Y - this.SelectedItem.Y;
+                    System.Console.WriteLine("Box Test x: " + this.SelectedItem.X);
+                    System.Console.WriteLine("Box Test y: " + this.SelectedItem.Y);
+                    System.Console.WriteLine("Box Test Width: " + this.SelectedItem.Width);
+                    System.Console.WriteLine("Box Test Height: " + this.SelectedItem.Height);
+                    return;
+                }
+
+                if(this.IsRectSelected == true && Keyboard.IsKeyDown(Key.LeftShift))
+                {
+
+                    Point canvasCursorPosition = e.GetPosition(canvas);
+
+                    this.SelectedItem.X = canvasCursorPosition.X - this.SelectedItem.Width / 2;
+                    this.SelectedItem.Y = canvasCursorPosition.Y - this.SelectedItem.Height / 2;
+
                     return;
                 }
             }
@@ -361,11 +389,34 @@ namespace OpenDL.UC
         {
             Canvas canvas = sender as Canvas;
             canvas.ReleaseMouseCapture();
+            this.SelectedItem = null;
+            this.IsRectSelected = false;
         }
 
         private void UserControl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
             this.SelectedItem = null;
+            this.IsRectSelected = false;
+        }
+
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(this.SelectedItem != null && Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.C))
+            {
+                ClassificationLabelBox label = new ClassificationLabelBox()
+                {
+                    X = this.SelectedItem.X + 10,
+                    Y = this.SelectedItem.Y + 10,
+                    Width = this.SelectedItem.Width,
+                    Height = this.SelectedItem.Height,
+                    Name = this.SelectedItem.Name,
+                    Color = this.SelectedItem.Color,
+                    IsSelected = true
+                };
+                this.SelectedItem.IsSelected = false;
+                this.SelectedItem = label;
+                this.BoxCollection.Add(this.SelectedItem);
+            }
         }
     }
 }

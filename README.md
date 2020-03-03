@@ -5,7 +5,8 @@
 #### 데모영상
 <center>
 
-[![Video Label](https://raw.githubusercontent.com/gellston/OpenDL/master/preview/preview1.2.png)](https://youtu.be/jkmO2F1--qE)
+<a href="https://youtu.be/jkmO2F1--qE" target="_blank"><img src="https://raw.githubusercontent.com/gellston/OpenDL/master/preview/preview1.2.png" 
+alt="데모영상" /></a>
 
 </center>
 

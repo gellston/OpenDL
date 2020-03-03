@@ -36,12 +36,14 @@ namespace OpenDL.ViewModel
             SimpleIoc.Default.Register<SegmentationLabelViewModel>();
             SimpleIoc.Default.Register<SegmentationAugmentViewModel>();
             SimpleIoc.Default.Register<SegmentationTrainViewModel>();
+            SimpleIoc.Default.Register<SegmentationModelManagementViewModel>();
 
 
             // Classification ViewModel Registeration
             SimpleIoc.Default.Register<ClassificationLabelViewModel>();
             SimpleIoc.Default.Register<ClassificationAugmentViewModel>();
             SimpleIoc.Default.Register<ClassificationTrainViewModel>();
+            SimpleIoc.Default.Register<ClassificationModelManagementViewModel>();
 
 
 
@@ -50,10 +52,15 @@ namespace OpenDL.ViewModel
             SimpleIoc.Default.GetInstance<LabelViewModel>();
             SimpleIoc.Default.GetInstance<TrainViewModel>();
             SimpleIoc.Default.GetInstance<ModelManagementViewModel>();
+
+
             SimpleIoc.Default.GetInstance<SegmentationTrainViewModel>();
             SimpleIoc.Default.GetInstance<SegmentationLabelViewModel>();
+            SimpleIoc.Default.GetInstance<SegmentationModelManagementViewModel>();
+
             SimpleIoc.Default.GetInstance<ClassificationTrainViewModel>();
             SimpleIoc.Default.GetInstance<ClassificationLabelViewModel>();
+            SimpleIoc.Default.GetInstance<ClassificationModelManagementViewModel>();
 
         }
 
