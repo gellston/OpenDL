@@ -2,15 +2,25 @@
 # OpenDL 1.2
 
 
-#### 실행영상
-[![Video Label](http://img.youtube.com/vi/uLR1RNqJ1Mw/0.jpg)](https://youtu.be/jkmO2F1--qE)
+#### 데모영상ㄴ
+<center>
+
+[![Video Label](https://raw.githubusercontent.com/gellston/OpenDL/master/preview/preview1.2.png)](https://youtu.be/jkmO2F1--qE)
+
+</center>
+
 
 #### 실행환경
 * Window10, .Net Core 3.1, Cuda10
 
 #### Segmentation 라이브러리 사용법
-* 결과 
+* 결과 이미지
 
+<center>
+
+![Segmentation 예제](https://raw.githubusercontent.com/gellston/opendl/master/preview/segmentation.png)
+
+</center>
 
 * C++  
 
