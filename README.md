@@ -2,7 +2,7 @@
 # OpenDL 1.2
 
 
-#### 데모영상ㄴ
+#### 데모영상
 <center>
 
 [![Video Label](https://raw.githubusercontent.com/gellston/OpenDL/master/preview/preview1.2.png)](https://youtu.be/jkmO2F1--qE)
