@@ -37,7 +37,7 @@ namespace OpenDL.ViewModel
         /// Train variablees
         /// </summary>
         /// 
-        private SegmentLabelInfo segmentLabelInfo = null;
+        private ClassLabelInfo classLabelInfo = null;
         private int batchSize = 0;
         private int epoch = 0;
         private int batchStep = 0;
@@ -45,11 +45,12 @@ namespace OpenDL.ViewModel
         private double learningRate = 0;
         private double validationSampleRate = 0;
         private double targetAccuracy = 0;
-        private SegmentTrainModelInfo modelInfo = null;
+        private ClassTrainModelInfo modelInfo = null;
         private bool isGray = false;
         private int imageWidth = 0;
         private int imageHeight = 0;
         private int labelOutput = 0;
+        private int trainLabelOutput = 0;
         private int imageChannel = 1;
         private string preModelOutputPath = "";
         private string modelName = "";
@@ -80,10 +81,10 @@ namespace OpenDL.ViewModel
             this.ValidationCostCollection = new ObservableCollection<LinePlotInfo>();
             this.TrainAccuracyCollection = new ObservableCollection<LinePlotInfo>();
             this.ValidationAccuracyCollection = new ObservableCollection<LinePlotInfo>();
-            this.PureSegmentModelCollection = new ObservableCollection<DeepModelPath>();
-            this.TrainSampleCollection = new ObservableCollection<SegmentTrainSample>();
-            this.BestSamplePreviewCollection = new ObservableCollection<SegmentPreviewItem>();
-            this.WorstSamplePreviewCollection = new ObservableCollection<SegmentPreviewItem>();
+            this.PureClassModelCollection = new ObservableCollection<DeepModelPath>();
+            this.TrainSampleCollection = new ObservableCollection<ClassTrainSample>();
+            //this.BestSamplePreviewCollection = new ObservableCollection<SegmentPreviewItem>();
+            //this.WorstSamplePreviewCollection = new ObservableCollection<SegmentPreviewItem>();
 
 
             this.TrainTaskThread = new Thread(new ThreadStart(TrainTaskStart));
@@ -142,8 +143,8 @@ namespace OpenDL.ViewModel
 
                     sess.run(global_init);
 
-                    List<SegmentTrainSample> trainSample = this.TrainSampleCollection.ToList<SegmentTrainSample>();
-                    List<SegmentTrainSample> validationSample = new List<SegmentTrainSample>();
+                    List<ClassTrainSample> trainSample = this.TrainSampleCollection.ToList<ClassTrainSample>();
+                    List<ClassTrainSample> validationSample = new List<ClassTrainSample>();
                     validationSample.AddRange(trainSample.GetRange(0, this.validationSampleCount));
 
                     for (int epoch = 0; epoch < this.epoch && IsInterrupt != true; epoch++)
@@ -152,7 +153,7 @@ namespace OpenDL.ViewModel
                         /// Train sample
                         double totalTrainAccuracy = 0;
                         double totalTrainCost = 0;
-                        TrainingService.Shuffle<SegmentTrainSample>(trainSample);
+                        TrainingService.Shuffle<ClassTrainSample>(trainSample);
                         for (int batchStep = 0; batchStep < this.batchStep && IsInterrupt != true; batchStep++)
                         {
                             int collectionIndex = batchStep * this.batchSize;
@@ -162,7 +163,7 @@ namespace OpenDL.ViewModel
                                                                                 isGray,
                                                                                 imageWidth,
                                                                                 imageHeight,
-                                                                                labelOutput);
+                                                                                trainLabelOutput);
 
                             var trainImage = batch.Item1;
                             var trainLabel = batch.Item2;
@@ -205,7 +206,7 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput);
+                                                    trainLabelOutput);
 
                             var validationImage = batch.Item1;
                             var validationLabel = batch.Item2;
@@ -219,13 +220,13 @@ namespace OpenDL.ViewModel
                             var accDoubleArray = double.Parse(accNDArray[0].ToString());
 
 
-                            if (bestScore < accDoubleArray)
+                            if (bestScore <= accDoubleArray)
                             {
                                 bestScore = accDoubleArray;
                                 bestScoreIndex = index;
                             }
 
-                            if (worstScore > accDoubleArray)
+                            if (worstScore >= accDoubleArray)
                             {
                                 worstScore = accDoubleArray;
                                 worstScoreIndex = index;
@@ -247,7 +248,7 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput).Item1;
+                                                    trainLabelOutput).Item1;
 
                         var bestNDArray = this.trainSampleLoaderService.LoadBatch(validationSample,
                                                     bestScoreIndex,
@@ -255,7 +256,7 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput).Item1;
+                                                    trainLabelOutput).Item1;
 
 
                         var worstNDOutput = sess.run(new[] { Output }, new FeedItem(X, worstNDArray), new FeedItem(Phase, false));
@@ -299,29 +300,22 @@ namespace OpenDL.ViewModel
                             this.CurrentLoss = totalValidationCost;
 
                             // 이미지 업데이트
-                            ObservableCollection<SegmentPreviewItem> bestOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
+                            ClassPreviewItem bestOutputItem = this.trainSampleLoaderService.ExtractClassImagesFromNDArray(this.classLabelInfo,
                                                                                                                          bestNDArray,
                                                                                                                          bestNDOutput[0],
                                                                                                                          this.imageWidth,
                                                                                                                          this.imageHeight,
                                                                                                                          this.imageChannel);
 
-                            ObservableCollection<SegmentPreviewItem> worstOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
-                                                                                                                                                     worstNDArray,
-                                                                                                                                                     worstNDOutput[0],
-                                                                                                                                                     this.imageWidth,
-                                                                                                                                                     this.imageHeight,
-                                                                                                                                                     this.imageChannel);
+                            ClassPreviewItem worstOutputItem = this.trainSampleLoaderService.ExtractClassImagesFromNDArray(this.classLabelInfo,
+                                                                                                                            worstNDArray,
+                                                                                                                            worstNDOutput[0],
+                                                                                                                            this.imageWidth,
+                                                                                                                            this.imageHeight,
+                                                                                                                            this.imageChannel);
 
-                            foreach (var item in bestOutputCollection)
-                            {
-                                this.BestSamplePreviewCollection.Add(item);
-                            }
-
-                            foreach (var item in worstOutputCollection)
-                            {
-                                this.WorstSamplePreviewCollection.Add(item);
-                            }
+                            this.BestSamplePreview = bestOutputItem;
+                            this.WorstSamplePreview = worstOutputItem;
 
                         });
 
@@ -330,7 +324,7 @@ namespace OpenDL.ViewModel
                         {
                             saver.save(sess, configureService.ClassificationTrainedModelUnzipPath + Path.DirectorySeparatorChar + this.modelInfo.CheckFile, write_meta_graph: false);
                             sess.close();
-                            if (this.trainSampleLoaderService.ZipDeepModel(this.configureService.SegmentationTrainedModelUnzipPath,
+                            if (this.trainSampleLoaderService.ZipDeepModel(this.configureService.ClassificationTrainedModelUnzipPath,
                                                                        this.preModelOutputPath,
                                                                        this.configureService.SecurityPassword) == false)
                             {
@@ -378,12 +372,12 @@ namespace OpenDL.ViewModel
                     _TrainStartCommand = new RelayCommand(() =>
                     {
 
-                        if (this.segmentLabelInfo == null)
+                        if (this.classLabelInfo == null)
                         {
                             this.dialogService.ShowErrorMessage("라벨 정보가 없습니다.");
                             return;
                         }
-                        if (this.SelectedSegmentModel == null)
+                        if (this.SelectedClassificationModel == null)
                         {
                             this.dialogService.ShowErrorMessage("모델이 선택되지 않았습니다.");
                             return;
@@ -392,8 +386,8 @@ namespace OpenDL.ViewModel
                         this.CurrentStatus = "학습 준비중";
 
                         // 그래프 및 UI초기화
-                        this.BestSamplePreviewCollection.Clear();
-                        this.WorstSamplePreviewCollection.Clear();
+                        this.BestSamplePreview = null;
+                        this.WorstSamplePreview = null;
                         this.WorstSamplePreviewScore = 0;
                         this.BestSamplePreviewScore = 0;
                         this.TrainCostCollection.Clear();
@@ -412,14 +406,14 @@ namespace OpenDL.ViewModel
                         this.batchStep = (int)((this.TrainSampleCollection.Count - validationSampleCount) / this.batchSize);
 
                         // 라벨정보에서 필요한 정보 추출
-                        this.isGray = this.segmentLabelInfo.IsGray;
-                        this.imageWidth = this.segmentLabelInfo.ImageWidth;
-                        this.imageHeight = this.segmentLabelInfo.ImageHeight;
-                        this.labelOutput = this.segmentLabelInfo.LabelSize;
+                        this.isGray = this.classLabelInfo.IsGray;
+                        this.imageWidth = this.classLabelInfo.ImageWidth;
+                        this.imageHeight = this.classLabelInfo.ImageHeight;
+                        this.labelOutput = this.classLabelInfo.LabelSize;
                         this.imageChannel = this.isGray == true ? 1 : 3;
 
                         // 모델 압축해재에 필요한 정보 가져오기
-                        string targetModelPath = this.SelectedSegmentModel.FullPath;
+                        string targetModelPath = this.SelectedClassificationModel.FullPath;
                         string unzipPath = configureService.ClassificationTrainedModelUnzipPath;
                         string password = configureService.SecurityPassword;
 
@@ -434,17 +428,23 @@ namespace OpenDL.ViewModel
                         }
 
                         // 모델 로드
-                        this.modelInfo = trainSampleLoaderService.LoadSegmentTrainModelInfo(unzipPath + Path.DirectorySeparatorChar + configureService.ModelInfoFileName);
-
+                        this.modelInfo = trainSampleLoaderService.LoadClassTrainModelInfo(unzipPath + Path.DirectorySeparatorChar + configureService.ModelInfoFileName);
+                        this.trainLabelOutput = this.modelInfo.MaxLabelCount;
 
                         // 타겟 모델 경로
                         this.preModelOutputPath = configureService.ClassificationTrainedModelContainerPath + Path.DirectorySeparatorChar + modelName;
 
 
                         /// Label 정보 및 모델 정보 확인 
+                        /// 
+                        if(this.trainLabelOutput < this.labelOutput)
+                        {
+                            this.dialogService.ShowErrorMessage("라벨 사이즈가 맞지 않습니다.");
+                            return;
+                        }
                         if (this.modelInfo == null)
                         {
-                            this.dialogService.ShowErrorMessage("Segmentation 모델 로드에 실패했습니다");
+                            this.dialogService.ShowErrorMessage("Classification 모델 로드에 실패했습니다");
                             return;
                         }
 
@@ -477,12 +477,12 @@ namespace OpenDL.ViewModel
                             this.dialogService.ShowErrorMessage("이미지 높이 맞지 않습니다.");
                             return;
                         }
-                        if (this.segmentLabelInfo.IsGray != this.modelInfo.IsGray)
+                        if (this.classLabelInfo.IsGray != this.modelInfo.IsGray)
                         {
                             this.dialogService.ShowErrorMessage("이미지 색상 정보가 맞지 않습니다.");
                             return;
                         }
-                        if (this.segmentLabelInfo.LabelSize != this.modelInfo.MaxLabelCount)
+                        if (this.classLabelInfo.LabelSize != this.modelInfo.MaxLabelCount)
                         {
                             this.dialogService.ShowErrorMessage("라벨 갯수가 맞지 않습니다.");
                             return;
@@ -562,21 +562,21 @@ namespace OpenDL.ViewModel
                             return;
                         }
 
-                        var result = await this.trainSampleLoaderService.LoadSegmentSamplesAsync(CurrentOpenedLabelDirectory);
+                        var result = await this.trainSampleLoaderService.LoadClassSamplesAsync(CurrentOpenedLabelDirectory);
                         this.TrainSampleCollection = null;
                         this.TrainSampleCollection = result.Item1;
-                        this.segmentLabelInfo = null;
-                        this.segmentLabelInfo = result.Item2;
+                        this.classLabelInfo = null;
+                        this.classLabelInfo = result.Item2;
 
-                        if (this.segmentLabelInfo.LabelSize == 0)
+                        if (this.classLabelInfo.LabelSize == 0)
                         {
                             this.dialogService.ShowErrorMessage("올바르지 않은 라벨 정보입니다.");
                             return;
                         }
 
-                        ((BoolProperty)this.PropertyCollection.Where(x => x.Name == "GRAY").FirstOrDefault()).Value = this.segmentLabelInfo.IsGray;
-                        ((IntProperty)this.PropertyCollection.Where(x => x.Name == "IMAGE WIDTH").FirstOrDefault()).Value = this.segmentLabelInfo.ImageWidth;
-                        ((IntProperty)this.PropertyCollection.Where(x => x.Name == "IMAGE HEIGHT").FirstOrDefault()).Value = this.segmentLabelInfo.ImageHeight;
+                        ((BoolProperty)this.PropertyCollection.Where(x => x.Name == "GRAY").FirstOrDefault()).Value = this.classLabelInfo.IsGray;
+                        ((IntProperty)this.PropertyCollection.Where(x => x.Name == "IMAGE WIDTH").FirstOrDefault()).Value = this.classLabelInfo.ImageWidth;
+                        ((IntProperty)this.PropertyCollection.Where(x => x.Name == "IMAGE HEIGHT").FirstOrDefault()).Value = this.classLabelInfo.ImageHeight;
 
                     });
                 }
@@ -593,12 +593,12 @@ namespace OpenDL.ViewModel
                 {
                     _RefreshPureModelCommand = new RelayCommand(() =>
                     {
-                        this.PureSegmentModelCollection.Clear();
-                        string path = configureService.SegmentationPureModelContainerPath;
+                        this.PureClassModelCollection.Clear();
+                        string path = configureService.ClassificationPureModelContainerPath;
                         string[] models = Directory.GetFiles(path);
                         foreach (var model in models)
                         {
-                            this.PureSegmentModelCollection.Add(new DeepModelPath()
+                            this.PureClassModelCollection.Add(new DeepModelPath()
                             {
                                 FullPath = model,
                                 ModelName = Path.GetFileName(model)
@@ -685,34 +685,34 @@ namespace OpenDL.ViewModel
             set => Set<ObservableCollection<LinePlotInfo>>(nameof(ValidationAccuracyCollection), ref _ValidationAccuracyCollection, value);
         }
 
-        private ObservableCollection<SegmentTrainSample> _TrainSamplesCollection = null;
-        public ObservableCollection<SegmentTrainSample> TrainSampleCollection
+        private ObservableCollection<ClassTrainSample> _TrainSamplesCollection = null;
+        public ObservableCollection<ClassTrainSample> TrainSampleCollection
         {
             get => _TrainSamplesCollection;
-            set => Set<ObservableCollection<SegmentTrainSample>>(nameof(TrainSampleCollection), ref _TrainSamplesCollection, value);
+            set => Set<ObservableCollection<ClassTrainSample>>(nameof(TrainSampleCollection), ref _TrainSamplesCollection, value);
         }
 
 
-        private ObservableCollection<DeepModelPath> _PureSegmentModelCollection = null;
-        public ObservableCollection<DeepModelPath> PureSegmentModelCollection
+        private ObservableCollection<DeepModelPath> _PureClassModelCollection = null;
+        public ObservableCollection<DeepModelPath> PureClassModelCollection
         {
-            get => _PureSegmentModelCollection;
-            set => Set<ObservableCollection<DeepModelPath>>(nameof(PureSegmentModelCollection), ref _PureSegmentModelCollection, value);
+            get => _PureClassModelCollection;
+            set => Set<ObservableCollection<DeepModelPath>>(nameof(PureClassModelCollection), ref _PureClassModelCollection, value);
         }
 
 
-        private ObservableCollection<SegmentPreviewItem> _BestSamplePreviewCollection = null;
-        public ObservableCollection<SegmentPreviewItem> BestSamplePreviewCollection
+        private ClassPreviewItem _BestSamplePreview = null;
+        public ClassPreviewItem BestSamplePreview
         {
-            get => _BestSamplePreviewCollection;
-            set => Set<ObservableCollection<SegmentPreviewItem>>(nameof(BestSamplePreviewCollection), ref _BestSamplePreviewCollection, value);
+            get => _BestSamplePreview;
+            set => Set<ClassPreviewItem>(nameof(BestSamplePreview), ref _BestSamplePreview, value);
         }
 
-        private ObservableCollection<SegmentPreviewItem> _WorstSamplePreviewCollection = null;
-        public ObservableCollection<SegmentPreviewItem> WorstSamplePreviewCollection
+        private ClassPreviewItem _WorstSamplePreview = null;
+        public ClassPreviewItem WorstSamplePreview
         {
-            get => _WorstSamplePreviewCollection;
-            set => Set<ObservableCollection<SegmentPreviewItem>>(nameof(WorstSamplePreviewCollection), ref _WorstSamplePreviewCollection, value);
+            get => _WorstSamplePreview;
+            set => Set<ClassPreviewItem>(nameof(WorstSamplePreview), ref _WorstSamplePreview, value);
         }
 
         private double _BestSamplePreviewScore = 0;
@@ -731,11 +731,11 @@ namespace OpenDL.ViewModel
 
 
 
-        private DeepModelPath _SelectedSegmentModel = null;
-        public DeepModelPath SelectedSegmentModel
+        private DeepModelPath _SelectedClassificationModel = null;
+        public DeepModelPath SelectedClassificationModel
         {
-            get => _SelectedSegmentModel;
-            set => Set<DeepModelPath>(nameof(SelectedSegmentModel), ref _SelectedSegmentModel, value);
+            get => _SelectedClassificationModel;
+            set => Set<DeepModelPath>(nameof(SelectedClassificationModel), ref _SelectedClassificationModel, value);
         }
 
 

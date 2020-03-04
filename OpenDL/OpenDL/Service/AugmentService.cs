@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Size = OpenCvSharp.Size;
 using Point = OpenCvSharp.Point;
+using Rect = OpenCvSharp.Rect;
 
 namespace OpenDL.Service
 {
@@ -115,6 +116,90 @@ namespace OpenDL.Service
                 });
             }
             catch(Exception e)
+            {
+
+            }
+        }
+
+
+
+
+        public async Task DoClassificationAugmentationAsync(string _outputFolder,
+                                                           ObservableCollection<ClassificationLabelBox> _boxes,
+                                                           ObservableCollection<ClassLabelUnit> _units,
+                                                           int _imageWidth,
+                                                           int _imageHeight,
+                                                           bool _isGray,
+                                                           Action<int, int> _progressCallback)
+        {
+
+            try
+            {
+                ClassLabelInfo labelInfo = new ClassLabelInfo()
+                {
+                    ImageHeight = _imageHeight,
+                    ImageWidth = _imageWidth,
+                    Labels = _boxes,
+                    LabelSize = _boxes.Count,
+                    IsGray = _isGray
+                };
+
+                string classLabelInfoJson = JsonConvert.SerializeObject(labelInfo, Formatting.Indented);
+                using (StreamWriter sw = new StreamWriter(_outputFolder + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, false, Encoding.UTF8))
+                {
+                    sw.Write(classLabelInfoJson);
+                }
+
+
+                for(int index=0; index<_boxes.Count; index++)
+                {
+                    Directory.CreateDirectory(_outputFolder + Path.DirectorySeparatorChar + index.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    int labelCount = 0;
+                    foreach (var unit in _units)
+                    {
+                        _progressCallback(labelCount, _units.Count);
+                        labelCount++;
+                        await Task.Delay(10);
+
+                        if (unit.Boxes.Count <= 0) continue;
+
+           
+                        Mat sourceImage = null;
+                        if (_isGray == true)
+                            sourceImage = new Mat(unit.FilePath, ImreadModes.Grayscale);
+                        else
+                            sourceImage = new Mat(unit.FilePath, ImreadModes.Color);
+
+                        
+                        foreach(var box in unit.Boxes)
+                        {
+                            if (box.X < 0 || box.Y < 0) continue;
+                            if (box.X + box.Width >= sourceImage.Width) continue;
+                            if (box.Y + box.Height >= sourceImage.Height) continue;
+
+                            var labelObject = _boxes.Where(x => x.Name == box.Name).FirstOrDefault();
+                            int index = _boxes.IndexOf(labelObject);
+                            string fileName = _outputFolder + Path.DirectorySeparatorChar + index.ToString() + Path.DirectorySeparatorChar + DateTime.Now.ToString("yyyyMMddHHmmssFFF") + ".jpg";
+
+                            var boxImage = new Mat(sourceImage, new Rect((int)box.X, (int)box.Y, (int)box.Width, (int)box.Height));
+                            Mat resizeLabel = boxImage.Resize(new Size(_imageWidth, _imageHeight));
+                            resizeLabel.SaveImage(fileName);
+                        }
+                    }
+                });
+            }
+            catch (Exception e)
             {
 
             }

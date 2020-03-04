@@ -10,6 +10,9 @@
     <Compile Update="UC\BoxLabelControler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="UC\ClassificationPreviewer.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="UC\SegmentationControler.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -67,6 +70,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UC\BoxLabelControler.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="UC\ClassificationPreviewer.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UC\SegmentationControler.xaml">

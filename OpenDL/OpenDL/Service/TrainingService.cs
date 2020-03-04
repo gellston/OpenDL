@@ -144,7 +144,79 @@ namespace OpenDL.Service
 
             return (inputImageBatch, inputLabelBatch);
         }
-       
+
+
+        public (NDArray, NDArray) LoadBatch(List<ClassTrainSample> _sampleCollection,
+                                                                             int _index,
+                                                                             int _batchSize,
+                                                                             bool _isGray,
+                                                                             int _imageWidth,
+                                                                             int _imageHeight,
+                                                                             int _labelOutput)
+        {
+
+            int channel = 1;
+            ImreadModes readMode = ImreadModes.Grayscale;
+            if (_isGray == true)
+            {
+                channel = 1;
+                readMode = ImreadModes.Grayscale;
+            }
+            else
+            {
+                channel = 3;
+                readMode = ImreadModes.Color;
+            }
+
+            NDArray inputImageBatch = np.zeros((_batchSize, _imageHeight, _imageWidth, channel));
+            NDArray inputLabelBatch = np.zeros((_batchSize, _labelOutput));
+            int inputImageSize = _imageHeight * _imageHeight * channel;
+            //int labelImageSize = _imageHeight * _imageHeight * 1;
+
+            for (int index = 0; index < _batchSize; index++)
+            {
+                /// Source ND Image make
+                int sampleIndex = index + _index;
+                ClassTrainSample sample = _sampleCollection[sampleIndex];
+                string inputImagePath = sample.InputImagePath;
+                Mat sourceImage = new Mat(inputImagePath, readMode);
+
+                byte[] byteImage = new byte[inputImageSize];
+                Marshal.Copy(sourceImage.Data, byteImage, 0, inputImageSize);
+                NDArray sourceNDImage = np.array<byte>(byteImage, true);
+                sourceNDImage = sourceNDImage.reshape((_imageHeight, _imageWidth, channel));
+                inputImageBatch[index] = sourceNDImage;
+                /// Source ND Image make
+                /// 
+
+                /// Label ND Image Make
+                /// 
+                //NDArray oneLabel = np.zeros((_imageHeight, _imageWidth, _labelOutput));
+                //List<NDArray> labelList = new List<NDArray>();
+                //for (int labelIndex = 0; labelIndex < _labelOutput; labelIndex++)
+                //{
+                //    string labelPath = sample.OutputLabelCollection[labelIndex];
+
+                //    Mat labelImage = new Mat(labelPath, ImreadModes.Grayscale);
+                //    Mat normalized = labelImage.Threshold(125, 255, ThresholdTypes.Binary);
+                //    normalized = normalized / 255;
+                //    byte[] byteLabelImage = new byte[labelImageSize];
+                //    Marshal.Copy(normalized.Data, byteLabelImage, 0, labelImageSize);
+                //    NDArray labelNDImage = np.array<byte>(byteLabelImage, true);
+                //    labelNDImage = labelNDImage.reshape((_imageHeight, _imageWidth, 1));
+                //    labelList.Add(labelNDImage);
+                //    //oneLabel[labelIndex] = labelNDImage;
+                //}
+                //NDArray oneLabel = np.concatenate(labelList.ToArray(), 2);
+                inputLabelBatch[index, sample.LabelIndex] = 1.0;
+                /// Label ND Image Make
+                /// 
+            }
+
+
+            return (inputImageBatch, inputLabelBatch);
+        }
+
         public void DeleteUnzipFiles()
         {
             string[] files = Directory.GetFiles(configService.SegmentationTrainedModelUnzipPath);
@@ -254,6 +326,52 @@ namespace OpenDL.Service
             return _collection;
         }
 
+
+        public ClassPreviewItem ExtractClassImagesFromNDArray(ClassLabelInfo classLabelInfo,
+                                                                                        NDArray source,
+                                                                                        NDArray output,
+                                                                                        int imageWidth,
+                                                                                        int imageHeight,
+                                                                                        int imageChannel)
+        {
+            //ObservableCollection<ClassPreviewItem> _collection = new ObservableCollection<ClassPreviewItem>();
+
+
+            // 현재 이미지 출력 best 이미지 
+            var bestSourceImage = this.NDArrayToMat(source["0,:,:,:"],
+                      imageChannel,
+                      imageWidth,
+                      imageHeight);
+
+            BitmapSource sourceImage = this.ConvertToBitmapSource(OpenCvSharp.Extensions.BitmapConverter.ToBitmap(bestSourceImage));
+            sourceImage.Freeze();
+
+            ClassPreviewItem previewItem = new ClassPreviewItem()
+            {
+                Image = sourceImage
+            };
+
+            double maxScore = 0;
+            int maxIndex = 0;
+            for (int index = 0; index < classLabelInfo.Labels.Count; index++)
+            {
+                var label = classLabelInfo.Labels[index];
+
+                
+                double score = double.Parse(output[0, index].ToString());
+                if (maxScore < score)
+                {
+                    maxScore = score;
+                    maxIndex = index;
+                }
+            }
+
+            previewItem.Score = maxScore;
+            previewItem.Name = classLabelInfo.Labels[maxIndex].Name;
+
+            return previewItem;
+        }
+
         public BitmapSource ConvertToBitmapSource(Bitmap bitmap)
         {
             BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(),
@@ -341,6 +459,31 @@ namespace OpenDL.Service
             return info;
         }
 
+
+        public ClassTrainModelInfo LoadClassTrainModelInfo(string modelInfoFile)
+        {
+            ClassTrainModelInfo info = new ClassTrainModelInfo();
+
+
+            // 압축 해제된 파일에서 모델 정보 불러오기
+            try
+            {
+                using (StreamReader reader = new StreamReader(modelInfoFile, Encoding.UTF8))
+                {
+                    string labelContent = reader.ReadToEnd();
+                    info = (ClassTrainModelInfo)JsonConvert.DeserializeObject(labelContent, typeof(ClassTrainModelInfo));
+                }
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+
+            return info;
+        }
+
         public async Task<(ObservableCollection<SegmentTrainSample>, SegmentLabelInfo)> LoadSegmentSamplesAsync(string _folder)
         {
 
@@ -404,6 +547,81 @@ namespace OpenDL.Service
             
 
             return (segmenTrainSampleCollection, labelInfo);
+        }
+
+
+        public async Task<(ObservableCollection<ClassTrainSample>, ClassLabelInfo)> LoadClassSamplesAsync(string _folder)
+        {
+
+            ObservableCollection<ClassTrainSample> classTrainSampleCollection = new ObservableCollection<ClassTrainSample>();
+            ClassLabelInfo labelInfo = new ClassLabelInfo();
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(_folder + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, Encoding.UTF8))
+                {
+                    string labelContent = reader.ReadToEnd();
+                    labelInfo = (ClassLabelInfo)JsonConvert.DeserializeObject(labelContent, typeof(ClassLabelInfo));
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            int imageWidth = labelInfo.ImageHeight;
+            int imageHeight = labelInfo.ImageWidth;
+            int labelSize = labelInfo.LabelSize;
+
+
+
+
+            try
+            {
+
+                string[] directories = Directory.GetDirectories(_folder);
+                int[] labelIndexes = new int[directories.Length];
+                for (int index = 0; index < directories.Length; index++)
+                {
+                    labelIndexes[index] = int.Parse(Path.GetFileName(directories[index]));
+                }
+
+                await Task.Run(async () =>
+                {
+                    for (int dirIndex=0; dirIndex < directories.Length; dirIndex++)
+                    {
+                        var directory = directories[dirIndex];
+
+                        string[] images = Directory.GetFiles(directory);
+                        foreach(var image in images)
+                        {
+                            ClassTrainSample info = new ClassTrainSample()
+                            {
+                                ImageWidth = labelInfo.ImageWidth,
+                                ImageHeight = labelInfo.ImageHeight,
+                                IsGray = labelInfo.IsGray,
+                                Name = directory,
+                                LabelIndex = labelIndexes[dirIndex]
+                            };
+
+                            info.InputImagePath = image;
+
+                            Application.Current.Dispatcher.Invoke(() =>
+                            {
+                                classTrainSampleCollection.Add(info);
+                            });
+                            await Task.Delay(10);
+                        }
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return (classTrainSampleCollection, labelInfo);
         }
     }
 }

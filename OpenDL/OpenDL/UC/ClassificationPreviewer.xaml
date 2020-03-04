@@ -1,0 +1,45 @@
+﻿<UserControl x:Class="OpenDL.UC.ClassificationPreviewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:OpenDL.UC"
+             xmlns:model="clr-namespace:OpenDL.Model"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <ContentPresenter Content="{Binding RelativeSource={RelativeSource AncestorType=local:ClassificationPreviewer}, Path=PreviewItem, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <ContentPresenter.Resources>
+            <DataTemplate DataType="{x:Type model:ClassPreviewItem}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" ></RowDefinition>
+                        <RowDefinition Height="40" ></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Image Source="{Binding Image, Mode=OneWay}" 
+                           Stretch="Uniform"
+                           Grid.Row="0"
+                           Grid.RowSpan="2"
+                           Grid.Column="0"
+                           Grid.ColumnSpan="2"></Image>
+                    <TextBlock Text="{Binding Name}" 
+                               Grid.Row="1" 
+                               Grid.Column="0"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"></TextBlock>
+                    
+                    <TextBlock Text="{Binding Score}" 
+                               Grid.Row="1" 
+                               Grid.Column="1"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"></TextBlock>
+                </Grid>
+            </DataTemplate>
+        </ContentPresenter.Resources>
+    </ContentPresenter>
+
+</UserControl>

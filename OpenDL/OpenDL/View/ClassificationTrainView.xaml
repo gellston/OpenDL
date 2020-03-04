@@ -222,8 +222,8 @@
 
             </Grid>
             <ListView Grid.Row="2"
-                      ItemsSource="{Binding PureSegmentModelCollection}"
-                      SelectedItem="{Binding SelectedSegmentModel}"
+                      ItemsSource="{Binding PureClassModelCollection}"
+                      SelectedItem="{Binding SelectedClassificationModel}"
                       HorizontalContentAlignment="Stretch">
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type model:DeepModelPath}">
@@ -281,7 +281,7 @@
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                       >
                 <ListView.Resources>
-                    <DataTemplate DataType="{x:Type model:SegmentTrainSample}">
+                    <DataTemplate DataType="{x:Type model:ClassTrainSample}">
                         <Grid Height="30">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50"></ColumnDefinition>
@@ -384,12 +384,12 @@
                      IsReadOnly="True"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"></TextBox>
-            <uc:SegmentationPreviewer Grid.Column="0"
+            <uc:ClassificationPreviewer Grid.Column="0"
                                       Grid.Row="1"
-                                      Images="{Binding BestSamplePreviewCollection}"></uc:SegmentationPreviewer>
-            <uc:SegmentationPreviewer Grid.Column="1"
+                                      PreviewItem="{Binding BestSamplePreview}"></uc:ClassificationPreviewer>
+            <uc:ClassificationPreviewer Grid.Column="1"
                                       Grid.Row="1"
-                                      Images="{Binding WorstSamplePreviewCollection}"></uc:SegmentationPreviewer>
+                                      PreviewItem="{Binding WorstSamplePreview}"></uc:ClassificationPreviewer>
         </Grid>
     </DockPanel>
 </UserControl>

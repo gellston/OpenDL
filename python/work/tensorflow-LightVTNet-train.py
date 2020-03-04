@@ -2,10 +2,10 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 from util.dataloader import dataloader
 from model.model_classification_LightVTNet import model_classification_LightVTNet
-from model.model_classification_LightVTNet_Gray import model_classification_LightVTNet_Gray
+#from model.model_classification_LightVTNet_Gray import model_classification_LightVTNet_Gray
 
-loader_train = dataloader('C://Github//VTDEEP//python//dataset//animal-train-v1')
-loader_validation = dataloader('C://Github/VTDEEP//python//dataset//animal-validation-v1')
+loader_train = dataloader('C://Github//OpenDL//python//dataset//animal-train-v1')
+loader_validation = dataloader('C://Github/OpenDL//python//dataset//animal-validation-v1')
 
 classCount = loader_validation.label_count()
 validationCount = loader_validation.sample_count()
@@ -20,9 +20,9 @@ target_accuracy = 0.90
 
 sess = tf.compat.v1.Session()
 
-model1 = model_classification_LightVTNet_Gray(sess=sess, class_count=classCount)
+model1 = model_classification_LightVTNet(sess=sess, class_count=classCount)
 
-writer = tf.summary.FileWriter("C:/Github/VTDEEP/python/pretrained-model/model_classification_LightVTNet_Gray/tensorboard", sess.graph)
+writer = tf.summary.FileWriter("C:/Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/tensorboard", sess.graph)
 writer.close()
 
 
@@ -35,8 +35,8 @@ sess.run(global_initializer)
 ## save model file
 saver = tf.compat.v1.train.Saver()
 
-saver.save(sess, 'C:/Github/VTDEEP/python/pretrained-model/model_classification_LightVTNet_Gray/LightVTNet_Gray')
-tf.train.write_graph(sess.graph_def, "", "C:/Github/VTDEEP/python/pretrained-model/model_classification_LightVTNet_Gray/LightVTNet_Gray.pbtxt", as_text=True)
+saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/LightVTNetColor')
+tf.train.write_graph(sess.graph_def, "", "C:/Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/LightVTNetColor.pbtxt", as_text=True)
 
 
 print('learning started')
@@ -53,7 +53,7 @@ for epoch in range(train_epoch):
 
     loader_train.clear()
     for i in range(total_batch):
-        inputs_train, outputs_train = loader_train.load([100*100*3], 1.0, batch_size)
+        inputs_train, outputs_train = loader_train.load([100, 100, 3], 1.0, batch_size)
         if inputs_train is None or outputs_train is None:
             loader_train.clear()
             break
@@ -64,7 +64,7 @@ for epoch in range(train_epoch):
         epoch_train_avg_accuracy += (current_accuray / total_batch)
 
 
-    inputs_validation, output_validation = loader_validation.load([100*100*3], 1.0, validationCount)
+    inputs_validation, output_validation = loader_validation.load([100,100,3], 1.0, validationCount)
     loader_validation.clear()
 
 
@@ -105,7 +105,7 @@ plt.plot(cost_validation_graph)
 plt.plot(accuracy_validation_graph)
 plt.ylabel('cost_train, accuracy_train, cost_validation, accuracy_validation, ')
 plt.legend(['cost_train', 'accuracy_train', 'cost_validation', 'accuracy_validation'], loc='upper left')
-plt.savefig('C://Github/VTDEEP/python/pretrained-model/model_classification_LightVTNet_Gray/pre-trained-LightVTNet-graph.png')
+plt.savefig('C://Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/pre-trained-LightVTNet-graph.png')
 plt.show()
 
 print('Learning finished.')
