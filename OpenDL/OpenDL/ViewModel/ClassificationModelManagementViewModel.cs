@@ -186,7 +186,7 @@ namespace OpenDL.ViewModel
                             string outputZipModelFile = Path.GetDirectoryName(fileName) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(fileName) + ".zip";
 
 
-                            SegmentTrainModelInfo modelInfo = this.trainService.LoadSegmentTrainModelInfo(this.configureService.FreezeUnzipPath +
+                            ClassTrainModelInfo modelInfo = this.trainService.LoadClassTrainModelInfo(this.configureService.FreezeUnzipPath +
                                                                                     Path.DirectorySeparatorChar +
                                                                                     this.configureService.ModelInfoFileName);
                             string checkFilePath = this.configureService.FreezeUnzipPath + Path.DirectorySeparatorChar + modelInfo.CheckFile;
@@ -215,7 +215,7 @@ namespace OpenDL.ViewModel
                                           this.configureService.PackageZipPath + Path.DirectorySeparatorChar + this.configureService.TensorflowDllName, true);
                             }
 
-                            FreezedSegmentModelInfo freezeInfo = new FreezedSegmentModelInfo()
+                            FreezedClassModelInfo freezeInfo = new FreezedClassModelInfo()
                             {
                                 Width = modelInfo.Width,
                                 Height = modelInfo.Height,
@@ -228,7 +228,7 @@ namespace OpenDL.ViewModel
                             //파일에 출력하는 예
                             using (StreamWriter wr = new StreamWriter(modelInfoFile))
                             {
-                                XmlSerializer xs = new XmlSerializer(typeof(FreezedSegmentModelInfo));
+                                XmlSerializer xs = new XmlSerializer(typeof(FreezedClassModelInfo));
                                 xs.Serialize(wr, freezeInfo);
                             }
 

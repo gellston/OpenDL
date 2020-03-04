@@ -45,7 +45,7 @@ namespace OpenDL.UC
             InitializeComponent();
         }
 
-        public static readonly DependencyProperty PreviewItemProperty = DependencyProperty.Register("PreviewItem", typeof(ClassPreviewItem), typeof(ClassificationPreviewer), new PropertyMetadata(OnCustomerChangedCallBack));
+        public static readonly DependencyProperty PreviewItemProperty = DependencyProperty.Register("PreviewItem", typeof(ClassPreviewItem), typeof(ClassificationPreviewer));
         public ClassPreviewItem PreviewItem
         {
             get
@@ -59,16 +59,6 @@ namespace OpenDL.UC
             }
         }
 
-        private static void OnCustomerChangedCallBack(DependencyObject sender, DependencyPropertyChangedEventArgs e)
-        {
-            ClassificationPreviewer control = sender as ClassificationPreviewer;
-            if (control != null)
-            {
-                ClassPreviewItem item = e.NewValue as ClassPreviewItem;
-                control.PreviewItem = item;
-                control.OnPropertyRaised("PreviewItem");
-            }
-        }
 
     }
 }

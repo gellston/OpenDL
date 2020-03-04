@@ -50,6 +50,7 @@ namespace OpenDL.ViewModel
         private int imageWidth = 0;
         private int imageHeight = 0;
         private int labelOutput = 0;
+        private int trainLabelOutput = 0;
         private int imageChannel = 1;
         private string preModelOutputPath = "";
         private string modelName = "";
@@ -162,7 +163,7 @@ namespace OpenDL.ViewModel
                                                                                 isGray,
                                                                                 imageWidth,
                                                                                 imageHeight,
-                                                                                labelOutput);
+                                                                                this.trainLabelOutput);
 
                             var trainImage = batch.Item1;
                             var trainLabel = batch.Item2;
@@ -205,7 +206,7 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput);
+                                                    this.trainLabelOutput);
 
                             var validationImage = batch.Item1;
                             var validationLabel = batch.Item2;
@@ -247,7 +248,7 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput).Item1;
+                                                    this.trainLabelOutput).Item1;
 
                         var bestNDArray = this.trainSampleLoaderService.LoadBatch(validationSample,
                                                     bestScoreIndex,
@@ -255,7 +256,7 @@ namespace OpenDL.ViewModel
                                                     isGray,
                                                     imageWidth,
                                                     imageHeight,
-                                                    labelOutput).Item1;
+                                                    this.trainLabelOutput).Item1;
 
 
                         var worstNDOutput = sess.run(new[] { Output }, new FeedItem(X, worstNDArray), new FeedItem(Phase, false));
@@ -435,7 +436,7 @@ namespace OpenDL.ViewModel
 
                         // 모델 로드
                         this.modelInfo = trainSampleLoaderService.LoadSegmentTrainModelInfo(unzipPath + Path.DirectorySeparatorChar + configureService.ModelInfoFileName);
-
+                        this.trainLabelOutput = this.modelInfo.MaxLabelCount;
 
                         // 타겟 모델 경로
                         this.preModelOutputPath = configureService.SegmentationTrainedModelContainerPath + Path.DirectorySeparatorChar + modelName;
@@ -482,7 +483,7 @@ namespace OpenDL.ViewModel
                             this.dialogService.ShowErrorMessage("이미지 색상 정보가 맞지 않습니다.");
                             return;
                         }
-                        if (this.segmentLabelInfo.LabelSize != this.modelInfo.MaxLabelCount)
+                        if (this.labelOutput > this.trainLabelOutput)
                         {
                             this.dialogService.ShowErrorMessage("라벨 갯수가 맞지 않습니다.");
                             return;

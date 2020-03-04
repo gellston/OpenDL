@@ -22,6 +22,8 @@ using Size = OpenCvSharp.Size;
 using System.Windows.Media;
 using System.Text.RegularExpressions;
 using GalaSoft.MvvmLight.Messaging;
+using System.Drawing;
+using System.Windows.Media.Imaging;
 
 namespace OpenDL.ViewModel
 {
@@ -196,8 +198,12 @@ namespace OpenDL.ViewModel
 
                         double bestScore = 0;
                         double worstScore = 100;
-                        int bestScoreIndex = 0;
-                        int worstScoreIndex = 0;
+                        //int bestScoreIndex = 0;
+                        //int worstScoreIndex = 0;
+                        string bestScoreFileName = "";
+                        string worstScoreFileName = "";
+                        string bestScoreLabelName = "";
+                        string worstScoreLabelName = "";
                         for (int index = 0; index < this.validationSampleCount && IsInterrupt != true; index++)
                         {
                             var batch = this.trainSampleLoaderService.LoadBatch(validationSample,
@@ -216,20 +222,30 @@ namespace OpenDL.ViewModel
                             var costNDArray = sess.run(new[] { Cost }, new FeedItem(X, validationImage), new FeedItem(Y, validationLabel), new FeedItem(Phase, false));
                             var accNDArray = sess.run(new[] { Accuracy }, new FeedItem(X, validationImage), new FeedItem(Y, validationLabel), new FeedItem(Phase, false));
 
+                            var classResult = sess.run(new[] { Output }, new FeedItem(X, validationImage), new FeedItem(Phase, false));
+
+                            int labelIndex = validationSample[index].LabelIndex;
+                            var classScore = double.Parse(classResult[0][0,labelIndex].ToString());
+
+
+
                             var costDoubleArray = double.Parse(costNDArray[0].ToString());
                             var accDoubleArray = double.Parse(accNDArray[0].ToString());
 
 
-                            if (bestScore <= accDoubleArray)
+
+                            if (bestScore < classScore)
                             {
-                                bestScore = accDoubleArray;
-                                bestScoreIndex = index;
+                                bestScore = classScore;
+                                bestScoreFileName = validationSample[index].InputImagePath;
+                                bestScoreLabelName = this.classLabelInfo.Labels[labelIndex].Name;
                             }
 
-                            if (worstScore >= accDoubleArray)
+                            if (worstScore > classScore)
                             {
-                                worstScore = accDoubleArray;
-                                worstScoreIndex = index;
+                                worstScore = classScore;
+                                worstScoreFileName = validationSample[index].InputImagePath;
+                                worstScoreLabelName = this.classLabelInfo.Labels[labelIndex].Name;
                             }
 
                             totalValidationAccuracy += (accDoubleArray);
@@ -241,26 +257,7 @@ namespace OpenDL.ViewModel
 
 
 
-                        // Best , Worst Image 추출
-                        var worstNDArray = this.trainSampleLoaderService.LoadBatch(validationSample,
-                                                    worstScoreIndex,
-                                                    1,
-                                                    isGray,
-                                                    imageWidth,
-                                                    imageHeight,
-                                                    trainLabelOutput).Item1;
-
-                        var bestNDArray = this.trainSampleLoaderService.LoadBatch(validationSample,
-                                                    bestScoreIndex,
-                                                    1,
-                                                    isGray,
-                                                    imageWidth,
-                                                    imageHeight,
-                                                    trainLabelOutput).Item1;
-
-
-                        var worstNDOutput = sess.run(new[] { Output }, new FeedItem(X, worstNDArray), new FeedItem(Phase, false));
-                        var bestNDOutput = sess.run(new[] { Output }, new FeedItem(X, bestNDArray), new FeedItem(Phase, false));
+                        //// Best , Worst Image 추출
 
 
 
@@ -300,22 +297,31 @@ namespace OpenDL.ViewModel
                             this.CurrentLoss = totalValidationCost;
 
                             // 이미지 업데이트
-                            ClassPreviewItem bestOutputItem = this.trainSampleLoaderService.ExtractClassImagesFromNDArray(this.classLabelInfo,
-                                                                                                                         bestNDArray,
-                                                                                                                         bestNDOutput[0],
-                                                                                                                         this.imageWidth,
-                                                                                                                         this.imageHeight,
-                                                                                                                         this.imageChannel);
 
-                            ClassPreviewItem worstOutputItem = this.trainSampleLoaderService.ExtractClassImagesFromNDArray(this.classLabelInfo,
-                                                                                                                            worstNDArray,
-                                                                                                                            worstNDOutput[0],
-                                                                                                                            this.imageWidth,
-                                                                                                                            this.imageHeight,
-                                                                                                                            this.imageChannel);
+                            Mat bestMatImage = new Mat(bestScoreFileName);
+                            Bitmap bestBitmapImage = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(bestMatImage);
+                            BitmapSource bestBitmapSourceImage = this.trainSampleLoaderService.ConvertToBitmapSource(bestBitmapImage);
 
-                            this.BestSamplePreview = bestOutputItem;
-                            this.WorstSamplePreview = worstOutputItem;
+                            Mat worstMatImage = new Mat(worstScoreFileName);
+                            Bitmap worstBitmapImage = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(worstMatImage);
+                            BitmapSource worstBitmapSourceImage = this.trainSampleLoaderService.ConvertToBitmapSource(worstBitmapImage);
+
+                            ClassPreviewItem bestItem = new ClassPreviewItem()
+                            {
+                                Name = bestScoreLabelName,
+                                Score = bestScore,
+                                Image = bestBitmapSourceImage
+                            };
+
+                            ClassPreviewItem worstItem = new ClassPreviewItem()
+                            {
+                                Name = worstScoreLabelName,
+                                Score = worstScore,
+                                Image = worstBitmapSourceImage
+                            };
+
+                            this.BestSamplePreview = bestItem;
+                            this.WorstSamplePreview = worstItem;
 
                         });
 
@@ -437,11 +443,7 @@ namespace OpenDL.ViewModel
 
                         /// Label 정보 및 모델 정보 확인 
                         /// 
-                        if(this.trainLabelOutput < this.labelOutput)
-                        {
-                            this.dialogService.ShowErrorMessage("라벨 사이즈가 맞지 않습니다.");
-                            return;
-                        }
+                        
                         if (this.modelInfo == null)
                         {
                             this.dialogService.ShowErrorMessage("Classification 모델 로드에 실패했습니다");
@@ -482,7 +484,7 @@ namespace OpenDL.ViewModel
                             this.dialogService.ShowErrorMessage("이미지 색상 정보가 맞지 않습니다.");
                             return;
                         }
-                        if (this.classLabelInfo.LabelSize != this.modelInfo.MaxLabelCount)
+                        if (this.trainLabelOutput < this.labelOutput)
                         {
                             this.dialogService.ShowErrorMessage("라벨 갯수가 맞지 않습니다.");
                             return;

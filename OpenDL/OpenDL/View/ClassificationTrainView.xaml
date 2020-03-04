@@ -386,10 +386,10 @@
                      VerticalContentAlignment="Center"></TextBox>
             <uc:ClassificationPreviewer Grid.Column="0"
                                       Grid.Row="1"
-                                      PreviewItem="{Binding BestSamplePreview}"></uc:ClassificationPreviewer>
+                                      PreviewItem="{Binding BestSamplePreview, UpdateSourceTrigger=PropertyChanged}"></uc:ClassificationPreviewer>
             <uc:ClassificationPreviewer Grid.Column="1"
                                       Grid.Row="1"
-                                      PreviewItem="{Binding WorstSamplePreview}"></uc:ClassificationPreviewer>
+                                      PreviewItem="{Binding WorstSamplePreview, UpdateSourceTrigger=PropertyChanged}"></uc:ClassificationPreviewer>
         </Grid>
     </DockPanel>
 </UserControl>

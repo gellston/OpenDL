@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <ContentPresenter Content="{Binding RelativeSource={RelativeSource AncestorType=local:ClassificationPreviewer}, Path=PreviewItem, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+    <ContentPresenter Content="{Binding RelativeSource={RelativeSource AncestorType=local:ClassificationPreviewer}, Path=PreviewItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
         <ContentPresenter.Resources>
             <DataTemplate DataType="{x:Type model:ClassPreviewItem}">
                 <Grid>
