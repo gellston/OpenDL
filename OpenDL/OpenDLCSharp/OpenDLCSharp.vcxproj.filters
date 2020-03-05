@@ -27,6 +27,15 @@
     <ClInclude Include="ODSegmentationFactorySharp.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="IODClassificationSharp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ODClassificationFactorySharp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="ODClassificationSharp.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp">
@@ -36,6 +45,12 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="ODSegmentationFactorySharp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ODClassificationSharp.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="ODClassificationFactorySharp.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

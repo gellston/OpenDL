@@ -150,6 +150,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ODClassification.cpp" />
+    <ClCompile Include="ODClassificationFactory.cpp" />
     <ClCompile Include="ODSegmentation.cpp" />
     <ClCompile Include="ODSegmentationFactory.cpp" />
     <ClCompile Include="OpenDLCplus.cpp" />
@@ -160,6 +162,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IODSegmentation.h" />
+    <ClInclude Include="IODClassification.h" />
+    <ClInclude Include="ODClassification.h" />
+    <ClInclude Include="ODClassificationFactory.h" />
     <ClInclude Include="ODSegmentation.h" />
     <ClInclude Include="ODSegmentationFactory.h" />
   </ItemGroup>

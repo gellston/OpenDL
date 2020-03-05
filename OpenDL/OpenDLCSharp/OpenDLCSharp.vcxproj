@@ -121,13 +121,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IODClassificationSharp.h" />
     <ClInclude Include="IODSegmentationSharp.h" />
+    <ClInclude Include="ODClassificationFactorySharp.h" />
+    <ClInclude Include="ODClassificationSharp.h" />
     <ClInclude Include="ODSegmentationFactorySharp.h" />
     <ClInclude Include="ODSegmentationSharp.h" />
     <ClInclude Include="Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="ODClassificationFactorySharp.cpp" />
+    <ClCompile Include="ODClassificationSharp.cpp" />
     <ClCompile Include="ODSegmentationFactorySharp.cpp" />
     <ClCompile Include="ODSegmentationSharp.cpp" />
   </ItemGroup>

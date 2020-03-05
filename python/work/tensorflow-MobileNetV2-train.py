@@ -4,8 +4,8 @@ from util.dataloader import dataloader
 from model.model_classification_MobileNetV2 import model_classification_MobileNetV2
 
 
-loader_train = dataloader('C://Github//VTDEEP//python//dataset//animal-train-v1')
-loader_validation = dataloader('C://Github/VTDEEP//python//dataset//animal-validation-v1')
+loader_train = dataloader('C://Github//OpenDL//python//dataset//animal-train-v1')
+loader_validation = dataloader('C://Github/OpenDL//python//dataset//animal-validation-v1')
 
 classCount = loader_validation.label_count()
 validationCount = loader_validation.sample_count()
@@ -20,9 +20,9 @@ target_accuracy = 0.90
 
 sess = tf.compat.v1.Session()
 
-model1 = model_classification_MobileNetV2(sess=sess, class_count=1280)
+model1 = model_classification_MobileNetV2(sess=sess, class_count=4)
 
-writer = tf.summary.FileWriter("C:/Github/VTDEEP/python/pretrained-model/model_classification_MobileNetV2/tensorboard", sess.graph)
+writer = tf.summary.FileWriter("C:/Github/OpenDL/python/pretrained-model/model_classification_MobileNetV2/tensorboard", sess.graph)
 writer.close()
 
 
@@ -34,8 +34,8 @@ sess.run(global_initializer)
 
 ## save model file
 saver = tf.compat.v1.train.Saver()
-saver.save(sess, 'C:/Github/VTDEEP/python/pretrained-model/model_classification_MobileNetV2/MobileNetV2')
-tf.train.write_graph(sess.graph_def, "", "C:/Github/VTDEEP/python/pretrained-model/model_classification_MobileNetV2/MobileNetV2.pbtxt", as_text=True)
+saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_mobilenetV2/MobileNetV2')
+tf.train.write_graph(sess.graph_def, "", "C:/Github/OpenDL/python/pretrained-model/model_mobilenetV2/MobileNetV2.pbtxt", as_text=True)
 
 print('learning started')
 

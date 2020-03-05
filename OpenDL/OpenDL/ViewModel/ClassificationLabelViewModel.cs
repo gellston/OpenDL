@@ -185,7 +185,7 @@ namespace OpenDL.ViewModel
                 {
                     _KeyDownEventCommand = new RelayCommand<object>((args) =>
                     {
-                        if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.Enter))
+                        if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift))
                         {
                             if (this.SelectedLabelUnit == null) return;
 

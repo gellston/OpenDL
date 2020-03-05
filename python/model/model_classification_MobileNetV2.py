@@ -18,7 +18,7 @@ class model_classification_MobileNetV2:
         self.learning_rate_tensor = tf.compat.v1.placeholder(tf.float32, shape=[], name='learning_rate')
         print(self.learning_rate_tensor)
 
-        self.X = tf.compat.v1.placeholder(tf.float32, [None, 224 * 224 * 3], name='X')
+        self.X = tf.compat.v1.placeholder(tf.float32, [None, 224 , 224 , 3], name='X')
         print(self.X)
 
         self.keep_layer = tf.compat.v1.placeholder(tf.bool, name='phase')
@@ -27,12 +27,12 @@ class model_classification_MobileNetV2:
         self.Y = tf.compat.v1.placeholder(tf.float32, [None, self.class_count], 'Y')
         print(self.Y)
 
-        X_input = tf.compat.v1.reshape(self.X, [-1, 224, 224, 3])
+        ##X_input = tf.compat.v1.reshape(self.X, [-1, 224, 224, 3])
 
         print("=== network structure ===")
 
         with tf.variable_scope('conv1'):
-            net = tf.compat.v1.layers.conv2d(X_input, filters=32, kernel_size=3, strides=2, use_bias=False,
+            net = tf.compat.v1.layers.conv2d(self.X, filters=32, kernel_size=3, strides=2, use_bias=False,
                                              kernel_initializer=tf.initializers.glorot_normal(), padding='same')
             net = tf.compat.v1.layers.batch_normalization(net, momentum=0.9, training=self.keep_layer)
             print("conv1=", net)
