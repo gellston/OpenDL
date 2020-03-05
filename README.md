@@ -8,7 +8,7 @@
 <a href="https://youtu.be/HkKbtf9pzhU" target="_blank"><img src="https://raw.githubusercontent.com/gellston/OpenDL/master/preview/preview1.2.png" 
 alt="데모영상"/></a>
 
-<a hreaf="https://1drv.ms/u/s!AiHCv3RUThwnhhYJ8UNEaeQWTZsM?e=sM9ia5" target="_blank"> 데모 이미지 샘플 다운로드 </a>
+<a href="https://1drv.ms/u/s!AiHCv3RUThwnhhYJ8UNEaeQWTZsM?e=sM9ia5" target="_blank"> 데모 이미지 샘플 다운로드 </a>
 
 </center>
 
