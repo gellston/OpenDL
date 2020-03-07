@@ -40,7 +40,7 @@ class anogan_dataloader:
             image = cv2.imread(image_path, self.input_color).astype(np.uint8)
             cv_image = cv2.resize(image, dsize=(width, height), interpolation=cv2.INTER_AREA)
             npImage = np.array(cv_image)
-            npImage = npImage.reshape(shape) / 255
+            npImage = npImage.reshape(shape) / 127.5 - 1
             #npImage = np.array(npImage, dtype=np.float)
             images.append(npImage)
 

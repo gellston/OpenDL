@@ -506,9 +506,10 @@ def transition_up(name, x, filters):
 def residual_layer(name, input, filters, is_batch_norm):
     encode = tf.compat.v1.layers.batch_normalization(input,
                                                      scale=True,
+                                                     center=True,
                                                      momentum=0.9,
                                                      training=is_batch_norm)
-    encode = tf.compat.v1.nn.relu(encode)
+    encode = tf.compat.v1.nn.leaky_relu(encode)
     encode = tf.compat.v1.layers.separable_conv2d(encode,
                                                   filters=filters,
                                                   kernel_size=[3, 3],
@@ -542,7 +543,7 @@ def transition_down_expandChannelDouble(name, input, filters, is_batch_norm):
                                    depthwise_initializer=tf.compat.v1.variance_scaling_initializer(),
                                    name=name + '_conv1x1')
 
-    x = tf.compat.v1.layers.batch_normalization(x, scale=True, momentum=0.9, training=is_batch_norm)
+    x = tf.compat.v1.layers.batch_normalization(x, scale=True, momentum=0.9, center=True, training=is_batch_norm)
     x = tf.compat.v1.nn.relu(x, name=name + 'relu')
 
     return x

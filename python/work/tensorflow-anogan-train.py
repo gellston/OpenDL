@@ -63,8 +63,8 @@ for step in range(train_epoch):
         print('Validation Step: ', '%04d' % (validation_step + 1), ' step accuracy = ', '{:.9f}'.format(accuracy),)
 
     output_images = model.reconstruct(validation_images, keep_prop=False)
-    output_reshape = output_images[0] * 255.0
-    input_image = validation_images[0] * 255.0
+    output_reshape = (output_images[0] + 1)* 127.5
+    input_image = (validation_images[0] + 1)* 127.5
 
 
 

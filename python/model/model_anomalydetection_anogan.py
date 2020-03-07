@@ -52,43 +52,43 @@ class model_anomalydetection_anogan:
             # 16x16x128 (x3)
             encode5 = residual_block('encode5_1', transition_down4, 128, self.keep_layer)
             encode5 = residual_block('encode5_2', encode5, 128, self.keep_layer)
-            #encode5 = residual_block('encode5_3', encode5, 128, self.keep_layer)
+            encode5 = residual_block('encode5_3', encode5, 128, self.keep_layer)
             # 32x32x128
             transition_up1 = transition_up('transition_up1', encode5, 128)
             print(transition_up1)
 
             # 32x32x128 (x3)
-            decode1 = transition_up1 #+ encode4
+            decode1 = transition_up1 + encode4
             decode1 = residual_block('decode_1_1', decode1, 128, self.keep_layer)
             decode1 = residual_block('decode_1_2', decode1, 128, self.keep_layer)
-            #decode1 = residual_block('decode_1_3', decode1, 128, self.keep_layer)
+            decode1 = residual_block('decode_1_3', decode1, 128, self.keep_layer)
             # 64x64x64
             transition_up2 = transition_up('transition_up2', decode1, 64)
             print(transition_up2)
 
             # 64x64x64 (x3)
-            decode2 = transition_up2 #+ encode3
+            decode2 = transition_up2 + encode3
             decode2 = residual_block('decode_2_1', decode2, 64, self.keep_layer)
             decode2 = residual_block('decode_2_2', decode2, 64, self.keep_layer)
-            #decode2 = residual_block('decode_2_3', decode2, 64, self.keep_layer)
+            decode2 = residual_block('decode_2_3', decode2, 64, self.keep_layer)
             # 128x128x32
             transition_up3 = transition_up('transition_up3', decode2, 32)
             print(transition_up3)
 
             # 128x128x32 (x3)
-            decode3 = transition_up3 #+ encode2
+            decode3 = transition_up3 + encode2
             decode3 = residual_block('decode_3_1', decode3, 32, self.keep_layer)
             decode3 = residual_block('decode_3_2', decode3, 32, self.keep_layer)
-            #decode3 = residual_block('decode_3_3', decode3, 32, self.keep_layer)
+            decode3 = residual_block('decode_3_3', decode3, 32, self.keep_layer)
             # 256x256x8
             transition_up4 = transition_up('transition_up4', decode3, 8)
             print(transition_up4)
 
             # 256x256x8 (x3)
-            decode4 = transition_up4 #+ encode1
+            decode4 = transition_up4 + encode1
             decode4 = residual_block('decode_4_1', decode4, 8, self.keep_layer)
             decode4 = residual_block('decode_4_2', decode4, 8, self.keep_layer)
-            #decode4 = residual_block('decode_4_3', decode4, 8, self.keep_layer)
+            decode4 = residual_block('decode_4_3', decode4, 8, self.keep_layer)
 
             decode5 = tf.compat.v1.layers.separable_conv2d(decode4,
                                                            filters=1,
@@ -100,7 +100,8 @@ class model_anomalydetection_anogan:
                                                            pointwise_initializer=tf.compat.v1.variance_scaling_initializer(),
                                                            depthwise_initializer=tf.compat.v1.variance_scaling_initializer(),
                                                            name='decode5')
-            decode5 = tf.nn.sigmoid(decode5)
+            decode5 = tf.nn.tanh(decode5)
+
             return decode5
 
     def discriminator(self, input, reuse=None):
@@ -112,23 +113,23 @@ class model_anomalydetection_anogan:
             # 256x256x8
             encode1 = residual_block('encode1_2', input, 8, self.keep_layer)
             # 128x128x32
-            transition_down1 = transition_down_expandChannelDouble('transition_down1', encode1, 32, self.keep_layer)
+            transition_down1 = transition_down_expandChannelDouble('transition_down1', encode1, 16, self.keep_layer)
             print(transition_down1)
 
             # 128x128x32
-            encode2 = residual_block('encode2', transition_down1, 32, self.keep_layer)
+            encode2 = residual_block('encode2', transition_down1, 16, self.keep_layer)
             # 64x64x64
-            transition_down2 = transition_down_expandChannelDouble('transition_down2', encode2, 64, self.keep_layer)
+            transition_down2 = transition_down_expandChannelDouble('transition_down2', encode2, 32, self.keep_layer)
             print(transition_down2)
 
             # 64x64x64
-            encode3 = residual_block('encode3', transition_down2, 64, self.keep_layer)
+            encode3 = residual_block('encode3', transition_down2, 32, self.keep_layer)
             # 32x32x128
-            transition_down3 = transition_down_expandChannelDouble('transition_down3', encode3, 128, self.keep_layer)
+            transition_down3 = transition_down_expandChannelDouble('transition_down3', encode3, 64, self.keep_layer)
             print(transition_down3)
 
             # 32x32x128
-            encode4 = residual_block('encode4_1', transition_down3, 128, self.keep_layer)
+            encode4 = residual_block('encode4_1', transition_down3, 64, self.keep_layer)
             # 16x16x128
             transition_down4 = transition_down_expandChannelDouble('transition_down4', encode4, 128, self.keep_layer)
             print(transition_down4)
@@ -155,11 +156,19 @@ class model_anomalydetection_anogan:
         self.D_gene = self.discriminator(self.G, True)
         self.output = self.G
 
-        self.loss_D_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_real, labels=tf.ones_like(self.D_real)))
+        d_scale_factor = 0.25
+        g_scale_factor = 1 - 0.75
+
+        self.loss_D_real = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_real, labels=tf.ones_like(self.D_real) - d_scale_factor))
         self.loss_D_gene = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_gene, labels=tf.zeros_like(self.D_gene)))
 
         self.loss_D = self.loss_D_real + self.loss_D_gene
-        self.loss_G = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_gene, labels=tf.ones_like(self.D_gene)))
+        #self.loss_G = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_gene, labels=tf.ones_like(self.D_gene))) + tf.losses.mean_squared_error(self.Z, self.G)
+        #tf.reduce_mean(tf.abs(self.G - self.Z))
+        self.l1_loss = tf.losses.mean_squared_error(self.Z, self.G)
+        self.loss_G_gene = tf.reduce_mean(tf.nn.sigmoid_cross_entropy_with_logits(logits=self.D_gene, labels=tf.ones_like(self.D_gene) - g_scale_factor))
+        self.loss_G = self.loss_G_gene + self.l1_loss
+
 
         vars_D = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='discriminator')
         vars_G = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope='generator')
