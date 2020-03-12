@@ -13,7 +13,7 @@ train_epoch = 10000
 batch_size = 6
 sample_size = train_loader.size()
 total_batch = int(sample_size / batch_size)
-target_accuracy = 0.95
+target_accuracy = 0.90
 learning_rate = 0.003
 
 sess = tf.Session()

@@ -506,7 +506,7 @@ def transition_up(name, x, filters):
 def residual_layer(name, input, filters, is_batch_norm):
     encode = tf.compat.v1.layers.batch_normalization(input,
                                                      scale=True,
-                                                     center=True,
+                                                     center=False,
                                                      momentum=0.9,
                                                      training=is_batch_norm)
     encode = tf.compat.v1.nn.leaky_relu(encode)
@@ -547,3 +547,104 @@ def transition_down_expandChannelDouble(name, input, filters, is_batch_norm):
     x = tf.compat.v1.nn.relu(x, name=name + 'relu')
 
     return x
+
+
+########################################## Anomaly Layer #####################################################################
+
+def TU_ANO(name, input, filters, kernel_size=[3, 3], strides=[2, 2], is_batch_norm=True, padding='SAME'):
+    with tf.variable_scope(name):
+        x = tf.compat.v1.layers.conv2d_transpose(input,
+                                          filters=filters,
+                                          kernel_size=kernel_size,
+                                          strides=strides,
+                                          use_bias=False,
+                                          padding=padding,
+                                          activation=None,
+                                          kernel_initializer=tf.compat.v1.variance_scaling_initializer(),
+                                          name=name+'_trans_conv3x3')
+
+        #deconv = tf.compat.v1.layers.batch_normalization(x,
+        #                                                 scale=True,
+        #                                                 center=True,
+        #                                                 momentum=0.9,
+        #                                                 training=is_batch_norm)
+
+        deconv = tf.compat.v1.nn.leaky_relu(x)
+        print('TU_ANO', deconv)
+        return deconv
+
+def TU_ANO_RELU(name, input, filters, kernel_size=[3, 3], strides=[2, 2], is_batch_norm=True, padding='SAME'):
+    with tf.variable_scope(name):
+        x = tf.compat.v1.layers.conv2d_transpose(input,
+                                          filters=filters,
+                                          kernel_size=kernel_size,
+                                          strides=strides,
+                                          use_bias=False,
+                                          padding=padding,
+                                          activation=None,
+                                          kernel_initializer=tf.compat.v1.variance_scaling_initializer(),
+                                          name=name+'_trans_conv3x3')
+
+        #deconv = tf.compat.v1.layers.batch_normalization(x,
+        #                                                 scale=True,
+        #                                                 center=True,
+        #                                                 momentum=0.9,
+        #                                                 training=is_batch_norm)
+
+        deconv = tf.compat.v1.nn.leaky_relu(x)
+        print('TU_ANO', deconv)
+        return deconv
+
+
+def CONV_ANO(name, input, filters, kernel_size=[3, 3], strides=[1, 1], is_batch_norm=True, padding='SAME'):
+    with tf.variable_scope(name):
+        encode = tf.compat.v1.layers.conv2d(input,
+                                          filters=filters,
+                                          kernel_size=kernel_size,
+                                          strides=strides,
+                                          use_bias=False,
+                                          padding=padding,
+                                          activation=None,
+                                          kernel_initializer=tf.compat.v1.variance_scaling_initializer(),
+                                          name=name + '_conv3x3')
+
+        #conv = tf.compat.v1.layers.batch_normalization(encode,
+        #                                                 scale=True,
+        #                                                 center=True,
+        #                                                 momentum=0.9,
+        #                                                 training=is_batch_norm)
+
+        conv = tf.compat.v1.nn.leaky_relu(encode)
+        print('CONV_ANO', conv)
+        return conv
+
+
+def CONV_ANO_RELU(name, input, filters, kernel_size=[3, 3], strides=[1, 1], is_batch_norm=True, padding='SAME'):
+    with tf.variable_scope(name):
+        encode = tf.compat.v1.layers.conv2d(input,
+                                          filters=filters,
+                                          kernel_size=kernel_size,
+                                          strides=strides,
+                                          use_bias=False,
+                                          padding=padding,
+                                          activation=None,
+                                          kernel_initializer=tf.compat.v1.variance_scaling_initializer(),
+                                          name=name + '_conv3x3_relu')
+
+        #conv = tf.compat.v1.layers.batch_normalization(encode,
+        #                                                 scale=True,
+        #                                                 center=True,
+        #                                                 momentum=0.9,
+        #                                                 training=is_batch_norm)
+
+        conv = tf.compat.v1.nn.leaky_relu(encode)
+        print('CONV_ANO', conv)
+        return conv
+
+def UPSAMPLING(name, input, multiple=2):
+    with tf.variable_scope(name):
+        height = input.get_shape().as_list()[1]
+        width = input.get_shape().as_list()[2]
+        x = tf.image.resize_nearest_neighbor(input, size=(height * multiple, width * multiple))
+        print('UPSAMPLING', x)
+        return x

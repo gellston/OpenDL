@@ -1,7 +1,7 @@
 import os
 import cv2 as cv2
 import numpy as np
-
+import random
 
 class anogan_dataloader:
     def __init__(self, image_path):
@@ -19,11 +19,14 @@ class anogan_dataloader:
             self.input_images_paths.append(temp1)
             self.dataset_count += 1
 
+    def shuffle(self):
+        random.shuffle(self.input_images_paths)
 
 
-    def load(self, color=cv2.IMREAD_GRAYSCALE, width=256, height=256, shape=[256, 256, 1], batch=5):
+    def load(self, color=0, width=256, height=256, shape=[256, 256, 1], resizeWidth=256, resizeHeight=256, batch=5):
         images = []
 
+        #random.shuffle(self.input_images_paths)
 
         for index in range(batch):
             if index + self.currentIndex >= self.dataset_count:
@@ -38,9 +41,9 @@ class anogan_dataloader:
             image_path = self.input_images_paths[self.currentIndex + index]
 
             image = cv2.imread(image_path, self.input_color).astype(np.uint8)
-            cv_image = cv2.resize(image, dsize=(width, height), interpolation=cv2.INTER_AREA)
-            npImage = np.array(cv_image)
-            npImage = npImage.reshape(shape) / 127.5 - 1
+            cv_image = cv2.resize(image, dsize=(resizeWidth, resizeHeight), interpolation=cv2.INTER_AREA)
+            npImage = np.array(cv_image) / 255
+            npImage = npImage.reshape(shape)
             #npImage = np.array(npImage, dtype=np.float)
             images.append(npImage)
 
