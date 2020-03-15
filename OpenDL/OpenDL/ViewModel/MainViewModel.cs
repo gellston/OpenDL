@@ -76,8 +76,8 @@ namespace OpenDL.ViewModel
 
 
             Messenger.Default.Register<SelectWorkTypeMessage>(this, SelectWorkTypeCallback);
-            Messenger.Default.Register<SegmentAugmentationMessage>(this, SegmentAugmentationCallback);
-            Messenger.Default.Register<ClassificationAugmentationMessage>(this, ClassificationAugmentationCallback);
+            Messenger.Default.Register<AugmentationMessage>(this, AugmentationCallback);
+            //Messenger.Default.Register<ClassificationAugmentationMessage>(this, ClassificationAugmentationCallback);
         }
 
 
@@ -107,16 +107,24 @@ namespace OpenDL.ViewModel
         }
 
 
-        private void SegmentAugmentationCallback(SegmentAugmentationMessage message)
+        private void AugmentationCallback(AugmentationMessage message)
         {
             switch (message.Message)
             {
                 case "Open":
                     this.PopupWidth = 500;
                     this.PopupHeight = 500;
-                    this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<SegmentationAugmentViewModel>();
+                    
                     this.IsPopup = true;
                     this.IsStayOpen = true;
+
+                    if(message.ViewModelType == "Segmentation")
+                        this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<SegmentationAugmentViewModel>();
+                    else if(message.ViewModelType == "Classification")
+                        this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<ClassificationAugmentViewModel>();
+                    else if(message.ViewModelType == "AnomalyDetection")
+                        this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<AnomalyAugmentViewModel>();
+
                     break;
 
                 case "Cancel":
@@ -127,25 +135,25 @@ namespace OpenDL.ViewModel
             };
         }
 
-        private void ClassificationAugmentationCallback(ClassificationAugmentationMessage message)
-        {
-            switch (message.Message)
-            {
-                case "Open":
-                    this.PopupWidth = 500;
-                    this.PopupHeight = 500;
-                    this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<ClassificationAugmentViewModel>();
-                    this.IsPopup = true;
-                    this.IsStayOpen = true;
-                    break;
+        //private void ClassificationAugmentationCallback(ClassificationAugmentationMessage message)
+        //{
+        //    switch (message.Message)
+        //    {
+        //        case "Open":
+        //            this.PopupWidth = 500;
+        //            this.PopupHeight = 500;
+        //            this.CurrentPopupViewModel = SimpleIoc.Default.GetInstance<ClassificationAugmentViewModel>();
+        //            this.IsPopup = true;
+        //            this.IsStayOpen = true;
+        //            break;
 
-                case "Cancel":
-                    this.IsPopup = false;
-                    this.IsStayOpen = false;
-                    break;
+        //        case "Cancel":
+        //            this.IsPopup = false;
+        //            this.IsStayOpen = false;
+        //            break;
 
-            };
-        }
+        //    };
+        //}
 
 
         private ObservableCollection<MainMenu> _MenuItems = null;

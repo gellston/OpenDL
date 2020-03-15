@@ -265,63 +265,70 @@ namespace OpenDL.ViewModel
                         Application.Current.Dispatcher.Invoke(() =>
                         {
 
-                            //그래프 및 스코어 업데이트
-                            this.BestSamplePreviewScore = bestScore;
-                            this.WorstSamplePreviewScore = worstScore;
-
-                            this.TrainCostCollection.Add(new LinePlotInfo()
+                            try
                             {
-                                Step = epoch,
-                                Value = totalTrainCost
-                            });
+                                //그래프 및 스코어 업데이트
+                                this.BestSamplePreviewScore = bestScore;
+                                this.WorstSamplePreviewScore = worstScore;
 
-                            this.TrainAccuracyCollection.Add(new LinePlotInfo()
+                                this.TrainCostCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalTrainCost
+                                });
+
+                                this.TrainAccuracyCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalTrainAccuracy
+                                });
+
+                                this.ValidationCostCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalValidationCost
+                                });
+
+                                this.ValidationAccuracyCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalValidationAccuracy
+                                });
+
+                                this.CurrentAccuracy = totalValidationAccuracy;
+                                this.CurrentLoss = totalValidationCost;
+
+                                // 이미지 업데이트
+
+                                Mat bestMatImage = new Mat(bestScoreFileName);
+                                Bitmap bestBitmapImage = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(bestMatImage);
+                                BitmapSource bestBitmapSourceImage = this.trainSampleLoaderService.ConvertToBitmapSource(bestBitmapImage);
+
+                                Mat worstMatImage = new Mat(worstScoreFileName);
+                                Bitmap worstBitmapImage = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(worstMatImage);
+                                BitmapSource worstBitmapSourceImage = this.trainSampleLoaderService.ConvertToBitmapSource(worstBitmapImage);
+
+                                ClassPreviewItem bestItem = new ClassPreviewItem()
+                                {
+                                    Name = bestScoreLabelName,
+                                    Score = bestScore,
+                                    Image = bestBitmapSourceImage
+                                };
+
+                                ClassPreviewItem worstItem = new ClassPreviewItem()
+                                {
+                                    Name = worstScoreLabelName,
+                                    Score = worstScore,
+                                    Image = worstBitmapSourceImage
+                                };
+
+                                this.BestSamplePreview = bestItem;
+                                this.WorstSamplePreview = worstItem;
+                            }
+                            catch(Exception e)
                             {
-                                Step = epoch,
-                                Value = totalTrainAccuracy
-                            });
 
-                            this.ValidationCostCollection.Add(new LinePlotInfo()
-                            {
-                                Step = epoch,
-                                Value = totalValidationCost
-                            });
-
-                            this.ValidationAccuracyCollection.Add(new LinePlotInfo()
-                            {
-                                Step = epoch,
-                                Value = totalValidationAccuracy
-                            });
-
-                            this.CurrentAccuracy = totalValidationAccuracy;
-                            this.CurrentLoss = totalValidationCost;
-
-                            // 이미지 업데이트
-
-                            Mat bestMatImage = new Mat(bestScoreFileName);
-                            Bitmap bestBitmapImage = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(bestMatImage);
-                            BitmapSource bestBitmapSourceImage = this.trainSampleLoaderService.ConvertToBitmapSource(bestBitmapImage);
-
-                            Mat worstMatImage = new Mat(worstScoreFileName);
-                            Bitmap worstBitmapImage = OpenCvSharp.Extensions.BitmapConverter.ToBitmap(worstMatImage);
-                            BitmapSource worstBitmapSourceImage = this.trainSampleLoaderService.ConvertToBitmapSource(worstBitmapImage);
-
-                            ClassPreviewItem bestItem = new ClassPreviewItem()
-                            {
-                                Name = bestScoreLabelName,
-                                Score = bestScore,
-                                Image = bestBitmapSourceImage
-                            };
-
-                            ClassPreviewItem worstItem = new ClassPreviewItem()
-                            {
-                                Name = worstScoreLabelName,
-                                Score = worstScore,
-                                Image = worstBitmapSourceImage
-                            };
-
-                            this.BestSamplePreview = bestItem;
-                            this.WorstSamplePreview = worstItem;
+                            }
 
                         });
 

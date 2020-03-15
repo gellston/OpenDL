@@ -93,6 +93,53 @@ namespace OpenDL.Service
         }
 
 
+
+
+
+
+        public async Task<ObservableCollection<string>> LoadAnomalLabelAsync(string _root, string[] _files)
+        {
+
+            ObservableCollection<string> fileLabel = new ObservableCollection<string>();
+            //ObservableCollection<ClassLabelUnit> labelCollection = new ObservableCollection<ClassLabelUnit>();
+
+
+            try
+            {
+                await Task.Run(() =>
+                {
+
+                    foreach (var file in _files)
+                    {
+                        //ClassLabelUnit unit = null;
+
+                        //Application.Current.Dispatcher.Invoke(() =>
+                        //{
+                        //    unit = new ClassLabelUnit();
+                        //    labelCollection.Add(unit);
+                        //});
+
+
+                        string filePath = Path.GetDirectoryName(file);
+                        string pureFileName = Path.GetFileNameWithoutExtension(file);
+                        string fileNameWithExtension = Path.GetFileName(file);
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            fileLabel.Add(file);
+                        });
+                    }
+                }).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            return fileLabel;
+        }
+
+
         public async Task<(ObservableCollection<SegmentLabelPolygon>, ObservableCollection<SegmentLabelUnit>)> LoadSegmentedLabelAsync(string _root, string [] _files)
         {
 

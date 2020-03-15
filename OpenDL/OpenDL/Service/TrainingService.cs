@@ -146,6 +146,56 @@ namespace OpenDL.Service
         }
 
 
+
+        public NDArray LoadBatch(List<AnomalTrainSample> _sampleCollection,
+                                                                                     int _index,
+                                                                                     int _batchSize,
+                                                                                     bool _isGray,
+                                                                                     int _imageWidth,
+                                                                                     int _imageHeight)
+        {
+
+            int channel = 1;
+            ImreadModes readMode = ImreadModes.Grayscale;
+            if (_isGray == true)
+            {
+                channel = 1;
+                readMode = ImreadModes.Grayscale;
+            }
+            else
+            {
+                channel = 3;
+                readMode = ImreadModes.Color;
+            }
+
+            NDArray inputImageBatch = np.zeros((_batchSize, _imageHeight, _imageWidth, channel));
+     
+            int inputImageSize = _imageHeight * _imageHeight * channel;
+            //int labelImageSize = _imageHeight * _imageHeight * 1;
+
+            for (int index = 0; index < _batchSize; index++)
+            {
+                /// Source ND Image make
+                int sampleIndex = index + _index;
+                AnomalTrainSample sample = _sampleCollection[sampleIndex];
+                string inputImagePath = sample.InputImagePath;
+                Mat sourceImage = new Mat(inputImagePath, readMode);
+
+                byte[] byteImage = new byte[inputImageSize];
+                Marshal.Copy(sourceImage.Data, byteImage, 0, inputImageSize);
+                NDArray sourceNDImage = np.array<byte>(byteImage, true);
+                sourceNDImage = sourceNDImage.reshape((_imageHeight, _imageWidth, channel));
+                inputImageBatch[index] = sourceNDImage;
+                /// Source ND Image make
+                /// 
+
+            }
+
+
+            return inputImageBatch;
+        }
+
+
         public (NDArray, NDArray) LoadBatch(List<ClassTrainSample> _sampleCollection,
                                                                              int _index,
                                                                              int _batchSize,
@@ -484,6 +534,30 @@ namespace OpenDL.Service
             return info;
         }
 
+        public AnomalTrainModelInfo LoadAnomalTrainModelInfo(string modelInfoFile)
+        {
+            AnomalTrainModelInfo info = new AnomalTrainModelInfo();
+
+
+            // 압축 해제된 파일에서 모델 정보 불러오기
+            try
+            {
+                using (StreamReader reader = new StreamReader(modelInfoFile, Encoding.UTF8))
+                {
+                    string labelContent = reader.ReadToEnd();
+                    info = (AnomalTrainModelInfo)JsonConvert.DeserializeObject(labelContent, typeof(AnomalTrainModelInfo));
+                }
+
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
+
+            return info;
+        }
+
         public async Task<(ObservableCollection<SegmentTrainSample>, SegmentLabelInfo)> LoadSegmentSamplesAsync(string _folder)
         {
 
@@ -612,6 +686,76 @@ namespace OpenDL.Service
                             });
                             await Task.Delay(10);
                         }
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+
+            }
+
+
+            return (classTrainSampleCollection, labelInfo);
+        }
+
+
+
+
+
+        public async Task<(ObservableCollection<AnomalTrainSample>, AnomalLabelInfo)> LoadAnomalSamplesAsync(string _folder)
+        {
+
+            ObservableCollection<AnomalTrainSample> classTrainSampleCollection = new ObservableCollection<AnomalTrainSample>();
+            AnomalLabelInfo labelInfo = new AnomalLabelInfo();
+
+            try
+            {
+                using (StreamReader reader = new StreamReader(_folder + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, Encoding.UTF8))
+                {
+                    string labelContent = reader.ReadToEnd();
+                    labelInfo = (AnomalLabelInfo)JsonConvert.DeserializeObject(labelContent, typeof(AnomalLabelInfo));
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            int imageWidth = labelInfo.ImageHeight;
+            int imageHeight = labelInfo.ImageWidth;
+      
+
+
+
+
+            try
+            {
+
+                string[] files = Directory.GetFiles(_folder);
+
+                await Task.Run(async () =>
+                {
+                    foreach (var file in files)
+                    {
+
+                        string fileExt = Path.GetExtension(file);
+                        if (fileExt != ".jpg") continue; 
+
+                        AnomalTrainSample info = new AnomalTrainSample()
+                        {
+                            ImageWidth = labelInfo.ImageWidth,
+                            ImageHeight = labelInfo.ImageHeight,
+                            IsGray = labelInfo.IsGray,
+                            Name = Path.GetFileName(file),
+                        };
+
+                        info.InputImagePath = file;
+
+                        Application.Current.Dispatcher.Invoke(() =>
+                        {
+                            classTrainSampleCollection.Add(info);
+                        });
+                        await Task.Delay(10);
                     }
                 });
             }

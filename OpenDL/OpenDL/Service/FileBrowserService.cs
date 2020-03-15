@@ -39,7 +39,7 @@ namespace OpenDL.Service
                 return null;
 
             string[] files = Directory.GetFiles(_folderPath, "*.*", SearchOption.AllDirectories)
-                             .Where(s => s.EndsWith(".bmp") || s.EndsWith(".jpg") || s.EndsWith(".jpeg")).ToArray();
+                             .Where(s => s.EndsWith(".bmp") || s.EndsWith(".jpg") || s.EndsWith(".jpeg") || s.EndsWith(".png")).ToArray();
 
             return files;
         }

@@ -16,6 +16,9 @@
             <DataTemplate DataType="{x:Type viewModel:ClassificationTrainViewModel}">
                 <view:ClassificationTrainView></view:ClassificationTrainView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewModel:AnomalyTrainViewModel}">
+                <view:AnomalyTrainView></view:AnomalyTrainView>
+            </DataTemplate>
         </ContentPresenter.Resources>
     </ContentPresenter>
 </UserControl>

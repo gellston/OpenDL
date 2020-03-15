@@ -18,6 +18,9 @@
             <DataTemplate DataType="{x:Type viewmodel:ClassificationLabelViewModel}">
                 <view:ClassificationLabelView></view:ClassificationLabelView>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:AnomalyLabelViewModel}">
+                <view:AnomalyLabelView></view:AnomalyLabelView>
+            </DataTemplate>
         </ContentPresenter.Resources>
     </ContentPresenter>
 </UserControl>

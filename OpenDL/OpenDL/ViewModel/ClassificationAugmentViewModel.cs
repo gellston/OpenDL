@@ -144,7 +144,7 @@ namespace OpenDL.ViewModel
                 {
                     _CancelCommand = new RelayCommand(() =>
                     {
-                        Messenger.Default.Send<ClassificationAugmentationMessage>(new ClassificationAugmentationMessage()
+                        Messenger.Default.Send<AugmentationMessage>(new AugmentationMessage()
                         {
                             Message = "Cancel"
                         });

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import cv2 as cv2
 import numpy as np
 
-from model.model_anomalydetection_SSMIAUTOV2 import model_anomalydetection_SSMIAUTOV2
+from model.model_anomalydetection_SSIMAUTOV2 import model_anomalydetection_SSIMAUTOV2
 from util.anogan_dataloader import anogan_dataloader
 
 train_loader = anogan_dataloader('C://Github//OpenDL//python//dataset//woodPatch//')
@@ -17,7 +17,7 @@ target_accuracy = 0.90
 learning_rate = 0.0002
 
 sess = tf.Session()
-model = model_anomalydetection_SSMIAUTOV2(sess=sess, name="model_anomalydetection_SSMIAUTOV2")
+model = model_anomalydetection_SSIMAUTOV2(sess=sess, name="model_anomalydetection_SSIMAUTOV2")
 
 global_variable_initializer = tf.compat.v1.global_variables_initializer()
 #local_variable_initializer = tf.compat.v1.local_variables_initializer()
@@ -27,9 +27,9 @@ print('global variable initializer name : ', global_variable_initializer.name)
 sess.run(global_variable_initializer)
 
 ## save model file
-#saver = tf.compat.v1.train.Saver()
-#saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_segmentation_HySegnetV1/model_segmentation_HySegnetV1')
-#tf.train.write_graph(sess.graph_def, "", 'C:/Github/OpenDL/python/pretrained-model/model_segmentation_HySegnetV1/model_segmentation_HySegnetV1.pbtxt', as_text=True)
+saver = tf.compat.v1.train.Saver()
+saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSIMAUTOV2/model_anomalydetection_SSIMAUTOV2')
+tf.train.write_graph(sess.graph_def, "", 'C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSIMAUTOV2/model_anomalydetection_SSIMAUTOV2.pbtxt', as_text=True)
 
 
 loss_graph = []
@@ -86,15 +86,15 @@ for step in range(train_epoch):
     if avg_accuracy > target_accuracy:
        break;
 
-tf.train.write_graph(sess.graph.as_graph_def(),"C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSMIAUTO/", "model_anomalydetection_SSMIAUTO.pb")
+tf.train.write_graph(sess.graph.as_graph_def(),"C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSIMAUTOV2/", "model_anomalydetection_SSIMAUTOV2.pb")
 saver = tf.train.Saver(tf.global_variables())
-saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSMIAUTO/model_anomalydetection_SSMIAUTO')
+saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSIMAUTOV2/model_anomalydetection_SSIMAUTOV2')
 
 plt.plot(loss_graph)
 plt.plot(accuracy_graph)
 plt.ylabel('discriminator_loss, generator_loss,  accuracy')
 plt.legend(['discriminator_loss', 'generator_loss', 'accuracy'], loc='upper left')
-plt.savefig('C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSMIAUTO/model_anomalydetection_SSMIAUTO.png')
+plt.savefig('C:/Github/OpenDL/python/pretrained-model/model_anomalydetection_SSIMAUTOV2/model_anomalydetection_SSIMAUTOV2.png')
 plt.show()
 
 print('Learning finished.')

@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<VTObjectDetectionInfo xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <FilePath>C:\Github\VTDEEP\python\dataset\object_detection_input512x512\frontal face\156_1_faces.jpg</FilePath>
-  <FileName>156_1_faces.jpg</FileName>
-  <RoiItems />
-  <IsConfirmed>true</IsConfirmed>
-</VTObjectDetectionInfo>

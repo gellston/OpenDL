@@ -43,6 +43,14 @@ namespace OpenDL.ViewModel
                 case "Classification":
                     this.LabelViewModelContent = SimpleIoc.Default.GetInstance<ClassificationLabelViewModel>();
                     break;
+
+                case "Anomaly Detection":
+                    this.LabelViewModelContent = SimpleIoc.Default.GetInstance<AnomalyLabelViewModel>();
+                    break;
+
+                default:
+                    this.LabelViewModelContent = null;
+                    break;
             };
         }
     }

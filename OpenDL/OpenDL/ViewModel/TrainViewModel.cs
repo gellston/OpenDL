@@ -28,6 +28,12 @@ namespace OpenDL.ViewModel
                 case "Classification":
                     this.TrainViewModelContent = SimpleIoc.Default.GetInstance<ClassificationTrainViewModel>();
                     break;
+                case "Anomaly Detection":
+                    this.TrainViewModelContent = SimpleIoc.Default.GetInstance<AnomalyTrainViewModel>();
+                    break;
+                default:
+                    this.TrainViewModelContent = null;
+                    break;
             };
         }
 

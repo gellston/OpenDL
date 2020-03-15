@@ -19,6 +19,15 @@
     <Compile Update="UC\SegmentationPreviewer.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\AnomalyAugmentView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\AnomalyLabelView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\AnomalyTrainView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\ClassificationAugmentView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -79,6 +88,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="UC\SegmentationPreviewer.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\AnomalyAugmentView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\AnomalyLabelView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\AnomalyTrainView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\ClassificationAugmentView.xaml">

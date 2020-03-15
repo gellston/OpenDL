@@ -47,6 +47,13 @@ namespace OpenDL.ViewModel
 
 
 
+            // Anomaly Detection ViewModel
+            SimpleIoc.Default.Register<AnomalyLabelViewModel>();
+            SimpleIoc.Default.Register<AnomalyAugmentViewModel>();
+            SimpleIoc.Default.Register<AnomalyTrainViewModel>();
+
+
+
             //Pre Initialization of ViewModel
             SimpleIoc.Default.GetInstance<ConfigureService>();
             SimpleIoc.Default.GetInstance<LabelViewModel>();
@@ -61,6 +68,10 @@ namespace OpenDL.ViewModel
             SimpleIoc.Default.GetInstance<ClassificationTrainViewModel>();
             SimpleIoc.Default.GetInstance<ClassificationLabelViewModel>();
             SimpleIoc.Default.GetInstance<ClassificationModelManagementViewModel>();
+
+            SimpleIoc.Default.GetInstance<AnomalyLabelViewModel>();
+            SimpleIoc.Default.GetInstance<AnomalyTrainViewModel>();
+
 
         }
 

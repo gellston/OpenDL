@@ -214,9 +214,10 @@ namespace OpenDL.ViewModel
                 {
                     _OpenAugmentationCommand = new RelayCommand(() =>
                     {
-                        Messenger.Default.Send<ClassificationAugmentationMessage>(new ClassificationAugmentationMessage()
+                        Messenger.Default.Send<AugmentationMessage>(new AugmentationMessage()
                         {
-                            Message = "Open"
+                            Message = "Open",
+                            ViewModelType = "Classification"
                         });
                     });
                 }

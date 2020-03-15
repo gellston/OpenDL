@@ -9,6 +9,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
 using System.Windows;
+
 using Size = OpenCvSharp.Size;
 using Point = OpenCvSharp.Point;
 using Rect = OpenCvSharp.Rect;
@@ -195,6 +196,79 @@ namespace OpenDL.Service
                             var boxImage = new Mat(sourceImage, new Rect((int)box.X, (int)box.Y, (int)box.Width, (int)box.Height));
                             Mat resizeLabel = boxImage.Resize(new Size(_imageWidth, _imageHeight));
                             resizeLabel.SaveImage(fileName);
+                        }
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+
+            }
+        }
+
+
+
+        public async Task DoAnomalyAugmentationAsync(string _outputFolder,
+                                                           ObservableCollection<string> _files,
+                                                           int _imageWidth,
+                                                           int _imageHeight,
+                                                           bool _isGray,
+                                                           int _patchWidth,
+                                                           int _patchHeight,
+                                                           int _repeatCount,
+                                                           Action<int, int> _progressCallback)
+        {
+
+            try
+            {
+                AnomalLabelInfo labelInfo = new AnomalLabelInfo()
+                {
+                    ImageHeight = _patchHeight,
+                    ImageWidth = _patchWidth,
+                    IsGray = _isGray
+                };
+
+                string anoLabelInfoJson = JsonConvert.SerializeObject(labelInfo, Formatting.Indented);
+                using (StreamWriter sw = new StreamWriter(_outputFolder + Path.DirectorySeparatorChar + this.configService.LabelInfoFileName, false, Encoding.UTF8))
+                {
+                    sw.Write(anoLabelInfoJson);
+                }
+
+            }
+            catch (Exception e)
+            {
+
+            }
+
+            try
+            {
+                await Task.Run(async () =>
+                {
+                    int labelCount = 0;
+                    foreach (var file in _files)
+                    {
+                        _progressCallback(labelCount, _files.Count);
+                        labelCount++;
+                        await Task.Delay(10);
+
+                        Mat sourceImage = null;
+                        if (_isGray == true)
+                            sourceImage = new Mat(file, ImreadModes.Grayscale);
+                        else
+                            sourceImage = new Mat(file, ImreadModes.Color);
+
+                        for(int index =0; index < _repeatCount; index++)
+                        {
+                            string fileName = _outputFolder + Path.DirectorySeparatorChar + index.ToString() + "_" + DateTime.Now.ToString("yyyyMMddHHmmssFFF") + ".jpg";
+
+                            Random random = new Random();
+                            int startX = random.Next(0, _imageWidth - _patchWidth);
+                            int startY = random.Next(0, _imageHeight - _patchHeight);
+
+                            Mat resizeLabel = sourceImage.Resize(new Size(_imageWidth, _imageHeight));
+                            var boxImage = new Mat(resizeLabel, new Rect(startX, startY, _patchWidth, _patchHeight));
+
+                            boxImage.SaveImage(fileName);
                         }
                     }
                 });

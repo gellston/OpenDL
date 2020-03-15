@@ -16,6 +16,17 @@ namespace OpenDL.Service
             string checkPath = SegmentationPureModelContainerPath;
             checkPath = SegmentationTrainedModelContainerPath;
             checkPath = SegmentationTrainedModelUnzipPath;
+
+            checkPath = ClassificationPureModelContainerPath;
+            checkPath = ClassificationTrainedModelContainerPath;
+            checkPath = ClassificationTrainedModelUnzipPath;
+
+
+            checkPath = AnomalyPureModelContainerPath;
+            checkPath = AnomalyTrainedModelContainerPath;
+            checkPath = AnomalyTrainedModelUnzipPath;
+
+
             checkPath = FreezeUnzipPath;
             checkPath = TensorflowPackagePath;
             checkPath = PackageZipPath;
@@ -169,6 +180,45 @@ namespace OpenDL.Service
                     Directory.CreateDirectory(classificationTrainedModelUnzipPath);
 
                 return classificationTrainedModelUnzipPath;
+            }
+        }
+
+
+
+        // AnomalyDetection Path 
+        public string AnomalyPureModelContainerPath
+        {
+            get
+            {
+                string anomalyModelContainerPath = this.BaseDirectory + Path.DirectorySeparatorChar + "AnomalyPureModelContainer";
+                if (!Directory.Exists(anomalyModelContainerPath))
+                    Directory.CreateDirectory(anomalyModelContainerPath);
+                
+                return anomalyModelContainerPath;
+            }
+        }
+
+        public string AnomalyTrainedModelContainerPath
+        {
+            get
+            {
+                string anomalyModelContainerPath = this.BaseDirectory + Path.DirectorySeparatorChar + "AnomalyTrainedModelContainer";
+                if (!Directory.Exists(anomalyModelContainerPath))
+                    Directory.CreateDirectory(anomalyModelContainerPath);
+                
+                return anomalyModelContainerPath;
+            }
+        }
+
+        public string AnomalyTrainedModelUnzipPath
+        {
+            get
+            {
+                string anomalyTrainedModelUnzipPath = this.BaseDirectory + Path.DirectorySeparatorChar + "AnomalyTrainedModelUnzipPath";
+                if (!Directory.Exists(anomalyTrainedModelUnzipPath))
+                    Directory.CreateDirectory(anomalyTrainedModelUnzipPath);
+
+                return anomalyTrainedModelUnzipPath;
             }
         }
 

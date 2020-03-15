@@ -38,6 +38,9 @@
                     <DataTemplate DataType="{x:Type viewModel:ClassificationAugmentViewModel}">
                         <view:ClassificationAugmentView></view:ClassificationAugmentView>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type viewModel:AnomalyAugmentViewModel}">
+                        <view:AnomalyAugmentView></view:AnomalyAugmentView>
+                    </DataTemplate>
                 </ContentPresenter.Resources>
             </ContentPresenter>
         </Popup>

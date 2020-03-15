@@ -268,60 +268,67 @@ namespace OpenDL.ViewModel
                         Application.Current.Dispatcher.Invoke(() =>
                         {
 
-                            //그래프 및 스코어 업데이트
-                            this.BestSamplePreviewScore = bestScore;
-                            this.WorstSamplePreviewScore = worstScore;
-
-                            this.TrainCostCollection.Add(new LinePlotInfo()
+                            try
                             {
-                                Step = epoch,
-                                Value = totalTrainCost
-                            });
+                                //그래프 및 스코어 업데이트
+                                this.BestSamplePreviewScore = bestScore;
+                                this.WorstSamplePreviewScore = worstScore;
 
-                            this.TrainAccuracyCollection.Add(new LinePlotInfo()
-                            {
-                                Step = epoch,
-                                Value = totalTrainAccuracy
-                            });
+                                this.TrainCostCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalTrainCost
+                                });
 
-                            this.ValidationCostCollection.Add(new LinePlotInfo()
-                            {
-                                Step = epoch,
-                                Value = totalValidationCost
-                            });
+                                this.TrainAccuracyCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalTrainAccuracy
+                                });
 
-                            this.ValidationAccuracyCollection.Add(new LinePlotInfo()
-                            {
-                                Step = epoch,
-                                Value = totalValidationAccuracy
-                            });
+                                this.ValidationCostCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalValidationCost
+                                });
 
-                            this.CurrentAccuracy = totalValidationAccuracy;
-                            this.CurrentLoss = totalValidationCost;
+                                this.ValidationAccuracyCollection.Add(new LinePlotInfo()
+                                {
+                                    Step = epoch,
+                                    Value = totalValidationAccuracy
+                                });
 
-                            // 이미지 업데이트
-                            ObservableCollection<SegmentPreviewItem> bestOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
-                                                                                                                         bestNDArray,
-                                                                                                                         bestNDOutput[0],
-                                                                                                                         this.imageWidth,
-                                                                                                                         this.imageHeight,
-                                                                                                                         this.imageChannel);
+                                this.CurrentAccuracy = totalValidationAccuracy;
+                                this.CurrentLoss = totalValidationCost;
 
-                            ObservableCollection<SegmentPreviewItem> worstOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
-                                                                                                                                                     worstNDArray,
-                                                                                                                                                     worstNDOutput[0],
-                                                                                                                                                     this.imageWidth,
-                                                                                                                                                     this.imageHeight,
-                                                                                                                                                     this.imageChannel);
+                                // 이미지 업데이트
+                                ObservableCollection<SegmentPreviewItem> bestOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
+                                                                                                                             bestNDArray,
+                                                                                                                             bestNDOutput[0],
+                                                                                                                             this.imageWidth,
+                                                                                                                             this.imageHeight,
+                                                                                                                             this.imageChannel);
 
-                            foreach (var item in bestOutputCollection)
-                            {
-                                this.BestSamplePreviewCollection.Add(item);
+                                ObservableCollection<SegmentPreviewItem> worstOutputCollection = this.trainSampleLoaderService.ExtractSetmentImagesFromNDArray(this.segmentLabelInfo,
+                                                                                                                                                         worstNDArray,
+                                                                                                                                                         worstNDOutput[0],
+                                                                                                                                                         this.imageWidth,
+                                                                                                                                                         this.imageHeight,
+                                                                                                                                                         this.imageChannel);
+
+                                foreach (var item in bestOutputCollection)
+                                {
+                                    this.BestSamplePreviewCollection.Add(item);
+                                }
+
+                                foreach (var item in worstOutputCollection)
+                                {
+                                    this.WorstSamplePreviewCollection.Add(item);
+                                }
                             }
-
-                            foreach (var item in worstOutputCollection)
+                            catch(Exception e)
                             {
-                                this.WorstSamplePreviewCollection.Add(item);
+
                             }
 
                         });

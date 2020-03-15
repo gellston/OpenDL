@@ -43,6 +43,10 @@ namespace OpenDL.ViewModel
                 case "Classification":
                     this.ManagementViewModel = SimpleIoc.Default.GetInstance<ClassificationModelManagementViewModel>();
                     break;
+
+                default:
+                    this.ManagementViewModel = null;
+                    break;
             };
         }
     }

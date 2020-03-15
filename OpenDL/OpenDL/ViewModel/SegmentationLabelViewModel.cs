@@ -212,9 +212,10 @@ namespace OpenDL.ViewModel
                 {
                     _OpenAugmentationCommand = new RelayCommand(() =>
                     {
-                        Messenger.Default.Send<SegmentAugmentationMessage>(new SegmentAugmentationMessage()
+                        Messenger.Default.Send<AugmentationMessage>(new AugmentationMessage()
                         {
-                            Message = "Open"
+                            Message = "Open",
+                            ViewModelType = "Segmentation"
                         });
                     });
                 }
