@@ -610,7 +610,7 @@ namespace OpenDL.Service
                             segmenTrainSampleCollection.Add(info);
                         });
 
-                        await Task.Delay(10);
+                        //await Task.Delay(10);
                     }
                 });
             }
@@ -684,7 +684,7 @@ namespace OpenDL.Service
                             {
                                 classTrainSampleCollection.Add(info);
                             });
-                            await Task.Delay(10);
+                            //await Task.Delay(10);
                         }
                     }
                 });
@@ -755,7 +755,7 @@ namespace OpenDL.Service
                         {
                             classTrainSampleCollection.Add(info);
                         });
-                        await Task.Delay(10);
+                        //await Task.Delay(1);
                     }
                 });
             }
