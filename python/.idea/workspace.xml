@@ -16,7 +16,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoderV2-train.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="208">
+            <state relative-caret-position="475">
               <caret line="48" selection-start-line="48" selection-end-line="48" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -26,75 +26,9 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/util/anogan_dataloader.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="484">
-              <caret line="54" column="21" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoderV2-prediction.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="253">
-              <caret line="11" selection-start-line="11" selection-end-line="11" />
-              <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/model/model_anomalydetection_SSIMAUTOV2.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1495">
-              <caret line="10" column="39" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/model/model_classification_LightVTNet.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="437">
-              <caret line="69" column="26" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="26" />
-              <folding>
-                <element signature="e#0#23#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python/Lib/site-packages/tensorflow/python/training/saver.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="32499">
-              <caret line="1448" selection-start-line="1448" selection-end-line="1448" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://C:/Python/Lib/site-packages/tensorflow/python/framework/meta_graph.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15042">
-              <caret line="683" selection-start-line="683" selection-end-line="683" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/model/model_classification_MobileNetV2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="920">
+            <state relative-caret-position="826">
               <caret line="42" column="90" selection-start-line="42" selection-start-column="90" selection-end-line="42" selection-end-column="90" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -104,10 +38,94 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/model/model_segmentation_HySegnetV1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-253">
+              <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/model/model_segmentation_HySegnetV2.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2875">
+              <caret line="125" lean-forward="true" selection-start-line="125" selection-end-line="125" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/work/tensorflow-MobileNetV2-train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="138">
+              <caret line="6" selection-start-line="6" selection-end-line="6" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/work/tensorflow-centernet-train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-943">
+              <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/work/tensorflow-LightVTNet-train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/work/tensorflow-HySegnetV1-train.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="192">
+              <caret line="43" selection-start-line="43" selection-end-line="43" />
+              <folding>
+                <element signature="e#0#23#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/util/segmentation_dataloader_v1.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="606">
+              <caret line="44" column="81" selection-start-line="44" selection-start-column="81" selection-end-line="44" selection-end-column="81" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/util/helper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="14766">
-              <caret line="643" column="36" selection-start-line="643" selection-start-column="28" selection-end-line="643" selection-end-column="36" />
+            <state relative-caret-position="761">
+              <caret line="670" selection-start-line="670" selection-end-line="670" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -126,10 +144,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>conv_elu_bn</find>
-      <find>trainset_load</find>
-      <find>validation_label_info</find>
-      <find>expand</find>
       <find>extract_box_from_featuremaps</find>
       <find>stage32_1</find>
       <find>deconv_elu_bn</find>
@@ -140,11 +154,9 @@
       <find>validationset_load</find>
       <find>average_pooling2d</find>
       <find>pool</find>
-      <find>concat</find>
       <find>_res_bottlenect</find>
       <find>residual3</find>
       <find>conv2d</find>
-      <find>upsample</find>
       <find>conv_block</find>
       <find>depthwise_conv2d</find>
       <find>feature_channels</find>
@@ -156,6 +168,12 @@
       <find>train</find>
       <find>generator</find>
       <find>get_accuracy</find>
+      <find>residual</find>
+      <find>concat</find>
+      <find>sepa</find>
+      <find>upsample</find>
+      <find>conv_joint1</find>
+      <find>max_pool2d</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -189,7 +207,6 @@
         <option value="$PROJECT_DIR$/model/model_HySegnetV1.py" />
         <option value="$PROJECT_DIR$/../../DeepLearningExamples/tensorflow-mobile-person_segmentation-train-v3.py" />
         <option value="$PROJECT_DIR$/model/model_segmentation_HySegnetV1.py" />
-        <option value="$PROJECT_DIR$/util/segmentation_dataloader_v1.py" />
         <option value="$PROJECT_DIR$/work/tensorflow-LightVTNet-train.py" />
         <option value="$PROJECT_DIR$/model/model_classification_MobileNetV2.py" />
         <option value="$PROJECT_DIR$/work/tensorflow-MobileNetV2-train.py" />
@@ -198,24 +215,26 @@
         <option value="$PROJECT_DIR$/util/dataloader.py" />
         <option value="$PROJECT_DIR$/model/model_anomalydetection_anogan.py" />
         <option value="$PROJECT_DIR$/work/tensorflow-anogan-train.py" />
-        <option value="$PROJECT_DIR$/work/tensorflow-HySegnetV1-train.py" />
         <option value="$PROJECT_DIR$/model/model_anomalydetection_SSMIAUTO.py" />
         <option value="$PROJECT_DIR$/work/tensorflow-ssimAutoencoder-train.py" />
         <option value="$PROJECT_DIR$/work/randomPatchGenerator.py" />
         <option value="$PROJECT_DIR$/util/randomPatchGenerator.py" />
         <option value="$PROJECT_DIR$/work/pathcGenerator.py" />
         <option value="$PROJECT_DIR$/util/anogan_dataloader.py" />
-        <option value="$PROJECT_DIR$/util/helper.py" />
         <option value="$PROJECT_DIR$/model/model_anomalydetection_SSMIAUTOV2.py" />
         <option value="$PROJECT_DIR$/model/model_anomalydetection_SSIMAUTOV2.py" />
         <option value="$PROJECT_DIR$/work/tensorflow-ssimAutoencoderV2-train.py" />
         <option value="$PROJECT_DIR$/work/tensorflow-ssimAutoencoder-prediction.py" />
+        <option value="$PROJECT_DIR$/util/segmentation_dataloader_v1.py" />
+        <option value="$PROJECT_DIR$/work/tensorflow-HySegnetV1-train.py" />
+        <option value="$PROJECT_DIR$/model/model_segmentation_HySegnetV2.py" />
+        <option value="$PROJECT_DIR$/util/helper.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="111" />
-    <option name="y" value="73" />
+    <option name="x" value="6" />
+    <option name="y" value="103" />
     <option name="width" value="1058" />
     <option name="height" value="901" />
   </component>
@@ -282,8 +301,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.tensorflow-ssimAutoencoderV2-train">
-    <configuration name="pathcGenerator" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.tensorflow-HySegnetV1-train">
+    <configuration name="model_segmentation_HySegnetV2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="python" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -291,11 +310,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/work" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/model" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/pathcGenerator.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/model/model_segmentation_HySegnetV2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -304,7 +323,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="tensorflow-anogan-train" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="tensorflow-HySegnetV1-train" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="python" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -316,7 +335,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/tensorflow-anogan-train.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/tensorflow-HySegnetV1-train.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -325,7 +344,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="tensorflow-ssimAutoencoder-prediction" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="tensorflow-LightVTNet-train" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="python" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -337,7 +356,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Github\OpenDL\python\work\tensorflow-ssimAutoencoderV2-prediction.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/tensorflow-LightVTNet-train.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -346,7 +365,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="tensorflow-ssimAutoencoder-train" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="tensorflow-MobileNetV2-train" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="python" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -358,7 +377,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/tensorflow-ssimAutoencoder-train.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/tensorflow-MobileNetV2-train.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -389,19 +408,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.pathcGenerator" />
-      <item itemvalue="Python.tensorflow-anogan-train" />
-      <item itemvalue="Python.tensorflow-ssimAutoencoder-prediction" />
-      <item itemvalue="Python.tensorflow-ssimAutoencoder-train" />
       <item itemvalue="Python.tensorflow-ssimAutoencoderV2-train" />
+      <item itemvalue="Python.tensorflow-HySegnetV1-train" />
+      <item itemvalue="Python.tensorflow-MobileNetV2-train" />
+      <item itemvalue="Python.model_segmentation_HySegnetV2" />
+      <item itemvalue="Python.tensorflow-LightVTNet-train" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tensorflow-HySegnetV1-train" />
+        <item itemvalue="Python.tensorflow-LightVTNet-train" />
+        <item itemvalue="Python.model_segmentation_HySegnetV2" />
+        <item itemvalue="Python.tensorflow-MobileNetV2-train" />
         <item itemvalue="Python.tensorflow-ssimAutoencoderV2-train" />
-        <item itemvalue="Python.tensorflow-ssimAutoencoder-prediction" />
-        <item itemvalue="Python.pathcGenerator" />
-        <item itemvalue="Python.tensorflow-ssimAutoencoder-train" />
-        <item itemvalue="Python.tensorflow-anogan-train" />
       </list>
     </recent_temporary>
   </component>
@@ -430,11 +449,11 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.5770065" visible="true" weight="0.25763962" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.5770065" visible="true" weight="0.26765016" />
       <window_info id="Structure" order="1" sideWeight="0.42299348" side_tool="true" weight="0.15384616" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49947312" weight="0.329718" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6345109" weight="0.61496747" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.6345109" weight="0.21908894" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.6253952" weight="0.28965518" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -630,7 +649,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/Downloads/캡쳐_GIT JK1_NE COMPARE/Segmentation 스크립트 코드/models/model_custom_mobile_segmentation_v3.py" />
     <entry file="file://$PROJECT_DIR$/model/model_objectdetection_atrous_centernet.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="834">
@@ -655,16 +673,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="276">
           <caret line="30" selection-start-line="30" selection-end-line="56" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/model_objectdetection_centernet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2154">
-          <caret line="124" column="54" selection-start-line="124" selection-start-column="54" selection-end-line="124" selection-end-column="54" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -706,43 +714,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-422">
           <caret line="505" selection-start-line="505" selection-end-line="505" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/work/tensorflow-MobileNetV2-train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="529">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/work/tensorflow-LightVTNet-train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/model_objectdetection_atrous_centernet_v2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="136" column="123" lean-forward="true" selection-start-line="136" selection-start-column="112" selection-end-line="136" selection-end-column="123" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/model_segmentation_HySegnetV1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="109" column="105" selection-start-line="109" selection-start-column="66" selection-end-line="109" selection-end-column="105" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -800,16 +771,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/work/tensorflow-centernet-train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="23">
-          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/work/tensorflow-anogan-train.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="23">
@@ -834,23 +795,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/model_anomalydetection_SSMIAUTO.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1748">
-          <caret line="80" selection-end-line="142" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/work/tensorflow-HySegnetV1-train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="207">
-          <caret line="15" column="22" selection-start-line="15" selection-start-column="22" selection-end-line="15" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/model/model_anomalydetection_SSMIAUTO.py" />
     <entry file="file://$PROJECT_DIR$/work/tensorflow-LightVTNet-predict.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="345">
@@ -935,16 +880,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/util/segmentation_dataloader_v1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="30" column="34" lean-forward="true" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/work/pathcGenerator.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="207">
@@ -965,16 +900,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoder-train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-575">
-          <caret line="8" selection-start-line="8" selection-end-line="8" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoder-train.py" />
     <entry file="file://C:/Python/Lib/site-packages/tensorflow/python/framework/tensor_shape.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="117">
@@ -986,6 +912,36 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="109">
           <caret line="2826" selection-start-line="2826" selection-end-line="2826" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/anogan_dataloader.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="54" column="21" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoderV2-prediction.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="69">
+          <caret line="11" selection-start-line="11" selection-end-line="11" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/model_classification_LightVTNet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1541">
+          <caret line="69" column="26" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="26" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1003,10 +959,97 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/model/model_anomalydetection_SSIMAUTOV2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="12" column="22" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/model_objectdetection_centernet.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1550">
+          <caret line="124" column="54" selection-start-line="124" selection-start-column="54" selection-end-line="124" selection-end-column="54" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/model/model_objectdetection_atrous_centernet_v2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="851">
+          <caret line="136" column="123" selection-start-line="136" selection-start-column="112" selection-end-line="136" selection-end-column="123" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/model/model_classification_MobileNetV2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="920">
+        <state relative-caret-position="826">
           <caret line="42" column="90" selection-start-line="42" selection-start-column="90" selection-end-line="42" selection-end-column="90" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoderV2-train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="48" selection-start-line="48" selection-end-line="48" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/work/tensorflow-LightVTNet-train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="276">
+          <caret line="15" column="41" selection-start-line="15" selection-start-column="41" selection-end-line="15" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/work/tensorflow-centernet-train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-943">
+          <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/work/tensorflow-MobileNetV2-train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="138">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/util/segmentation_dataloader_v1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="606">
+          <caret line="44" column="81" selection-start-line="44" selection-start-column="81" selection-end-line="44" selection-end-column="81" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/work/tensorflow-HySegnetV1-train.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
@@ -1015,58 +1058,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/util/helper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14766">
-          <caret line="643" column="36" selection-start-line="643" selection-start-column="28" selection-end-line="643" selection-end-column="36" />
+        <state relative-caret-position="761">
+          <caret line="670" selection-start-line="670" selection-end-line="670" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/model/model_classification_LightVTNet.py">
+    <entry file="file://$PROJECT_DIR$/model/model_segmentation_HySegnetV1.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="437">
-          <caret line="69" column="26" selection-start-line="69" selection-start-column="17" selection-end-line="69" selection-end-column="26" />
+        <state relative-caret-position="-253">
+          <caret line="16" column="41" selection-start-line="16" selection-start-column="41" selection-end-line="16" selection-end-column="41" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoderV2-prediction.py">
+    <entry file="file://$PROJECT_DIR$/model/model_segmentation_HySegnetV2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/work/tensorflow-ssimAutoencoderV2-train.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="208">
-          <caret line="48" selection-start-line="48" selection-end-line="48" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/util/anogan_dataloader.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="484">
-          <caret line="54" column="21" selection-start-line="54" selection-start-column="21" selection-end-line="54" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/model/model_anomalydetection_SSIMAUTOV2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1495">
-          <caret line="10" column="39" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="39" />
+        <state relative-caret-position="2875">
+          <caret line="125" lean-forward="true" selection-start-line="125" selection-end-line="125" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>

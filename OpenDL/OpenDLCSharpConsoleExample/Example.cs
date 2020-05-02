@@ -1,13 +1,14 @@
 ﻿
-/* 
- * Segmentation 예제
- * Segmentation 예제
- * Segmentation 예제
- * 
- * 
- * 
+
+ //* Segmentation 예제
+ //* Segmentation 예제
+ //* Segmentation 예제
+ //* 
+ //* 
+ //* 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,32 +20,51 @@ namespace OpenDLCSharpConsoleExample
     {
         static void Main(string[] args)
         {
+
+
+            ODL.IODSegmentationSharp segmentation = ODL.ODSegmentationFactorySharp.SegmentatorLoader("C://Users//wantr//Desktop//ApoxyDetector//ApoxyDetector.frz",
+                                                                                         "C://Users//wantr//Desktop//ApoxyDetector//__FreezeModelInfo.xml");
+
+
             Cv2.NamedWindow("original");
             Cv2.NamedWindow("result");
+            Cv2.NamedWindow("Thinning");
+
+            var files = Directory.GetFiles("D://검사 이미지//dispensing image", "*.jpg");
 
 
-            Mat image = new Mat("C://Github//OpenDL//sampleImage//segmentationSample.jpg");
-            Mat result = new Mat(new Size(256, 256), MatType.CV_32FC1);
-            Mat convertedDepth = new Mat();
+            foreach(var file in files)
+            {
+                Mat image = new Mat(file, ImreadModes.Grayscale);
+                image = image.Resize(new Size(512, 512));
+                Mat result = new Mat(new Size(512, 512), MatType.CV_32FC1);
+                Mat convertedDepth = new Mat();
 
-            ODL.IODSegmentationSharp segmentation = ODL.ODSegmentationFactorySharp.SegmentatorLoader("C://Github//OpenDL//OpenDL//x64//Release//FaceDetector.frz",
-                                                                                                     "C://Github//OpenDL//OpenDL//x64//Release//__FreezeModelInfo.xml");
 
-            segmentation.Run(image.Data, result.Data);
+                segmentation.Run(image.Data, result.Data);
 
-            System.Console.WriteLine("label count :" + segmentation.GetLabelCount());
+                //////System.Console.WriteLine("label count :" + segmentation.GetLabelCount());
 
-            Mat threshold = result.Threshold(0.8, 255, ThresholdTypes.Binary);
-            threshold.ConvertTo(convertedDepth, MatType.CV_8UC1);
+                Mat threshold = result.Threshold(0.5, 255, ThresholdTypes.Binary);
+                threshold.ConvertTo(convertedDepth, MatType.CV_8UC1);
 
-            Cv2.ImShow("original", image);
-            Cv2.ImShow("result", convertedDepth);
-            Cv2.WaitKey();
+                Mat thinning = new Mat(new Size(threshold.Width, threshold.Height), MatType.CV_8UC1);
+                OpenCvSharp.XImgProc.CvXImgProc.Thinning(convertedDepth, thinning);
+
+                Cv2.ImShow("original", image);
+                Cv2.ImShow("result", convertedDepth);
+                Cv2.ImShow("Thinning", thinning);
+                Cv2.WaitKey(1);
+            }
+
+            
         }
     }
 }
-*/
 
+
+
+/*
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -91,4 +111,4 @@ namespace OpenDLCSharpConsoleExample
             Cv2.WaitKey();
         }
     }
-}
+}*/

@@ -1,5 +1,5 @@
 ﻿
-# OpenDL 1.3
+# OpenDL 1.4
 
 
 #### 데모영상
@@ -245,6 +245,18 @@ namespace OpenDLCSharpConsoleExample
  4. 메뉴얼 업데이트 및 예제 업데이트
  
 ---
+#### 1.4 Release Note
+
+* 업데이트 리스트  
+
+```
+1. Tensorflow 1.15 업데이트
+   
+2. HySegNetV2 모델 추가
+   - 입력 이미지 사이즈 : 512x512x1
+   - 아웃풋 라벨 갯수 : 1
+
+```
 #### 1.3 Release Note
 
 * 업데이트 리스트  

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import cv2 as cv2
 import numpy as np
 
-from model.model_segmentation_HySegnetV1 import model_segmentation_HySegnetV1
+from model.model_segmentation_HySegnetV2 import model_segmentation_HySegnetV2
 from util.segmentation_dataloader_v1 import segmentation_dataloader_v1
 
 train_loader = segmentation_dataloader_v1('C://Github//OpenDL//python//dataset//portrait_segmentation_train_input256x256//', 'C://Github//OpenDL//python//dataset//portrait_segmentation_train_label256x256//')
@@ -17,7 +17,7 @@ target_accuracy = 0.90
 learning_rate = 0.003
 
 sess = tf.Session()
-model = model_segmentation_HySegnetV1(sess=sess, name="model_segmentation_HySegnetV1")
+model = model_segmentation_HySegnetV2(sess=sess, name="model_segmentation_HySegnetV2")
 
 global_variable_initializer = tf.compat.v1.global_variables_initializer()
 print('global variable initializer name : ', global_variable_initializer.name)
@@ -25,8 +25,8 @@ sess.run(global_variable_initializer)
 
 ## save model file
 saver = tf.compat.v1.train.Saver()
-saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_segmentation_HySegnetV1/model_segmentation_HySegnetV1')
-tf.train.write_graph(sess.graph_def, "", 'C:/Github/OpenDL/python/pretrained-model/model_segmentation_HySegnetV1/model_segmentation_HySegnetV1.pbtxt', as_text=True)
+saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_segmentation_HySegnetV1/model_segmentation_HySegnetV2')
+tf.train.write_graph(sess.graph_def, "", 'C:/Github/OpenDL/python/pretrained-model/model_segmentation_HySegnetV1/model_segmentation_HySegnetV2.pbtxt', as_text=True)
 
 
 cost_graph = []
@@ -41,7 +41,7 @@ for step in range(train_epoch):
     accuracy = 0
     for batch in range(total_batch):
         #train_loader.clear()
-        input_images, input_labels = train_loader.load([256, 256, 3], [256, 256, 1], 1, 255, batch_size)
+        input_images, input_labels = train_loader.load([1024, 1024, 1], [1024, 1024, 1], 1, 255, batch_size)
 
         if input_images is None:
             train_loader.clear()
@@ -52,7 +52,7 @@ for step in range(train_epoch):
 
     validation_loader.clear()
     for validation_step in range(100):
-        validation_images, validation_labels = validation_loader.load([256, 256, 3], [256, 256, 1], 1, 255, 1)
+        validation_images, validation_labels = validation_loader.load([1024, 1024, 1], [1024, 1024, 1], 1, 255, 1)
         accuracy = model.get_accuracy(validation_images, validation_labels, keep_prop=False)
         avg_accuracy += (accuracy / 100)
         print('Validation Step: ', '%04d' % (validation_step + 1), ' step accuracy = ', '{:.9f}'.format(accuracy),)

@@ -33,7 +33,7 @@ class segmentation_dataloader_v1:
                 return (None, None)
 
             image_path = self.input_images_paths[self.currentIndex + index]
-            image = cv2.imread(image_path).astype(np.uint8)
+            image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE).astype(np.uint8)
             npImage = np.array(image)
             npImage = npImage / devide1
             npImage = npImage.flatten().reshape(shape1)

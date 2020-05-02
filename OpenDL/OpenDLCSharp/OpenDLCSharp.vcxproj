@@ -113,11 +113,11 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Github\OpenDL\OpenDL\OpenDLCplus;C:\Github\Library\libtensorflow-gpu-windows-x86_64-1.14.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Github\OpenDL\OpenDL\OpenDLCplus;C:\Github\Library\libtensorflow-gpu-windows-x86_64-1.15.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>tensorflow.lib;OpenDLCplus.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Github\Library\libtensorflow-gpu-windows-x86_64-1.14.0\lib;C:\Github\OpenDL\OpenDL\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Github\Library\libtensorflow-gpu-windows-x86_64-1.15.0\lib;C:\Github\OpenDL\OpenDL\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

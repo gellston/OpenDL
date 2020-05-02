@@ -648,3 +648,26 @@ def UPSAMPLING(name, input, multiple=2):
         x = tf.image.resize_nearest_neighbor(input, size=(height * multiple, width * multiple))
         print('UPSAMPLING', x)
         return x
+
+
+########################################## Dilate Layer #####################################################################
+
+
+def atrus_conv(X_input, kernel_size, num_filter, dilate_rate, training, name="atrous_conv"):
+    with tf.variable_scope(name):
+        conv1 = tf.compat.v1.layers.separable_conv2d(inputs=X_input, filters=num_filter, kernel_size=[kernel_size, kernel_size], padding="SAME",
+                                           use_bias=False, strides=1,
+                                           pointwise_initializer=tf.compat.v1.variance_scaling_initializer(),
+                                           depthwise_initializer=tf.compat.v1.variance_scaling_initializer(),
+                                           dilation_rate=dilate_rate)
+
+        bm1 = tf.compat.v1.layers.batch_normalization(conv1, scale=True, center=True, momentum=0.9, training=training)
+        relu1 = tf.compat.v1.nn.relu(bm1)
+
+
+        print("atrusConvolution=", relu1)
+        return relu1
+
+
+
+
