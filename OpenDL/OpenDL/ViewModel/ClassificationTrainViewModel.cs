@@ -295,8 +295,10 @@ namespace OpenDL.ViewModel
                                     Value = totalValidationAccuracy
                                 });
 
-                                this.CurrentAccuracy = totalValidationAccuracy;
+                                this.CurrentValidationAccuracy = totalValidationAccuracy;
                                 this.CurrentLoss = totalValidationCost;
+
+                                this.CurrentTrainAccuracy = totalTrainAccuracy;
 
                                 // 이미지 업데이트
 
@@ -333,7 +335,7 @@ namespace OpenDL.ViewModel
                         });
 
                         // 학습 완료.
-                        if (this.CurrentAccuracy >= this.targetAccuracy)
+                        if (this.CurrentValidationAccuracy >= this.targetAccuracy && this.CurrentTrainAccuracy >= this.targetAccuracy)
                         {
                             saver.save(sess, configureService.ClassificationTrainedModelUnzipPath + Path.DirectorySeparatorChar + this.modelInfo.CheckFile, write_meta_graph: false);
                             sess.close();
@@ -635,11 +637,18 @@ namespace OpenDL.ViewModel
         }
 
 
-        private double _CurrentAccuracy = 0;
-        public double CurrentAccuracy
+        private double _CurrentValidationAccuracy = 0;
+        public double CurrentValidationAccuracy
         {
-            set => Set<double>(nameof(CurrentAccuracy), ref _CurrentAccuracy, value);
-            get => _CurrentAccuracy;
+            set => Set<double>(nameof(CurrentValidationAccuracy), ref _CurrentValidationAccuracy, value);
+            get => _CurrentValidationAccuracy;
+        }
+
+        private double _CurrentTrainAccuracy = 0;
+        public double CurrentTrainAccuracy
+        {
+            set => Set<double>(nameof(CurrentTrainAccuracy), ref _CurrentTrainAccuracy, value);
+            get => _CurrentTrainAccuracy;
         }
 
         private double _CurrentLoss = 0;

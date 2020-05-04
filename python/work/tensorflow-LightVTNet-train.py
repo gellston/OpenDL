@@ -1,7 +1,7 @@
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from util.dataloader import dataloader
-from model.model_classification_LightVTNet import model_classification_LightVTNet
+from model.model_classification_HyTrayNetV1 import model_classification_HyTrayNetV1
 #from model.model_classification_LightVTNet_Gray import model_classification_LightVTNet_Gray
 
 loader_train = dataloader('C://Github//OpenDL//python//dataset//animal-train-v1')
@@ -20,10 +20,10 @@ target_accuracy = 0.90
 
 sess = tf.compat.v1.Session()
 
-model1 = model_classification_LightVTNet(sess=sess, class_count=classCount)
+model1 = model_classification_HyTrayNetV1(sess=sess, class_count=3)
 
-writer = tf.summary.FileWriter("C:/Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/tensorboard", sess.graph)
-writer.close()
+#writer = tf.summary.FileWriter("C:/Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/tensorboard", sess.graph)
+#writer.close()
 
 
 ### gloal variable initializer
@@ -35,8 +35,8 @@ sess.run(global_initializer)
 ## save model file
 saver = tf.compat.v1.train.Saver()
 
-saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/LightVTNetColor')
-tf.train.write_graph(sess.graph_def, "", "C:/Github/OpenDL/python/pretrained-model/model_classification_LightVTNetColor/LightVTNetColor.pbtxt", as_text=True)
+saver.save(sess, 'C:/Github/OpenDL/python/pretrained-model/model_classification_HyTrayNetV1/HyTrayNetV1')
+tf.train.write_graph(sess.graph_def, "", "C:/Github/OpenDL/python/pretrained-model/model_classification_HyTrayNetV1/HyTrayNetV1.pbtxt", as_text=True)
 
 
 print('learning started')

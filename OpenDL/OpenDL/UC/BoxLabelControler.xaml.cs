@@ -83,9 +83,27 @@ namespace OpenDL.UC
 
                 control.CanvasWidth = image.Width;
                 control.CanvasHeight = image.Height;
-                control.TranslationX = 0;
-                control.TranslationY = 0;
-                control.Zoom = 1;
+                control.Zoom = (image.Width > image.Height ? (control.ActualWidth / image.Width) : (control.ActualHeight / image.Height));
+                control.ZoomMax = control.Zoom * 20;
+                control.ZoomMin = control.Zoom / 20;
+                control.ZoomStep = (control.ZoomMax - control.ZoomMin) / 40;
+
+
+                //control.TranslationX = 0;
+                //control.TranslationY = 0;
+
+                control.OutScrollViewer.UpdateLayout();
+
+                //double horizontalOffset = (Math.Abs(control.ActualWidth - image.Width) * control.Zoom) / 2;
+                //double verticalOffset = (Math.Abs(control.ActualHeight - image.Height) * control.Zoom) / 2;
+
+                //control.OutScrollViewer.ScrollToHorizontalOffset(horizontalOffset);
+                //control.OutScrollViewer.ScrollToVerticalOffset(verticalOffset);
+
+
+
+                control.OutScrollViewer.ScrollToVerticalOffset(control.OutScrollViewer.ScrollableHeight / 2);
+                control.OutScrollViewer.ScrollToHorizontalOffset(control.OutScrollViewer.ScrollableWidth / 2);
             }
         }
 
@@ -256,31 +274,11 @@ namespace OpenDL.UC
 
 
 
-        private void ChildCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var draggableControl = sender as Canvas;
-            if (draggableControl.IsMouseCaptured == true)
-                return;
-
-            if (e.Delta > 0)
-            {
-                this.Zoom -= this.ZoomStep;
-                if (this.Zoom <= this.ZoomMin)
-                    this.Zoom = this.ZoomMin;
-            }
-            else
-            {
-                this.Zoom += this.ZoomStep;
-                if (this.Zoom >= this.ZoomMax)
-                    this.Zoom = this.ZoomMax;
-
-            }
-        }
 
         private Point CanvasStart;
         private Point CanvasOrigin;
         private bool IsRectSelected = false;
-
+        private bool IsCanvasCaptured = false;
         private void ChildCanvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point pressedPoint = e.GetPosition(sender as IInputElement);
@@ -306,6 +304,7 @@ namespace OpenDL.UC
 
                 var draggableControl = sender as Canvas;
                 draggableControl.CaptureMouse();
+                IsCanvasCaptured = true;
                 return;
             }
 
@@ -391,6 +390,7 @@ namespace OpenDL.UC
             canvas.ReleaseMouseCapture();
             this.SelectedItem = null;
             this.IsRectSelected = false;
+            this.IsCanvasCaptured = false;
         }
 
         private void UserControl_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -417,6 +417,32 @@ namespace OpenDL.UC
                 this.SelectedItem = label;
                 this.BoxCollection.Add(this.SelectedItem);
             }
+        }
+
+        private void OutScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+            e.Handled = true;
+
+            //var draggableControl = sender as Canvas;
+            if (this.IsMouseCaptured == true)
+                return;
+
+            if (e.Delta > 0)
+            {
+                this.Zoom -= this.ZoomStep;
+                if (this.Zoom <= this.ZoomMin)
+                    this.Zoom = this.ZoomMin;
+            }
+            else
+            {
+                this.Zoom += this.ZoomStep;
+                if (this.Zoom >= this.ZoomMax)
+                    this.Zoom = this.ZoomMax;
+
+            }
+            OutScrollViewer.ScrollToVerticalOffset(OutScrollViewer.ScrollableHeight / 2);
+            OutScrollViewer.ScrollToHorizontalOffset(OutScrollViewer.ScrollableWidth / 2);
         }
     }
 }

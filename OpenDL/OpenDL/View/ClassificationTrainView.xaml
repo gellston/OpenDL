@@ -71,7 +71,7 @@
                      VerticalAlignment="Stretch"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
-                     Text="{Binding CurrentAccuracy, Converter={StaticResource DoubleToStringPercentConverter}}"
+                     Text="{Binding CurrentValidationAccuracy, Converter={StaticResource DoubleToStringPercentConverter}}"
                      Grid.Column="3">
             </TextBox>
 

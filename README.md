@@ -1,5 +1,5 @@
 ﻿
-# OpenDL 1.4
+# OpenDL 1.5
 
 
 #### 데모영상
@@ -245,6 +245,19 @@ namespace OpenDLCSharpConsoleExample
  4. 메뉴얼 업데이트 및 예제 업데이트
  
 ---
+#### 1.5 Release Note
+
+* 업데이트 리스트  
+
+```
+1. Classification 학습 정책 변경 
+   - train accuracy 값과 validation accuracy의 값이 target accuracy의 값을 넘을 때 완료
+   
+2. HyTrayNetV1 모델 추가
+   - 입력 이미지 사이즈 : 100x100x1
+   - 아웃풋 라벨 갯수 : 3
+
+```
 #### 1.4 Release Note
 
 * 업데이트 리스트  

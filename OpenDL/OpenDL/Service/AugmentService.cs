@@ -182,12 +182,13 @@ namespace OpenDL.Service
                         else
                             sourceImage = new Mat(unit.FilePath, ImreadModes.Color);
 
-                        
+                        System.Console.WriteLine(unit.FilePath);
                         foreach(var box in unit.Boxes)
                         {
                             if (box.X < 0 || box.Y < 0) continue;
                             if (box.X + box.Width >= sourceImage.Width) continue;
                             if (box.Y + box.Height >= sourceImage.Height) continue;
+                            if (box.Width < 0 | box.Height < 0) continue;
 
                             var labelObject = _boxes.Where(x => x.Name == box.Name).FirstOrDefault();
                             int index = _boxes.IndexOf(labelObject);
@@ -196,6 +197,7 @@ namespace OpenDL.Service
                             var boxImage = new Mat(sourceImage, new Rect((int)box.X, (int)box.Y, (int)box.Width, (int)box.Height));
                             Mat resizeLabel = boxImage.Resize(new Size(_imageWidth, _imageHeight));
                             resizeLabel.SaveImage(fileName);
+                            await Task.Delay(1);
                         }
                     }
                 });

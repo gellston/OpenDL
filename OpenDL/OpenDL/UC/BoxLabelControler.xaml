@@ -11,10 +11,10 @@
              Background="White" 
              MouseRightButtonDown="UserControl_MouseRightButtonDown"
              KeyDown="UserControl_KeyDown">
-    <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
-                  VerticalScrollBarVisibility="Disabled"
-                  HorizontalContentAlignment="Stretch"
-                  VerticalContentAlignment="Stretch">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                  VerticalScrollBarVisibility="Auto"
+                  Name="OutScrollViewer"
+                  PreviewMouseWheel="OutScrollViewer_PreviewMouseWheel">
         <ItemsControl ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=local:BoxLabelControler}, Path=BoxCollection, Mode=OneWay}">
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type model:ClassificationLabelBox}">
@@ -39,7 +39,6 @@
                     <Canvas Width="{Binding RelativeSource={RelativeSource AncestorType=local:BoxLabelControler}, Path=CanvasWidth, Mode=OneWay}" 
                             Height="{Binding RelativeSource={RelativeSource AncestorType=local:BoxLabelControler}, Path=CanvasHeight, Mode=OneWay}"
                             Name="ChildCanvas" 
-                            MouseWheel="ChildCanvas_MouseWheel"
                             MouseMove="ChildCanvas_MouseMove" 
                             MouseLeftButtonDown="ChildCanvas_MouseLeftButtonDown" 
                             MouseLeftButtonUp="ChildCanvas_MouseLeftButtonUp"

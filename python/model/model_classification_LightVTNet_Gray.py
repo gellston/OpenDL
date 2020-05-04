@@ -41,7 +41,6 @@ class model_classification_LightVTNet_Gray:
         net = inverted_bottle_neck(net, 6, 64, False, self.keep_layer, name="bottle_net2")
         net = inverted_bottle_neck(net, 6, 64, False, self.keep_layer, name="bottle_net3")
         net = inverted_bottle_neck(net, 6, 128, False, self.keep_layer, name="bottle_net4")
-
         net = inverted_bottle_neck(net, 6, 128, False, self.keep_layer, name="bottle_net5")
 
         with tf.variable_scope('conv2'):
