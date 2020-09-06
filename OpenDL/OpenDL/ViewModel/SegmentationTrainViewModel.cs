@@ -122,7 +122,8 @@ namespace OpenDL.ViewModel
 
                 try
                 {
-
+              
+                    
                     var graph = tf.Graph().as_default();
                     var saver = tf.train.import_meta_graph(configureService.SegmentationTrainedModelUnzipPath + Path.DirectorySeparatorChar + this.modelInfo.MetaFile);
                     var sess = tf.Session(graph);
@@ -443,7 +444,7 @@ namespace OpenDL.ViewModel
 
                         // 모델 로드
                         this.modelInfo = trainSampleLoaderService.LoadSegmentTrainModelInfo(unzipPath + Path.DirectorySeparatorChar + configureService.ModelInfoFileName);
-                        this.trainLabelOutput = this.modelInfo.MaxLabelCount;
+                        
 
                         // 타겟 모델 경로
                         this.preModelOutputPath = configureService.SegmentationTrainedModelContainerPath + Path.DirectorySeparatorChar + modelName;
@@ -455,6 +456,9 @@ namespace OpenDL.ViewModel
                             this.dialogService.ShowErrorMessage("Segmentation 모델 로드에 실패했습니다");
                             return;
                         }
+
+                        this.trainLabelOutput = this.modelInfo.MaxLabelCount;
+
 
                         if (File.Exists(this.preModelOutputPath) == true)
                         {

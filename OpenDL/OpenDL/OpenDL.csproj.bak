@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64</Platforms>
@@ -37,8 +37,8 @@
 
   <ItemGroup>
     <PackageReference Include="DevExpress.WindowsDesktop.Wpf" Version="19.2.*" />
-    <PackageReference Include="OpenCvSharp4.Windows" Version="4.4.0.20200725" />
-    <PackageReference Include="SciSharp.TensorFlow.Redist-Windows-GPU" Version="1.14.1" />
+    <PackageReference Include="OpenCvSharp3-AnyCPU" Version="4.0.0.20181129" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist-Windows-GPU" Version="1.15.1" />
     <PackageReference Include="TensorFlow.NET" Version="0.15.1" />
   </ItemGroup>
 
@@ -47,11 +47,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="DevExpress.Docs.v20.1">
-      <HintPath>..\..\..\..\Program Files (x86)\DevExpress 20.1\.NET Core Desktop Libraries\Bin\Standard\DevExpress.Docs.v20.1.dll</HintPath>
+    <Reference Include="DevExpress.Docs.v19.2">
+      <HintPath>..\..\..\..\Program Files (x86)\DevExpress 19.2\Components\Bin\Framework\DevExpress.Docs.v19.2.dll</HintPath>
     </Reference>
-    <Reference Include="DevExpress.Xpf.Themes.VS2019Dark.v20.1">
-      <HintPath>..\..\..\..\Program Files (x86)\DevExpress 20.1\.NET Core Desktop Libraries\Bin\NetCore\DevExpress.Xpf.Themes.VS2019Dark.v20.1.dll</HintPath>
+    <Reference Include="DevExpress.Xpf.Themes.VS2017Dark.v19.2">
+      <HintPath>..\..\..\..\Program Files (x86)\DevExpress 19.2\Components\Bin\Framework\DevExpress.Xpf.Themes.VS2017Dark.v19.2.dll</HintPath>
     </Reference>
   </ItemGroup>
 

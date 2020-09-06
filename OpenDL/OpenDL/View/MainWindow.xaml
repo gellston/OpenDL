@@ -15,7 +15,7 @@
         Width="800"
         DataContext="{Binding Source={StaticResource Locator},Path=MainViewModel}"
         Name="mainViewWindow"
-        dx:ThemeManager.ThemeName="VS2017Dark">
+        dx:ThemeManager.ThemeName="VS2019Dark">
 
     <dx:ThemedWindow.Resources>
         <dlConverter:IsNullConverter x:Key="IsNullConverter"></dlConverter:IsNullConverter>

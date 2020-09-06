@@ -87,13 +87,15 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Github\OpenDL\OpenDL\OpenDLCplus;C:\Github\Library\libtensorflow-gpu-windows-x86_64-1.15.0\include;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalDependencies />
+      <AdditionalDependencies>tensorflow.lib;OpenDLCplus.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Github\Library\libtensorflow-gpu-windows-x86_64-1.15.0\lib;C:\Github\OpenDL\OpenDL\x64\Release;</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

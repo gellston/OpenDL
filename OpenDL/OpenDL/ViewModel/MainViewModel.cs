@@ -33,7 +33,7 @@ namespace OpenDL.ViewModel
 
             MenuItems.Add(new MainMenu()
             {
-                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Business Objects/BO_Note.svg")), 1d, null, null, true),
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Business Objects/BO_Note.svg")), 1d, null, null, true),
                 Name = "릴리즈 노트",
                 MenuAction = new RelayCommand(() =>
                 {
@@ -43,7 +43,7 @@ namespace OpenDL.ViewModel
 
             MenuItems.Add(new MainMenu()
             {
-                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Icon Builder/Actions_Label.svg")), 1d, null, null, true),
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Icon Builder/Actions_Label.svg")), 1d, null, null, true),
                 Name = "라벨링",
                 MenuAction = new RelayCommand(() =>
                 {
@@ -53,7 +53,7 @@ namespace OpenDL.ViewModel
 
             MenuItems.Add(new MainMenu()
             {
-                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Business Objects/BO_Opportunity.svg")), 1d, null, null, true),
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Business Objects/BO_Opportunity.svg")), 1d, null, null, true),
                 Name = "트레이닝",
                 MenuAction = new RelayCommand(() =>
                 {
@@ -64,7 +64,7 @@ namespace OpenDL.ViewModel
 
             MenuItems.Add(new MainMenu()
             {
-                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Spreadsheet/ManageRelations.svg")), 1d, null, null, true),
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Spreadsheet/ManageRelations.svg")), 1d, null, null, true),
                 Name = "모델 관리",
                 MenuAction = new RelayCommand(() =>
                 {
@@ -282,7 +282,7 @@ namespace OpenDL.ViewModel
                 return new WorkTypeMenu()
                 {
                     Name = "선택되지 않음",
-                    Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Spreadsheet/ChartLegend_None.svg")), 1d, null, null, true)
+                    Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Spreadsheet/ChartLegend_None.svg")), 1d, null, null, true)
                 };
             }
         }

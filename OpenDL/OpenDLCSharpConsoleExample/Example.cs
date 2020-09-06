@@ -22,42 +22,35 @@ namespace OpenDLCSharpConsoleExample
         {
 
 
-            ODL.IODSegmentationSharp segmentation = ODL.ODSegmentationFactorySharp.SegmentatorLoader("C://Users//wantr//Desktop//ApoxyDetector//ApoxyDetector.frz",
-                                                                                         "C://Users//wantr//Desktop//ApoxyDetector//__FreezeModelInfo.xml");
+            ODL.IODSegmentationSharp segmentation = ODL.ODSegmentationFactorySharp.SegmentatorLoader("C://Users//gellston//Desktop//prezed_model//prezed_model.frz",
+                                                                                         "C://Users//gellston//Desktop//prezed_model//__FreezeModelInfo.xml");
 
 
             Cv2.NamedWindow("original");
             Cv2.NamedWindow("result");
-            Cv2.NamedWindow("Thinning");
+        
 
-            var files = Directory.GetFiles("D://검사 이미지//dispensing image", "*.jpg");
-
-
-            foreach(var file in files)
-            {
-                Mat image = new Mat(file, ImreadModes.Grayscale);
-                image = image.Resize(new Size(512, 512));
-                Mat result = new Mat(new Size(512, 512), MatType.CV_32FC1);
-                Mat convertedDepth = new Mat();
+            Mat image8bit = new Mat("C://Users//gellston//Desktop//source.jpg", ImreadModes.Color);
 
 
-                segmentation.Run(image.Data, result.Data);
 
-                //////System.Console.WriteLine("label count :" + segmentation.GetLabelCount());
-
-                Mat threshold = result.Threshold(0.5, 255, ThresholdTypes.Binary);
-                threshold.ConvertTo(convertedDepth, MatType.CV_8UC1);
-
-                Mat thinning = new Mat(new Size(threshold.Width, threshold.Height), MatType.CV_8UC1);
-                OpenCvSharp.XImgProc.CvXImgProc.Thinning(convertedDepth, thinning);
-
-                Cv2.ImShow("original", image);
-                Cv2.ImShow("result", convertedDepth);
-                Cv2.ImShow("Thinning", thinning);
-                Cv2.WaitKey(1);
-            }
+            Mat result = new Mat(new Size(1000, 200), MatType.CV_32FC1);
+            Mat convertedDepth = new Mat();
 
             
+
+            segmentation.Run(image8bit.Data, result.Data);
+
+            //////System.Console.WriteLine("label count :" + segmentation.GetLabelCount());
+
+            Mat threshold = result * 255;
+            threshold.ConvertTo(convertedDepth, MatType.CV_8UC1);
+
+
+            Cv2.ImShow("original", image8bit);
+            Cv2.ImShow("result", convertedDepth);
+            Cv2.WaitKey();
+
         }
     }
 }

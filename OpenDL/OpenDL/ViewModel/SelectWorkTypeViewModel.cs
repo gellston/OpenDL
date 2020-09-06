@@ -25,19 +25,19 @@ namespace OpenDL.ViewModel
             this.WorkTypeMenuCollection.Add(new WorkTypeMenu()
             {
                 
-                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Dashboards/ChartFullStackedLine.svg")), 1d, null, null, true),
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Dashboards/ChartFullStackedLine.svg")), 1d, null, null, true),
                 Name = "Classification"
             });
 
             this.WorkTypeMenuCollection.Add(new WorkTypeMenu()
             {
-                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Dashboards/ChartBubble.svg")), 1d, null, null, true),
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Dashboards/ChartBubble.svg")), 1d, null, null, true),
                 Name = "Segmentation"
             });
 
             this.WorkTypeMenuCollection.Add(new WorkTypeMenu()
             {
-                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v19.2;component/SvgImages/Chart/ChartType_RadarPoint.svg")), 1d, null, null, true),
+                Icon = WpfSvgRenderer.CreateImageSource(SvgImageHelper.CreateImage(new Uri("pack://application:,,,/DevExpress.Images.v20.1;component/SvgImages/Chart/ChartType_RadarPoint.svg")), 1d, null, null, true),
                 Name = "Anomaly Detection"
             });
 

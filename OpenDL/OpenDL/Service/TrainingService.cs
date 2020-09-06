@@ -98,8 +98,8 @@ namespace OpenDL.Service
 
             NDArray inputImageBatch = np.zeros((_batchSize, _imageHeight, _imageWidth, channel));
             NDArray inputLabelBatch = np.zeros((_batchSize, _imageHeight, _imageWidth, _labelOutput));
-            int inputImageSize = _imageHeight * _imageHeight * channel;
-            int labelImageSize = _imageHeight * _imageHeight * 1;
+            int inputImageSize = _imageHeight * _imageWidth * channel;
+            int labelImageSize = _imageHeight * _imageWidth * 1;
 
             for (int index =0; index < _batchSize; index++)
             {
@@ -289,7 +289,7 @@ namespace OpenDL.Service
                 type = MatType.CV_8UC3;
 
             byte[] ndByte = input.astype(NumSharp.NPTypeCode.Byte).ToByteArray();
-            var cvImage = new OpenCvSharp.Mat(imageHeight, imageWidth, type);
+            var cvImage = new OpenCvSharp.Mat(imageWidth, imageHeight, type);
             int length = imageHeight * imageWidth * channel; // or src.Height * src.Step;
             Marshal.Copy(ndByte, 0, cvImage.Data, length);
 
@@ -441,11 +441,12 @@ namespace OpenDL.Service
             {
                 using (ZipArchive archive = ZipArchive.Read(targetfilePath))
                 {
+                    
                     archive.Password = password;
-
                     foreach (ZipItem item in archive)
                     {
-                        item.Extract(outputPath);
+                       
+                        item.Extract(outputPath + Path.DirectorySeparatorChar, AllowFileOverwriteMode.Allow);
                     }
                 }
 
