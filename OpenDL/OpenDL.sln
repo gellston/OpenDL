@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenDLConsoleExample", "Ope
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpenDLCSharpConsoleExample", "OpenDLCSharpConsoleExample\OpenDLCSharpConsoleExample.csproj", "{69EF4866-FAA6-489E-BE8F-3AC365CB44C7}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RemoteSegmentationExample", "RemoteSegmentationExample\RemoteSegmentationExample.vcxproj", "{9EFE135C-6F80-481A-87F4-4C1DB267C815}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,16 @@ Global
 		{69EF4866-FAA6-489E-BE8F-3AC365CB44C7}.Release|x64.Build.0 = Release|x64
 		{69EF4866-FAA6-489E-BE8F-3AC365CB44C7}.Release|x86.ActiveCfg = Release|Any CPU
 		{69EF4866-FAA6-489E-BE8F-3AC365CB44C7}.Release|x86.Build.0 = Release|Any CPU
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Debug|x64.ActiveCfg = Debug|x64
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Debug|x64.Build.0 = Debug|x64
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Debug|x86.ActiveCfg = Debug|Win32
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Debug|x86.Build.0 = Debug|Win32
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Release|Any CPU.ActiveCfg = Release|Win32
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Release|x64.ActiveCfg = Release|x64
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Release|x64.Build.0 = Release|x64
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Release|x86.ActiveCfg = Release|Win32
+		{9EFE135C-6F80-481A-87F4-4C1DB267C815}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
