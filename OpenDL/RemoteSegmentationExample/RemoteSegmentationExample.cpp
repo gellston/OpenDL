@@ -11,7 +11,8 @@ int main(int argc, char* argv[])
 {
 
 
-    odl::IODSegmentation* segmentation = SegmentatorLoader(argv[1], argv[2]);
+    odl::IODSegmentation* segmentation = SegmentatorLoader(argv[1],
+                                                           argv[2]);
     
     std::shared_ptr< odl::IODSegmentation> segmentation_ptr(segmentation);
     float output[4900];
@@ -23,23 +24,38 @@ int main(int argc, char* argv[])
         memset(input, 0, sizeof(unsigned char) * 4900);
         memset(output_double, 0, sizeof(double) * 4900);
 
-        instance->args()
-            .get<unsigned char>("input", input, 4900);
+        try {
 
-        segmentation_ptr->Run(input, output);
+            instance->args()
+                .get<unsigned char>("input", input, 4900);
 
-        for (int index = 0; index < 4900; index++)
-            output_double[index] = output[index];
+            segmentation_ptr->Run(input, output);
 
-        instance->returns()
-            .push<double>("output", output_double, 4900);
+            for (int index = 0; index < 4900; index++)
+                output_double[index] = output[index];
+
+            instance->returns()
+                .push<double>("output", output_double, 4900);
+        }
+        catch (std::exception e) {
+            std::cout << e.what() << std::endl;
+        }
+
+        std::cout << "call sucessfully " << std::endl;
 
     });
-    function.args()
-        .arg<unsigned char>("input", 70 * 70)
-        .returns()
-        .arg<double>("output", 70 * 70)
-        .complete();
+
+    try {
+        function.args()
+            .arg<unsigned char>("input", 70 * 70)
+            .returns()
+            .ret<double>("output", 70 * 70)
+            .complete();
+    }
+    catch (std::exception e) {
+        std::cout << e.what() << std::endl;
+    }
+
 
 
     while (true) {
