@@ -58,7 +58,7 @@
       <recent name="C:\Development\VTDEEP\python\work" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.tensorflow-CrackDetector-train">
+  <component name="RunManager" selected="Python.tensorflow-ChassisWallDetector-train">
     <configuration name="model_segmentation_HySegnetV2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="python" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -72,6 +72,27 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/model/model_segmentation_HySegnetV2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="tensorflow-ChassisWallDetector-train" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="python" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/work" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/tensorflow-ChassisWallDetector-train.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -143,41 +164,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="tensorflow-MobileNetV2-train" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="python" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/work" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/work/tensorflow-MobileNetV2-train.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
       <item itemvalue="Python.model_segmentation_HySegnetV2" />
       <item itemvalue="Python.tensorflow-CrackDetector-train" />
       <item itemvalue="Python.tensorflow-HySegnetV1-train" />
       <item itemvalue="Python.tensorflow-LightVTNet-train" />
-      <item itemvalue="Python.tensorflow-MobileNetV2-train" />
+      <item itemvalue="Python.tensorflow-ChassisWallDetector-train" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.tensorflow-ChassisWallDetector-train" />
         <item itemvalue="Python.tensorflow-CrackDetector-train" />
         <item itemvalue="Python.tensorflow-LightVTNet-train" />
         <item itemvalue="Python.tensorflow-HySegnetV1-train" />
         <item itemvalue="Python.model_segmentation_HySegnetV2" />
-        <item itemvalue="Python.tensorflow-MobileNetV2-train" />
       </list>
     </recent_temporary>
   </component>
@@ -216,26 +216,22 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1899" height="233" key="GridCell.Tab.0.bottom" timestamp="1599365603897">
+    <state width="1899" height="562" key="GridCell.Tab.0.bottom" timestamp="1621915845964">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="233" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599365603897" />
-    <state width="1899" height="233" key="GridCell.Tab.0.center" timestamp="1599365603896">
+    <state width="1899" height="562" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1621915845964" />
+    <state width="1899" height="562" key="GridCell.Tab.0.center" timestamp="1621915845964">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="233" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599365603896" />
-    <state width="1899" height="233" key="GridCell.Tab.0.left" timestamp="1599365603896">
+    <state width="1899" height="562" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1621915845964" />
+    <state width="1899" height="562" key="GridCell.Tab.0.left" timestamp="1621915845964">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="233" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599365603896" />
-    <state width="1899" height="233" key="GridCell.Tab.0.right" timestamp="1599365603897">
+    <state width="1899" height="562" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1621915845964" />
+    <state width="1899" height="562" key="GridCell.Tab.0.right" timestamp="1621915845964">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="233" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599365603897" />
-    <state x="653" y="166" key="SettingsEditor" timestamp="1599338402054">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="653" y="166" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1599338402054" />
+    <state width="1899" height="562" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1621915845964" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

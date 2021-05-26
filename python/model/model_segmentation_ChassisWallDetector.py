@@ -21,35 +21,35 @@ class model_segmentation_ChassisWallDetector:
             self.keep_layer = tf.placeholder(tf.bool, name='phase')
 
             print('=== network structure ===')
-            encode1 = atrus_conv(self.X, kernel_size=3,  num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv1")
-            encode2 = atrus_conv(encode1, kernel_size=3,  num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv2")
+            encode1 = atrus_conv(self.X, kernel_size=3,  num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv1")
+            encode2 = atrus_conv(encode1, kernel_size=3,  num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv2")
             max_pool1 = max_pool2d(encode2, pool_size=3, strides=2, name='max_pool1')
             #70x70
 
-            encode3 = atrus_conv(max_pool1, kernel_size=3,  num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv3")
-            encode4 = atrus_conv(encode3, kernel_size=3, num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv4")
+            encode3 = atrus_conv(max_pool1, kernel_size=3,  num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv3")
+            encode4 = atrus_conv(encode3, kernel_size=3, num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv4")
             max_pool2 = max_pool2d(encode4, pool_size=3, strides=2, name='max_pool2')
             #35x35
 
-            encode5 = atrus_conv(max_pool2, kernel_size=3,  num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv5")
-            encode6 = atrus_conv(encode5, kernel_size=3, num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv6")
+            encode5 = atrus_conv(max_pool2, kernel_size=3,  num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv5")
+            encode6 = atrus_conv(encode5, kernel_size=3, num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv6")
             max_pool3 = max_pool2d(encode6, pool_size=3, strides=2, name='max_pool3')
             #18x18
 
-            encode7 = atrus_conv(max_pool3, kernel_size=3,  num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv7")
-            encode8 = atrus_conv(encode7, kernel_size=3, num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv8")
+            encode7 = atrus_conv(max_pool3, kernel_size=3,  num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv7")
+            encode8 = atrus_conv(encode7, kernel_size=3, num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv8")
             max_pool4 = max_pool2d(encode8, pool_size=3, strides=2, name='max_pool4')
             #9x9
 
-            encode9 = atrus_conv(max_pool4, kernel_size=3,  num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv9")
-            encode10 = atrus_conv(encode9, kernel_size=3, num_filter=64, dilate_rate=1, training=self.keep_layer, name="atrous_conv10")
+            encode9 = atrus_conv(max_pool4, kernel_size=3,  num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv9")
+            encode10 = atrus_conv(encode9, kernel_size=3, num_filter=128, dilate_rate=1, training=self.keep_layer, name="atrous_conv10")
             max_pool5 = max_pool2d(encode10, pool_size=3, strides=2, name='max_pool5')
             #5x5
 
-            joint2 = atrus_conv(max_pool2, kernel_size=3, num_filter=1, dilate_rate=1, training=self.keep_layer, name="conv_joint2")
-            joint3 = atrus_conv(max_pool3, kernel_size=3, num_filter=1, dilate_rate=1, training=self.keep_layer, name="conv_joint3")
-            joint4 = atrus_conv(max_pool4, kernel_size=3, num_filter=1, dilate_rate=1, training=self.keep_layer, name="conv_joint4")
-            joint5 = atrus_conv(max_pool5, kernel_size=3, num_filter=1, dilate_rate=1, training=self.keep_layer, name="conv_joint5")
+            joint2 = atrus_conv(max_pool2, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="conv_joint2")
+            joint3 = atrus_conv(max_pool3, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="conv_joint3")
+            joint4 = atrus_conv(max_pool4, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="conv_joint4")
+            joint5 = atrus_conv(max_pool5, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="conv_joint5")
 
             up1 = upsample_layer(joint2, [70, 70])
             up2 = upsample_layer(joint3, [70, 70])
@@ -58,10 +58,10 @@ class model_segmentation_ChassisWallDetector:
 
 
             concat1 = tf.concat([ up1, up2, up3, up4], -1)
-            channel_concat1 = atrus_conv(concat1, kernel_size=3, num_filter=6, dilate_rate=1, training=self.keep_layer, name="channel_concat1")
-            channel_concat2 = atrus_conv(concat1, kernel_size=3, num_filter=6, dilate_rate=1, training=self.keep_layer, name="channel_concat2")
-            channel_concat3 = atrus_conv(concat1, kernel_size=3, num_filter=6, dilate_rate=1, training=self.keep_layer, name="channel_concat3")
-            channel_concat4 = atrus_conv(concat1, kernel_size=3, num_filter=6, dilate_rate=1, training=self.keep_layer, name="channel_concat4")
+            channel_concat1 = atrus_conv(concat1, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="channel_concat1")
+            channel_concat2 = atrus_conv(concat1, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="channel_concat2")
+            channel_concat3 = atrus_conv(concat1, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="channel_concat3")
+            channel_concat4 = atrus_conv(concat1, kernel_size=3, num_filter=32, dilate_rate=1, training=self.keep_layer, name="channel_concat4")
 
             concat2 = tf.concat([channel_concat1, channel_concat2, channel_concat3, channel_concat4], -1)
 
