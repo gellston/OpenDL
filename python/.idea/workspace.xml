@@ -166,10 +166,10 @@
     </configuration>
     <list>
       <item itemvalue="Python.model_segmentation_HySegnetV2" />
+      <item itemvalue="Python.tensorflow-ChassisWallDetector-train" />
       <item itemvalue="Python.tensorflow-CrackDetector-train" />
       <item itemvalue="Python.tensorflow-HySegnetV1-train" />
       <item itemvalue="Python.tensorflow-LightVTNet-train" />
-      <item itemvalue="Python.tensorflow-ChassisWallDetector-train" />
     </list>
     <recent_temporary>
       <list>
